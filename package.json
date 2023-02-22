@@ -1,0 +1,47 @@
+{
+  "version": "0.0.1",
+  "name": "ktx2-encoder",
+  "description": "KTX2 encoder for browser applications",
+  "type": "module",
+  "main": "dist/main.js",
+  "module": "dist/module.esm.js",
+  "types": "types/index.d.ts",
+  "repository": "github:gz65555/ktx2-encoder",
+  "author": {
+    "name": "Hu Song",
+    "email": "gz65555@gmail.com"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "docs": "typedoc src/index.ts --plugin typedoc-plugin-markdown --out ./docs",
+    "build": "tsc && rollup -c"
+  },
+  "keywords": [
+    "ktx",
+    "ktx2",
+    "basis",
+    "texture",
+    "encoder",
+    "webgl",
+    "webgpu"
+  ],
+  "files": [
+    "types",
+    "dist"
+  ],
+  "devDependencies": {
+    "prettier": "^2.3.1",
+    "rollup": "^3",
+    "typedoc": "^0.23.25",
+    "typescript": "^4",
+    "vite": "^4"
+  },
+  "dependencies": {
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@swc/core": "^1.3.35",
+    "@swc/helpers": "^0.4.14",
+    "rollup-plugin-swc3": "^0.8.0",
+    "typedoc-plugin-markdown": "^3.14.0"
+  }
+}
