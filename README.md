@@ -1,7 +1,6 @@
 # ktx-encoder
 
 [![Latest NPM release](https://img.shields.io/npm/v/ktx2-encoder.svg)](https://www.npmjs.com/package/ktx2-encoder)
-[![Minzipped size](https://badgen.net/bundlephobia/minzip/ktx2-encoder)](https://bundlephobia.com/result?p=ktx2-encoder)
 [![License](https://img.shields.io/badge/license-MIT-007ec6.svg)](https://github.com/gz65555/ktx2-encoder)
 
 
