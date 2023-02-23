@@ -30,4 +30,3 @@ encodeKTX2Cube([data, ...] /** ArrayBuffer of png */, options);
 ```
 
 See [options](./docs/interfaces/IEncodeOptions.md) API documentation for more details.
-# ktx2-encoder
