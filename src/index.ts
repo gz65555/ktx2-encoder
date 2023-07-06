@@ -1,5 +1,6 @@
 import { BasisTextureType, IBasisEncoder } from "./IBasisEncoder";
 import { IBasisModule } from "./IBasisModule";
+import { write, read } from "ktx-parse";
 
 export interface IEncodeOptions {
   /**
@@ -42,6 +43,9 @@ export interface IEncodeOptions {
    * Create .KTX2 files instead of .basis files. By default this is FALSE.
    */
   isKTX2File: boolean;
+
+  /** kv data */
+  kvData: Record<string, string | Uint8Array>;
 }
 
 const DefaultOptions = {
@@ -54,10 +58,16 @@ const DefaultOptions = {
   isSetKTX2SRGBTransferFunc: true
 };
 
-export function encodeKTX2(pngBuffer: ArrayBuffer, options: Partial<IEncodeOptions> = {}): Promise<Uint8Array> {
+let encoder: IBasisEncoder | undefined;
+
+export function encodeKTX2(
+  pngBuffer: ArrayBuffer,
+  options: Partial<IEncodeOptions> = {},
+  keepEncoder: boolean = false
+): Promise<Uint8Array> {
   return initBasis().then((basisModule) => {
     const ktx2FileData = new Uint8Array(1024 * 1024 * 10);
-    const encoder = new basisModule.BasisEncoder();
+    if (!encoder) encoder = new basisModule.BasisEncoder();
     applyInputOptions(options, encoder);
     encoder.setTexType(BasisTextureType.cBASISTexType2D);
     encoder.setSliceSourceImage(0, new Uint8Array(pngBuffer), 0, 0, true);
@@ -65,19 +75,30 @@ export function encodeKTX2(pngBuffer: ArrayBuffer, options: Partial<IEncodeOptio
     if (byteLength === 0) {
       throw "encode failed";
     }
-    const actualKTX2FileData = new Uint8Array(ktx2FileData.buffer, 0, byteLength);
-    encoder.delete();
+    let actualKTX2FileData = new Uint8Array(ktx2FileData.buffer, 0, byteLength);
+    const container = read(ktx2FileData);
+    if (options.kvData) {
+      for (let k in options.kvData) {
+        container.keyValue[k] = options.kvData[k];
+      }
+      actualKTX2FileData = write(container, { keepWriter: true });
+    }
+    if (keepEncoder) encoder.delete();
     return actualKTX2FileData;
   });
 }
 
-export function encodeKTX2Cube(pngBuffers: Array<ArrayBuffer>, options: Partial<IEncodeOptions> = {}) {
+export function encodeKTX2Cube(
+  pngBuffers: Array<ArrayBuffer>,
+  options: Partial<IEncodeOptions> = {},
+  keepEncoder: boolean = false
+) {
   if (pngBuffers.length !== 6) {
     throw "cube texture must have 6 images";
   }
   return initBasis().then((basisModule) => {
     const ktx2FileData = new Uint8Array(1024 * 1024 * 10);
-    const encoder = new basisModule.BasisEncoder();
+    if (!encoder) encoder = new basisModule.BasisEncoder();
     applyInputOptions(options, encoder);
     encoder.setTexType(BasisTextureType.cBASISTexType2D);
     for (let i = 0; i < 6; i++) {
@@ -87,10 +108,19 @@ export function encodeKTX2Cube(pngBuffers: Array<ArrayBuffer>, options: Partial<
     if (byteLength === 0) {
       throw "encode failed";
     }
-    const actualKTX2FileData = new Uint8Array(ktx2FileData.buffer, 0, byteLength);
-    encoder.delete();
+    let actualKTX2FileData = new Uint8Array(ktx2FileData.buffer, 0, byteLength);
+    const container = read(ktx2FileData);
+    if (options.kvData) {
+      container.keyValue = options.kvData;
+      actualKTX2FileData = write(container);
+    }
+    if (keepEncoder) encoder.delete();
     return actualKTX2FileData;
   });
+}
+
+export function destroyEncoder() {
+  if (encoder) encoder.delete();
 }
 
 function applyInputOptions(options: Partial<IEncodeOptions> = {}, encoder: IBasisEncoder) {
