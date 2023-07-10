@@ -6,6 +6,13 @@ export const enum BasisTextureType {
   cBASISTexTypeVolume
 }
 
+/** image source type */
+export const enum SourceType {
+  RAW,
+  PNG,
+  JPG,
+}
+
 export interface IBasisEncoder {
   /**
    * Sets the slice's source image, either from a PNG file or from a raw 32-bit RGBA raster image.
@@ -16,7 +23,7 @@ export interface IBasisEncoder {
    * @param height if isPNG is true, height set 0.
    * @param isPNG is png buffer
    */
-  setSliceSourceImage(sliceIndex: number, imageBuffer: Uint8Array, width: number, height: number, isPNG: boolean): void;
+  setSliceSourceImage(sliceIndex: number, imageBuffer: Uint8Array, width: number, height: number, type: SourceType): void;
   /**
    * Compresses the provided source slice(s) to an output .basis file.
    * At the minimum, you must provided at least 1 source slice by calling setSliceSourceImage() before calling this method.

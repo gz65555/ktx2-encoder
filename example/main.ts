@@ -1,4 +1,5 @@
-import { encodeKTX2, encodeKTX2Cube } from "../src";
+import { encodeToKTX2, encodeKTX2Cube, encodeImageToKTX2 } from "../src";
+import { SourceType } from "../src/IBasisEncoder";
 import { write, read } from "./ktx-parse";
 
 function downloadBlob(data: BlobPart, fileName: string, mimeType?: string) {
@@ -24,24 +25,27 @@ function downloadURL(data: string, fileName: string) {
   a.remove();
 }
 
-fetch("/DuckCM.png")
-  .then((res) => res.arrayBuffer())
-  .then((pngBuffer) => {
-    encodeKTX2(pngBuffer, { kvData: { GalaceanTextureParams: new Uint8Array([0, 0, 0, 16]) } }).then((output) => {
-      const container = read(output);
-      // downloadBlob(output, "KVImage.ktx2");
-    });
+// fetch("/DuckCM.png")
+fetch("/photo-min.jpeg")
+  .then((res) => res.blob())
+  .then(async (pngBlob) => {
+    // const buffer = await pngBlob.arrayBuffer();
+    for (let i = 0; i < 3; i++) {
+      console.time("encode time");
+      await encodeToKTX2(pngBlob, { type: SourceType.JPG });
+      console.timeEnd("encode time");
+    }
   });
 
-Promise.all([
-  fetch("/cube/nx.png").then((res) => res.arrayBuffer()),
-  fetch("/cube/ny.png").then((res) => res.arrayBuffer()),
-  fetch("/cube/nz.png").then((res) => res.arrayBuffer()),
-  fetch("/cube/px.png").then((res) => res.arrayBuffer()),
-  fetch("/cube/py.png").then((res) => res.arrayBuffer()),
-  fetch("/cube/pz.png").then((res) => res.arrayBuffer())
-]).then((buffers) => {
-  encodeKTX2Cube(buffers).then((output) => {
-    console.log(output);
-  });
-});
+// Promise.all([
+//   fetch("/cube/nx.png").then((res) => res.arrayBuffer()),
+//   fetch("/cube/ny.png").then((res) => res.arrayBuffer()),
+//   fetch("/cube/nz.png").then((res) => res.arrayBuffer()),
+//   fetch("/cube/px.png").then((res) => res.arrayBuffer()),
+//   fetch("/cube/py.png").then((res) => res.arrayBuffer()),
+//   fetch("/cube/pz.png").then((res) => res.arrayBuffer())
+// ]).then((buffers) => {
+//   encodeKTX2Cube(buffers, { sourceType: SourceType.PNG }).then((output) => {
+//     console.log(output);
+//   });
+// });

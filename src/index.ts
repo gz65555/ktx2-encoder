@@ -1,4 +1,4 @@
-import { BasisTextureType, IBasisEncoder } from "./IBasisEncoder";
+import { BasisTextureType, IBasisEncoder, SourceType } from "./IBasisEncoder";
 import { IBasisModule } from "./IBasisModule";
 import { write, read } from "ktx-parse";
 
@@ -46,6 +46,9 @@ export interface IEncodeOptions {
 
   /** kv data */
   kvData: Record<string, string | Uint8Array>;
+
+  /** type */
+  type: SourceType;
 }
 
 const DefaultOptions = {
@@ -59,18 +62,31 @@ const DefaultOptions = {
 };
 
 let encoder: IBasisEncoder | undefined;
+const canvas = document.createElement("canvas");
+const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
 
-export function encodeKTX2(
-  pngBuffer: ArrayBuffer,
+function decodeImageData(imageBitmapSource: ImageBitmapSource) {
+  return createImageBitmap(imageBitmapSource).then((bitmap) => {
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+    ctx.drawImage(bitmap, 0, 0);
+    const imageData = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
+    return imageData;
+  });
+}
+
+export function encodeImageToKTX2(
+  buffer: ArrayBuffer,
   options: Partial<IEncodeOptions> = {},
-  keepEncoder: boolean = false
-): Promise<Uint8Array> {
+) {
   return initBasis().then((basisModule) => {
-    const ktx2FileData = new Uint8Array(1024 * 1024 * 10);
-    if (!encoder) encoder = new basisModule.BasisEncoder();
+    const encoder = new basisModule.BasisEncoder();
     applyInputOptions(options, encoder);
     encoder.setTexType(BasisTextureType.cBASISTexType2D);
-    encoder.setSliceSourceImage(0, new Uint8Array(pngBuffer), 0, 0, true);
+
+    encoder.setSliceSourceImage(0, new Uint8Array(buffer), 0, 0, options.type ?? SourceType.PNG);
+
+    const ktx2FileData = new Uint8Array(1024 * 1024 * 10);
     const byteLength = encoder.encode(ktx2FileData);
     if (byteLength === 0) {
       throw "encode failed";
@@ -83,8 +99,50 @@ export function encodeKTX2(
       }
       actualKTX2FileData = write(container, { keepWriter: true });
     }
-    if (keepEncoder) encoder.delete();
+    encoder.delete();
     return actualKTX2FileData;
+  });
+}
+
+export function encodeToKTX2(
+  imageBitmapSource: ImageBitmapSource | ArrayBuffer,
+  options: Partial<IEncodeOptions> = {},
+  keepEncoder: boolean = false
+): Promise<Uint8Array> {
+  return initBasis().then((basisModule) => {
+    if (!encoder) encoder = new basisModule.BasisEncoder();
+    applyInputOptions(options, encoder);
+    encoder.setTexType(BasisTextureType.cBASISTexType2D);
+
+    if (imageBitmapSource instanceof ArrayBuffer) {
+      imageBitmapSource = new Blob([imageBitmapSource]);
+    }
+
+    return decodeImageData(imageBitmapSource).then((imageData) => {
+      encoder!.setSliceSourceImage(
+        0,
+        new Uint8Array(imageData.data),
+        imageData.width,
+        imageData.height,
+        SourceType.RAW
+      );
+
+      const ktx2FileData = new Uint8Array(1024 * 1024 * 10);
+      const byteLength = encoder!.encode(ktx2FileData);
+      if (byteLength === 0) {
+        throw "encode failed";
+      }
+      let actualKTX2FileData = new Uint8Array(ktx2FileData.buffer, 0, byteLength);
+      const container = read(ktx2FileData);
+      if (options.kvData) {
+        for (let k in options.kvData) {
+          container.keyValue[k] = options.kvData[k];
+        }
+        actualKTX2FileData = write(container, { keepWriter: true });
+      }
+      if (keepEncoder) encoder!.delete();
+      return actualKTX2FileData;
+    });
   });
 }
 
@@ -102,7 +160,7 @@ export function encodeKTX2Cube(
     applyInputOptions(options, encoder);
     encoder.setTexType(BasisTextureType.cBASISTexType2D);
     for (let i = 0; i < 6; i++) {
-      encoder.setSliceSourceImage(i, new Uint8Array(pngBuffers[i]), 0, 0, true);
+      encoder.setSliceSourceImage(i, new Uint8Array(pngBuffers[i]), 0, 0, 1);
     }
     const byteLength = encoder.encode(ktx2FileData);
     if (byteLength === 0) {
@@ -121,6 +179,7 @@ export function encodeKTX2Cube(
 
 export function destroyEncoder() {
   if (encoder) encoder.delete();
+  promise = null;
 }
 
 function applyInputOptions(options: Partial<IEncodeOptions> = {}, encoder: IBasisEncoder) {
@@ -143,12 +202,8 @@ function initBasis(): Promise<IBasisModule> {
     function _init(): Promise<IBasisModule> {
       return new Promise((resolve, reject) => {
         Promise.all([
-          fetch("https://mdn.alipayobjects.com/rms/afts/file/A*64BiS7P_OQcAAAAAAAAAAAAAARQnAQ/basis_encoder.js").then(
-            (res) => res.text()
-          ),
-          fetch("https://mdn.alipayobjects.com/rms/afts/file/A*Dm-yQqrLquoAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm").then(
-            (res) => res.arrayBuffer()
-          )
+          fetch("https://mdn.alipayobjects.com/rms/afts/file/A*SrRkQarYYl4AAAAAAAAAAAAAARQnAQ/basis_encoder.js").then((res) => res.text()),
+          fetch("https://mdn.alipayobjects.com/rms/afts/file/A*qFWbTrA0hZYAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm").then((res) => res.arrayBuffer())
         ])
           .then(([basisEncoderCode, wasmBinary]) => {
             const script = document.createElement("script");
@@ -174,8 +229,4 @@ function initBasis(): Promise<IBasisModule> {
     promise = _init();
   }
   return promise;
-}
-
-export function release() {
-  promise = null;
 }
