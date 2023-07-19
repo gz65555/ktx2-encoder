@@ -32,8 +32,8 @@ devDependencies:
     specifier: ^0.24.8
     version: 0.24.8(typescript@5.0.2)
   typedoc-plugin-markdown:
-    specifier: ^3.14.0
-    version: 3.14.0(typedoc@0.24.8)
+    specifier: ^3.15.3
+    version: 3.15.3(typedoc@0.24.8)
   typescript:
     specifier: ^5
     version: 5.0.2
@@ -648,10 +648,10 @@ packages:
     resolution: {integrity: sha512-336iVw3rtn2BUK7ORdIAHTyxHGRIHVReokCR3XjbckJMK7ms8FysBfhLR8IXnAgy7T0PTPNBWKiH514FOW/WSg==, tarball: https://registry.npm.alibaba-inc.com/tslib/download/tslib-2.5.0.tgz}
     dev: false
 
-  /typedoc-plugin-markdown@3.14.0(typedoc@0.24.8):
-    resolution: {integrity: sha512-UyQLkLRkfTFhLdhSf3RRpA3nNInGn+k6sll2vRXjflaMNwQAAiB61SYbisNZTg16t4K1dt1bPQMMGLrxS0GZ0Q==, tarball: https://registry.npm.alibaba-inc.com/typedoc-plugin-markdown/download/typedoc-plugin-markdown-3.14.0.tgz}
+  /typedoc-plugin-markdown@3.15.3(typedoc@0.24.8):
+    resolution: {integrity: sha512-idntFYu3vfaY3eaD+w9DeRd0PmNGqGuNLKihPU9poxFGnATJYGn9dPtEhn2QrTdishFMg7jPXAhos+2T6YCWRQ==, tarball: https://registry.npm.alibaba-inc.com/typedoc-plugin-markdown/download/typedoc-plugin-markdown-3.15.3.tgz}
     peerDependencies:
-      typedoc: '>=0.23.0'
+      typedoc: '>=0.24.0'
     dependencies:
       handlebars: 4.7.7
       typedoc: 0.24.8(typescript@5.0.2)

@@ -4,28 +4,22 @@
 
 ## Table of contents
 
-### Interfaces
-
-- [IEncodeOptions](interfaces/IEncodeOptions.md)
-
 ### Functions
 
-- [encodeKTX2](modules.md#encodektx2)
-- [encodeKTX2Cube](modules.md#encodektx2cube)
-- [release](modules.md#release)
+- [encodeToKTX2](modules.md#encodetoktx2)
 
 ## Functions
 
-### encodeKTX2
+### encodeToKTX2
 
-▸ **encodeKTX2**(`pngBuffer`, `options?`): `Promise`<`Uint8Array`\>
+▸ **encodeToKTX2**(`imageBitmapSource`, `options?`): `Promise`<`Uint8Array`\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `pngBuffer` | `ArrayBuffer` |
-| `options` | `Partial`<[`IEncodeOptions`](interfaces/IEncodeOptions.md)\> |
+| `imageBitmapSource` | `ImageBitmapSource` \| `ArrayBuffer` |
+| `options` | `Partial`<`IEncodeOptions`\> |
 
 #### Returns
 
@@ -33,39 +27,4 @@
 
 #### Defined in
 
-index.ts:57
-
-___
-
-### encodeKTX2Cube
-
-▸ **encodeKTX2Cube**(`pngBuffers`, `options?`): `Promise`<`Uint8Array`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `pngBuffers` | `ArrayBuffer`[] |
-| `options` | `Partial`<[`IEncodeOptions`](interfaces/IEncodeOptions.md)\> |
-
-#### Returns
-
-`Promise`<`Uint8Array`\>
-
-#### Defined in
-
-index.ts:74
-
-___
-
-### release
-
-▸ **release**(): `void`
-
-#### Returns
-
-`void`
-
-#### Defined in
-
-index.ts:149
+[encoder.ts:107](https://github.com/gz65555/ktx2-encoder/blob/62d97dc/src/encoder.ts#L107)
