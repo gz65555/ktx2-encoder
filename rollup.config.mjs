@@ -28,7 +28,7 @@ export default [
         format: "es"
       },
       {
-        file: "dist/main.js",
+        file: "dist/main.umd.js",
         format: "umd",
         name: "KTX2Encoder"
       }

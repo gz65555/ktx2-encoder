@@ -3,7 +3,7 @@
   "name": "ktx2-encoder",
   "description": "KTX2(.ktx2) encoder for browser applications",
   "type": "module",
-  "main": "dist/main.js",
+  "main": "dist/main.umd.js",
   "module": "dist/module.esm.js",
   "types": "types/index.d.ts",
   "repository": "github:gz65555/ktx2-encoder",
@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "vite",
     "docs": "typedoc src/index.ts --plugin typedoc-plugin-markdown --out ./docs",
-    "build": "tsc && rollup -c"
+    "build": "tsc && rollup -cw"
   },
   "keywords": [
     "ktx",
@@ -36,13 +36,13 @@
     "prettier": "^2.3.1",
     "rollup": "^3",
     "rollup-plugin-swc3": "^0.8.0",
-    "typedoc": "^0.23.25",
+    "typedoc": "^0.24.8",
     "typedoc-plugin-markdown": "^3.14.0",
-    "typescript": "^4",
+    "typescript": "^5",
     "vite": "^4"
   },
   "dependencies": {
     "@swc/helpers": "^0.4.14",
-    "ktx-parse": "^0.5.0"
+    "ktx-parse": "^0.6.0"
   }
 }
