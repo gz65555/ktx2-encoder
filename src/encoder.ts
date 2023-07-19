@@ -250,12 +250,12 @@ function initBasis(): Promise<IBasisModule> {
 
 if (isInWorker) {
   self.addEventListener("message", (e: MessageEvent) => {
-    encodeImageToKTX2(e.data)
+    encodeToKTX2(e.data)
       .then((result) => {
         self.postMessage(result);
       })
       .catch((e) => {
-        throw e;
+        self.postMessage({ error: e });
       });
   });
 }
