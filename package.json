@@ -15,7 +15,7 @@
   "scripts": {
     "dev": "vite",
     "docs": "typedoc src/index.ts --plugin typedoc-plugin-markdown --out ./docs",
-    "build": "tsc && rollup -cw"
+    "build": "tsc && rollup -c"
   },
   "keywords": [
     "ktx",
