@@ -1,0 +1,386 @@
+[
+  {
+    "id": "eeda8863-cf98-4d33-9a59-2e9b69f3f2d6",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/2.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*qvqKQ6sXbkMAAAAAAAAAAAAADkp5AQ/2.glb"
+  },
+  {
+    "id": "594ce082-0e19-4c57-a35b-bc648b6cb60f",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/3.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*n-i9R4r7rMwAAAAAAAAAAAAADkp5AQ/3.glb"
+  },
+  {
+    "id": "a3f7e2ed-7131-440d-9fa0-d360b7bf259e",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/4.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*az5dT4LWhbQAAAAAAAAAAAAADkp5AQ/4.glb"
+  },
+  {
+    "id": "5fb652d2-cefa-48ce-846f-622f1f40cadd",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/5.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*y1WlSLYlgOgAAAAAAAAAAAAADkp5AQ/5.glb"
+  },
+  {
+    "id": "a04e7c20-7656-4078-88dc-cede4cd77613",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/6.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*QQ9OSpL31n0AAAAAAAAAAAAADkp5AQ/6.glb"
+  },
+  {
+    "id": "617812b0-c054-4dc4-8694-3322cc3583c1",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/7.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*gLTdQKtmhZoAAAAAAAAAAAAADkp5AQ/7.glb"
+  },
+  {
+    "id": "bd3c15ff-98b0-4afe-b3b0-6d6838fd8914",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/8.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*mrhgRKpJ-98AAAAAAAAAAAAADkp5AQ/8.glb"
+  },
+  {
+    "id": "a1434e80-6fd8-4dc1-b5a7-cb5a40346ea3",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/9.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*hEM8RKquRzwAAAAAAAAAAAAADkp5AQ/9.glb"
+  },
+  {
+    "id": "7ea006b5-f262-4305-a8cb-7341249cbd79",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/10.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*vdXES6HannoAAAAAAAAAAAAADkp5AQ/10.glb"
+  },
+  {
+    "id": "471f758c-d559-4ec9-86c6-607d1b88555c",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/11.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*uJ3oQ4zLy8IAAAAAAAAAAAAADkp5AQ/11.glb"
+  },
+  {
+    "id": "2bc35f78-0644-47ce-885f-97a52df9ba96",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/12.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*cJhFSoCER0IAAAAAAAAAAAAADkp5AQ/12.glb"
+  },
+  {
+    "id": "c2e84a55-bac8-4ff0-89ea-13cfcb679f10",
+    "type": "prefab",
+    "virtualPath": "/Assets/FBX_Track/1.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*9a6ISbiDmJcAAAAAAAAAAAAADkp5AQ/1.glb"
+  },
+  {
+    "id": "febafede-5139-447c-81a0-1c9870adcc7e",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/huopen/huopen_BaseColor.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*f--9QI3wPZEAAAAAAAAAAAAADkp5AQ/huopen_BaseColor.png"
+  },
+  {
+    "id": "c801dbe0-29aa-4ad9-b462-1a7ee8439736",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/huopen/huopen_Normal.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*io52QrHGbNIAAAAAAAAAAAAADkp5AQ/huopen_Normal.png"
+  },
+  {
+    "id": "d21630bd-39a4-4a80-a274-15920d605328",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/huopen/huopen_Roughness.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*FeAcQIO6Io0AAAAAAAAAAAAADkp5AQ/huopen_Roughness.png"
+  },
+  {
+    "id": "10089815-cfe5-41e8-b18a-e7410b4b42ce",
+    "type": "prefab",
+    "virtualPath": "/Assets/huopen/huopen.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*JKvMQpvjBQIAAAAAAAAAAAAADkp5AQ/huopen.glb"
+  },
+  {
+    "id": "f3874eba-0882-4c35-a67a-ef2b35fda130",
+    "type": "material",
+    "virtualPath": "/Assets/huopen/huopen-copied",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*fFGnTrE8a58AAAAAAAAAAAAADkp5AQ/huopen-copied.json"
+  },
+  {
+    "id": "f4d1cd84-c6fd-441a-ba0c-23320ec24e2b",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV1/XDDN_LV1_02_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*lHzMTqawLUMAAAAAAAAAAAAADkp5AQ/XDDN_LV1_02_albedo.png"
+  },
+  {
+    "id": "02a6c96d-3478-4510-8d37-5849f89ba049",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV1/XDDN_LV1_06_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*m-dKQoqdIhUAAAAAAAAAAAAADkp5AQ/XDDN_LV1_06_albedo.png"
+  },
+  {
+    "id": "a66d70fa-5637-4370-b83b-1c17d94cf1ab",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV1/XDDN_LV1_03_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*dskbT67SdEMAAAAAAAAAAAAADkp5AQ/XDDN_LV1_03_albedo.png"
+  },
+  {
+    "id": "5af4711d-02eb-477e-b363-74033229cfbb",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV1/XDDN_LV1_05_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*_XdBSIDd47kAAAAAAAAAAAAADkp5AQ/XDDN_LV1_05_albedo.png"
+  },
+  {
+    "id": "ee7cffda-7137-49fa-a676-9d3a355e0b72",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV1/XDDN_LV1_01_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*Icz6R61vcBQAAAAAAAAAAAAADkp5AQ/XDDN_LV1_01_albedo.png"
+  },
+  {
+    "id": "09199bde-eada-4142-936e-2c094734f470",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV1/XDDN_LV1_07_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*S-sKT4MM3LEAAAAAAAAAAAAADkp5AQ/XDDN_LV1_07_albedo.png"
+  },
+  {
+    "id": "5a74fb55-879d-4abc-839a-4fe14f410b19",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV1/XDDN_LV1_04_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*079vR6dOVdcAAAAAAAAAAAAADkp5AQ/XDDN_LV1_04_albedo.png"
+  },
+  {
+    "id": "3ef227f9-0d96-418f-bc22-1856a5da87f6",
+    "type": "prefab",
+    "virtualPath": "/Assets/LV1/yu_APL.glb",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*LfFeR5aZ8e8AAAAAAAAAAAAADkp5AQ/yu_APL.glb"
+  },
+  {
+    "id": "92985dbe-bd27-4252-bc10-066e34488da1",
+    "type": "prefab",
+    "virtualPath": "/Assets/LV1/yu_anim_0628.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*OAh-QrHsU6AAAAAAAAAAAAAADkp5AQ/yu_anim_0628.glb"
+  },
+  {
+    "id": "6f649176-daf3-4397-8b9b-574ebe297459",
+    "type": "AnimatorController",
+    "virtualPath": "/Assets/LV1/yu_anim",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*4aOfSKpgf78AAAAAAAAAAAAADkp5AQ/yu_anim.json"
+  },
+  {
+    "id": "6be6cb56-7b46-49ee-83d2-c7635a41e1c4",
+    "type": "AnimatorController",
+    "virtualPath": "/Assets/LV1/qiu_anim",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*ZaCXQLChCjsAAAAAAAAAAAAADkp5AQ/qiu_anim.json"
+  },
+  {
+    "id": "161552d8-e763-48e2-b692-bb66f189df51",
+    "type": "prefab",
+    "virtualPath": "/Assets/LV1/qiu_anim.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*RVj0QI3VJf4AAAAAAAAAAAAADkp5AQ/qiu_anim.glb"
+  },
+  {
+    "id": "aa9590e3-c865-4ae9-bd8b-2f6b33112c5f",
+    "type": "AnimatorController",
+    "virtualPath": "/Assets/LV1/hua_anim",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*bW0DSY5friAAAAAAAAAAAAAADkp5AQ/hua_anim.json"
+  },
+  {
+    "id": "628326f2-25a8-4737-b1f5-46208030363f",
+    "type": "prefab",
+    "virtualPath": "/Assets/LV1/LV1.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*cuRURYSQTJ8AAAAAAAAAAAAADkp5AQ/LV1.glb"
+  },
+  {
+    "id": "69b12d34-ff27-499a-8d04-22b477dde8c0",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV1/XDDN_LV1_08_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*yDKnT5JwNQEAAAAAAAAAAAAADkp5AQ/XDDN_LV1_08_albedo.png"
+  },
+  {
+    "id": "76faa0c0-5de9-4633-88c2-4f126ba8ba72",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV1/XDDN_LV1_09_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*DhAzR7gSkfsAAAAAAAAAAAAADkp5AQ/XDDN_LV1_09_albedo.png"
+  },
+  {
+    "id": "4663d177-44d1-4ea3-a2a6-f95f93eefba1",
+    "type": "prefab",
+    "virtualPath": "/Assets/LV1/hua.glb",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*AhCEQqyUaWEAAAAAAAAAAAAADkp5AQ/hua.glb"
+  },
+  {
+    "id": "61ca8cc0-6baf-46bc-bc42-d8d97bae9eca",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/shan_di/shui.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*rDQnR7s1x_cAAAAAAAAAAAAADkp5AQ/shui.png"
+  },
+  {
+    "id": "fb3c6585-851d-4e88-8c96-d5d537591a3e",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/shan_di/di4.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*1KQsSbtqarAAAAAAAAAAAAAADkp5AQ/di4.png"
+  },
+  {
+    "id": "3653edc5-7f4b-43c3-9464-bd863d0caead",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/shan_di/di3__albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*pLuKRbY-ntoAAAAAAAAAAAAADkp5AQ/di3__albedo.png"
+  },
+  {
+    "id": "a69d02d8-f162-420c-a6e9-1c78e9f73edc",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/shan_di/shan_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*exObQLRxUW0AAAAAAAAAAAAADkp5AQ/shan_albedo.png"
+  },
+  {
+    "id": "94c8908b-407f-4393-9973-4db8274d2e01",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/shan_di/di2_1.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*PaV4Tq6sG9YAAAAAAAAAAAAADkp5AQ/di2_1.png"
+  },
+  {
+    "id": "57f9f76f-0040-4286-9cbf-e9eba796f04e",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/shan_di/di1_2.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*OcGISoDi6DsAAAAAAAAAAAAADkp5AQ/di1_2.png"
+  },
+  {
+    "id": "424810a7-f108-40ef-bff9-7b4885f8c3d1",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/shan_di/di1_1.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*jaQPT6eD78oAAAAAAAAAAAAADkp5AQ/di1_1.png"
+  },
+  {
+    "id": "6d06171f-c567-4c1c-baea-42fa9a7a3fc5",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/shan_di/di2_2.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*w9BFS7H3ZwsAAAAAAAAAAAAADkp5AQ/di2_2.png"
+  },
+  {
+    "id": "2c6c1317-052e-406f-9661-307ba5654ca6",
+    "type": "prefab",
+    "virtualPath": "/Assets/shan_di/shan.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*X_U_To6C5igAAAAAAAAAAAAADkp5AQ/shan.glb"
+  },
+  {
+    "id": "cf30858a-dd92-419b-a0b8-5df06b542ae6",
+    "type": "prefab",
+    "virtualPath": "/Assets/shan_di/di.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*lS9YSqr2IRoAAAAAAAAAAAAADkp5AQ/di.glb"
+  },
+  {
+    "id": "4d3b98ff-0433-428d-8d17-06f1ef583ce5",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV23/XDDN_LV23_5_8.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*qPqNQKcGaPcAAAAAAAAAAAAADkp5AQ/XDDN_LV23_5_8.png"
+  },
+  {
+    "id": "ab681d21-01c5-4b4e-9edb-6645da95e1a6",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/LV23/XDDN_LV23_1_4.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*s2vgRbXs2doAAAAAAAAAAAAADkp5AQ/XDDN_LV23_1_4.png"
+  },
+  {
+    "id": "9aa59019-0bcc-4369-9058-6762b57e3649",
+    "type": "AnimatorController",
+    "virtualPath": "/Assets/LV23/LV23",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*X5H_SpXuBKUAAAAAAAAAAAAADkp5AQ/LV23.json"
+  },
+  {
+    "id": "dc9a1902-f8ac-4d94-b984-d0d9b568d6f1",
+    "type": "prefab",
+    "virtualPath": "/Assets/LV23/LV23.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*ZO16QYMs0XkAAAAAAAAAAAAADkp5AQ/LV23.glb"
+  },
+  {
+    "id": "45216dc3-67e8-47f5-add0-baccd9c8da47",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/plant/yumao_bjs_r_ship_fruit.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*umtPR6UfNloAAAAAAAAAAAAADkp5AQ/yumao_bjs_r_ship_fruit.png"
+  },
+  {
+    "id": "adf08b41-63c1-4c63-85f6-af849c9c47cc",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/plant/plant.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*Hh9MRb1WJ0oAAAAAAAAAAAAADkp5AQ/plant.png"
+  },
+  {
+    "id": "d0548e9b-f8bd-44c4-a1a5-b9bbcac3d60a",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/plant/plant_2.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*o-KNSatTckMAAAAAAAAAAAAADkp5AQ/plant_2.png"
+  },
+  {
+    "id": "1f0be934-c5ab-4bcd-8a53-836e420783dd",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/plant/plant_3.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*d6ntR76P9l8AAAAAAAAAAAAADkp5AQ/plant_3.png"
+  },
+  {
+    "id": "b98a4c9f-aad2-4377-a952-5074097f3f64",
+    "type": "prefab",
+    "virtualPath": "/Assets/plant/plant.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*BbZKRZsf-W4AAAAAAAAAAAAADkp5AQ/plant.glb"
+  },
+  {
+    "id": "44180257-167c-4a50-9625-45ad2bebc861",
+    "type": "prefab",
+    "virtualPath": "/Assets/plant/ship_fruit.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*xJPqSZiFv_cAAAAAAAAAAAAADkp5AQ/ship_fruit.glb"
+  },
+  {
+    "id": "19a6d69f-000d-48f7-a38b-8c7257a02637",
+    "type": "prefab",
+    "virtualPath": "/Assets/r/r2.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*YnlsRZjvV8kAAAAAAAAAAAAADkp5AQ/r2.glb"
+  },
+  {
+    "id": "aac0c324-9062-4a01-a22b-123c05783b23",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/r/new_r.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*i747RoBOUE0AAAAAAAAAAAAADkp5AQ/new_r.png"
+  },
+  {
+    "id": "ec85f987-1dc7-4bed-bf67-ab7b9ab0920d",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/HUD/HUD_zise.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*yft9RIlkDBEAAAAAAAAAAAAADkp5AQ/HUD_zise.png"
+  },
+  {
+    "id": "10d172ae-8bfd-4bf4-b851-bc4bf7f2a0e1",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/HUD/logo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*C5mvRKCUXbwAAAAAAAAAAAAADkp5AQ/logo.png"
+  },
+  {
+    "id": "80b232fa-bb88-42cc-87f8-81156366b14c",
+    "type": "prefab",
+    "virtualPath": "/Assets/HUD/HUD.glb",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*oBHlT7kTteUAAAAAAAAAAAAADkp5AQ/HUD.glb"
+  },
+  {
+    "id": "bec37b8b-1121-48c4-9ecf-fb11451f1e6d",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/HUD/HUD2.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*9AniT64CnVwAAAAAAAAAAAAADkp5AQ/HUD2.png"
+  },
+  {
+    "id": "89fdff2a-aa46-4e0a-8e31-20627e82513d",
+    "type": "prefab",
+    "virtualPath": "/Assets/HUD/fence.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*402RR40ILocAAAAAAAAAAAAADkp5AQ/fence.glb"
+  },
+  {
+    "id": "21478942-a75d-47fe-9c11-f011acf43edb",
+    "type": "environment",
+    "virtualPath": "/Assets/sky/SKY_256.hdr",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*z8n7T4Ghhr8AAAAAAAAAAAAADkp5AQ/SKY_256.hdr"
+  },
+  {
+    "id": "aaca6939-3487-456a-823d-d527b3041db3",
+    "type": "EditorTexture2D",
+    "virtualPath": "/Assets/sky/sky_img_albedo.png",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*O1D1S5T9eUoAAAAAAAAAAAAADkp5AQ/sky_img_albedo.png"
+  },
+  {
+    "id": "353a428b-1d51-4563-9fc5-60b27417f2ba",
+    "type": "prefab",
+    "virtualPath": "/Assets/sky/sky.fbx",
+    "path": "https://mdn.alipayobjects.com/oasis_be/afts/file/A*JCn3QKZnGXkAAAAAAAAAAAAADkp5AQ/sky.glb"
+  }
+]
