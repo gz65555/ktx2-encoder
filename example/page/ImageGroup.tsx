@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Modal, Upload } from "antd";
 import type { RcFile } from "antd/es/upload";
 import type { UploadFile } from "antd/es/upload/interface";
+import { PreEncodeFile } from "./type";
 
 const getBase64 = (file: RcFile): Promise<string> =>
   new Promise((resolve, reject) => {
@@ -12,8 +13,8 @@ const getBase64 = (file: RcFile): Promise<string> =>
   });
 
 export const ImageGroup: React.FC<{
-  list: { url: string; name: string }[];
-  setImageList: (list: { name: string; url: string }[]) => void;
+  list: PreEncodeFile[];
+  setImageList: (list: PreEncodeFile[]) => void;
 }> = ({ list, setImageList }) => {
   const [previewOpen, setPreviewOpen] = useState(false);
   const [previewImage, setPreviewImage] = useState("");

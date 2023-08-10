@@ -3,11 +3,13 @@ import { Breadcrumb, Layout, Menu, theme } from "antd";
 import { UploadComponent } from "./UploadComponents";
 import { ImageGroup } from "./ImageGroup";
 import { useState } from "react";
+import { Button } from "antd";
+import { DownloadComponent } from "./DownloadComponent";
 
 const { Header, Content, Footer } = Layout;
 
 const App: React.FC = () => {
-  const [list, setImageList] = useState<{ name: string; url: string }[]>([]);
+  const [list, setImageList] = useState<{ name: string; url: string; file: File }[]>([]);
 
   return (
     <Layout style={{ minHeight: "100vh" }}>
@@ -25,6 +27,7 @@ const App: React.FC = () => {
         {/* <div className="demo-logo" /> */}
         <div>
           <UploadComponent setImageList={setImageList} />
+          <DownloadComponent list={list} />
         </div>
       </Header>
       <Content

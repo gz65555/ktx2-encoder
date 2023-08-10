@@ -12,9 +12,9 @@ const props: UploadProps = {
 
 let lastFileList: any;
 
-export const UploadComponent: React.FC<{ setImageList: (list: { name: string; url: string }[]) => void }> = ({
-  setImageList
-}) => (
+export const UploadComponent: React.FC<{
+  setImageList: (list: { name: string; url: string; file: File }[]) => void;
+}> = ({ setImageList }) => (
   <Upload
     {...props}
     beforeUpload={(_, fileList) => {
@@ -26,12 +26,12 @@ export const UploadComponent: React.FC<{ setImageList: (list: { name: string; ur
         fileList.map((file) => {
           const url = URL.createObjectURL(file);
           const name = file.name;
-          return { url, name };
+          return { url, name, file };
         })
       );
       return false;
     }}
   >
-    <Button icon={<UploadOutlined />}>Click to Upload</Button>
+    <Button icon={<UploadOutlined />}></Button>
   </Upload>
 );
