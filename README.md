@@ -41,6 +41,4 @@ npm run dev
 
 2. Open the page，default is http://localhost:5174/
 
-<img src="https://mdn.alipayobjects.com/rms/afts/img/A*GhmNSbgafscAAAAAAAAAAAAAARQnAQ/original/image-20230817142639870.png" alt="image-20230817142639870" style="zoom:50%;" />
-
 3. Use it! Select your images and encode it to ktx2![lock](https://mdn.alipayobjects.com/rms/afts/img/A*himnRpVKEvgAAAAAAAAAAAAAARQnAQ/original/lock.gif)
