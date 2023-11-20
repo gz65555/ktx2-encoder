@@ -10,7 +10,6 @@ export const enum BasisTextureType {
 export const enum SourceType {
   RAW,
   PNG,
-  JPG,
 }
 
 export interface IBasisEncoder {

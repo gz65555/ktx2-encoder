@@ -17,7 +17,11 @@ export const DownloadComponent: React.FC<{ list: PreEncodeFile[] }> = ({ list })
         const zip = new jszip();
         setIsLoading(true);
         const promises = list.map((item) => {
-          return item.file.arrayBuffer().then((buffer) => ktx2Encoder.encode(buffer));
+          return item.file
+            .arrayBuffer()
+            .then((buffer) =>
+              ktx2Encoder.encode(buffer, { isUASTC: false, enableDebug: true, qualityLevel: 230, generateMipmap: true })
+            );
         });
         Promise.all(promises)
           .then((result) => {

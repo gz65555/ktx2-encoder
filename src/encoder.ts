@@ -92,8 +92,8 @@ export function encodeImageToKTX2(buffer: ArrayBuffer, options: Partial<IEncodeO
       throw "encode failed";
     }
     let actualKTX2FileData = new Uint8Array(ktx2FileData.buffer, 0, byteLength);
-    const container = read(ktx2FileData);
     if (options.kvData) {
+      const container = read(ktx2FileData);
       for (let k in options.kvData) {
         container.keyValue[k] = options.kvData[k];
       }
@@ -106,9 +106,11 @@ export function encodeImageToKTX2(buffer: ArrayBuffer, options: Partial<IEncodeO
 
 export function encodeToKTX2(
   imageBitmapSource: ImageBitmapSource | ArrayBuffer,
-  options: Partial<IEncodeOptions> = {}
+  options: Partial<IEncodeOptions> = {},
+  basisModulePromise?: Promise<IBasisModule>
 ): Promise<Uint8Array> {
-  return initBasis().then((basisModule) => {
+  if (!basisModulePromise) basisModulePromise = initBasis();
+  return basisModulePromise.then((basisModule) => {
     const encoder = new basisModule.BasisEncoder();
     applyInputOptions(options, encoder);
     encoder.setTexType(BasisTextureType.cBASISTexType2D);
@@ -126,8 +128,8 @@ export function encodeToKTX2(
         throw "encode failed";
       }
       let actualKTX2FileData = new Uint8Array(ktx2FileData.buffer, 0, byteLength);
-      const container = read(ktx2FileData);
       if (options.kvData) {
+        const container = read(ktx2FileData);
         for (let k in options.kvData) {
           container.keyValue[k] = options.kvData[k];
         }
@@ -250,7 +252,7 @@ function initBasis(): Promise<IBasisModule> {
 
 if (isInWorker) {
   self.addEventListener("message", (e: MessageEvent) => {
-    encodeToKTX2(e.data)
+    encodeToKTX2(e.data.buffer, e.data.options)
       .then((result) => {
         self.postMessage(result);
       })
