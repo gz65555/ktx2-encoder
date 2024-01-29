@@ -69,7 +69,7 @@ const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
 const isInWorker = typeof document === "undefined";
 
 export function decodeImageData(imageBitmapSource: ImageBitmapSource) {
-  return createImageBitmap(imageBitmapSource).then((bitmap) => {
+  return createImageBitmap(imageBitmapSource, { premultiplyAlpha: "none" }).then((bitmap) => {
     canvas.width = bitmap.width;
     canvas.height = bitmap.height;
     ctx.drawImage(bitmap, 0, 0);
