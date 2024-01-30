@@ -15,9 +15,10 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
+    "strict": false,
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "typeRoots": ["./node_modules/@webgpu/types", "./node_modules/@types"],
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src"],

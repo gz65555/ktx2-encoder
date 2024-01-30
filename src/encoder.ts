@@ -1,6 +1,7 @@
 import { BasisTextureType, IBasisEncoder, SourceType } from "./IBasisEncoder";
 import { IBasisModule } from "./IBasisModule";
 import { write, read } from "ktx-parse";
+import { decodeImageBitmap } from "./decodeImageData";
 
 declare function importScripts(...args: any): any;
 
@@ -64,18 +65,10 @@ export const DefaultOptions = {
 };
 
 let encoder: IBasisEncoder | undefined;
-const canvas = new OffscreenCanvas(128, 128);
-const ctx = canvas.getContext("2d", { willReadFrequently: true })!;
 const isInWorker = typeof document === "undefined";
 
 export function decodeImageData(imageBitmapSource: ImageBitmapSource) {
-  return createImageBitmap(imageBitmapSource, { premultiplyAlpha: "none" }).then((bitmap) => {
-    canvas.width = bitmap.width;
-    canvas.height = bitmap.height;
-    ctx.drawImage(bitmap, 0, 0);
-    const imageData = ctx.getImageData(0, 0, bitmap.width, bitmap.height);
-    return imageData;
-  });
+  return createImageBitmap(imageBitmapSource, { premultiplyAlpha: "none" }).then((bitmap) => decodeImageBitmap(bitmap));
 }
 
 export function encodeImageToKTX2(buffer: ArrayBuffer, options: Partial<IEncodeOptions> = {}) {
