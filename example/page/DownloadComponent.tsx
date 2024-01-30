@@ -6,6 +6,7 @@ import { PreEncodeFile } from "./type";
 import { ktx2Encoder } from "./ktx2-encoder";
 import { useState } from "react";
 import { downloadBlob } from "./utils";
+import { encodeToKTX2 } from "../../src";
 
 export const DownloadComponent: React.FC<{ list: PreEncodeFile[] }> = ({ list }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,11 +18,9 @@ export const DownloadComponent: React.FC<{ list: PreEncodeFile[] }> = ({ list })
         const zip = new jszip();
         setIsLoading(true);
         const promises = list.map((item) => {
-          return item.file
-            .arrayBuffer()
-            .then((buffer) =>
-              ktx2Encoder.encode(buffer, { isUASTC: false, enableDebug: true, qualityLevel: 230, generateMipmap: true })
-            );
+          return item.file.arrayBuffer().then((buffer) => {
+            return encodeToKTX2(buffer, { isUASTC: true, enableDebug: true, qualityLevel: 230, generateMipmap: true });
+          });
         });
         Promise.all(promises)
           .then((result) => {
