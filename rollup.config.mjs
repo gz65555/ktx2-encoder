@@ -10,7 +10,7 @@ const plugins = [
       jsc: {
         loose: true,
         externalHelpers: true,
-        target: "es5"
+        target: "es2020"
       },
       sourceMaps: true
     })
@@ -20,17 +20,22 @@ const plugins = [
 
 export default [
   {
-    input: "./src/index.ts",
+    input: "./src/web/index.ts",
     plugins,
     output: [
       {
-        file: "dist/module.esm.js",
+        file: "dist/web.esm.js",
         format: "es"
-      },
+      }
+    ]
+  },
+  {
+    input: "./src/node/index.ts",
+    plugins,
+    output: [
       {
-        file: "dist/main.umd.js",
-        format: "umd",
-        name: "KTX2Encoder"
+        file: "dist/node.esm.js",
+        format: "es"
       }
     ]
   }

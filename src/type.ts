@@ -9,7 +9,7 @@ export const enum BasisTextureType {
 /** image source type */
 export const enum SourceType {
   RAW,
-  PNG,
+  PNG
 }
 
 export interface IBasisEncoder {
@@ -22,7 +22,13 @@ export interface IBasisEncoder {
    * @param height if isPNG is true, height set 0.
    * @param isPNG is png buffer
    */
-  setSliceSourceImage(sliceIndex: number, imageBuffer: Uint8Array, width: number, height: number, type: SourceType): void;
+  setSliceSourceImage(
+    sliceIndex: number,
+    imageBuffer: Uint8Array,
+    width: number,
+    height: number,
+    type: SourceType
+  ): void;
   /**
    * Compresses the provided source slice(s) to an output .basis file.
    * At the minimum, you must provided at least 1 source slice by calling setSliceSourceImage() before calling this method.
@@ -93,4 +99,64 @@ export interface IBasisEncoder {
   delete(): void;
 
   new (): IBasisEncoder;
+}
+
+export interface IBasisModule {
+  BasisEncoder: IBasisEncoder;
+  initializeBasis: () => void;
+}
+
+export interface IEncodeOptions {
+  /**
+   *  enable debug output, default is false
+   */
+  enableDebug: boolean;
+  /**
+   * is UASTC texture, default is true
+   */
+  isUASTC: boolean;
+  /**
+   * if true the source images will be Y flipped before compression, default is false
+   */
+  isYFlip: boolean;
+  /**
+   * Sets the ETC1S encoder's quality level, which controls the file size vs. quality tradeoff.
+   */
+  qualityLevel: number;
+  /**
+   * The compression_level parameter controls the encoder perf vs. file size tradeoff for ETC1S files.
+   */
+  compressionLevel: number;
+  /**
+   * Use UASTC Zstandard supercompression. Defaults to disabled or KTX2_SS_NONE
+   */
+  needSupercompression: boolean;
+  /**
+   * setNormalMapMode is the same as the basisu.exe "-normal_map" option. It tunes several codec parameters so compression works better on normal maps.
+   */
+  isNormalMap: boolean;
+  /**
+   * Input source is sRGB. This should very probably match the "perceptual" setting.
+   */
+  isSetKTX2SRGBTransferFunc: boolean;
+  /**
+   * If true mipmaps will be generated from the source images
+   */
+  generateMipmap: boolean;
+  /**
+   * Create .KTX2 files instead of .basis files. By default this is FALSE.
+   */
+  isKTX2File: boolean;
+
+  /** kv data */
+  kvData: Record<string, string | Uint8Array>;
+
+  /** type */
+  type: SourceType;
+  /**
+   * Decode compressed image buffer to RGBA imageData.(Required in Node.js)
+   * @param buffer 
+   * @returns 
+   */
+  imageDecoder?: (buffer: Uint8Array) => Promise<{ width: number; height: number; data: Uint8Array }>;
 }
