@@ -3,6 +3,7 @@
   "name": "ktx2-encoder",
   "description": "KTX2(.ktx2) encoder for browser applications",
   "type": "module",
+  "packageManager": "pnpm@8.6.2",
   "exports": {
     "node": "./dist/node.esm.js",
     "default": "./dist/web.esm.js"
