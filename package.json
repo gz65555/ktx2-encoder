@@ -5,8 +5,14 @@
   "type": "module",
   "packageManager": "pnpm@8.6.2",
   "exports": {
-    "node": "./dist/node.esm.js",
-    "default": "./dist/web.esm.js"
+    "node": {
+      "import": "./dist/node.esm.js",
+      "types": "./types/node/index.d.ts"
+    },
+    "default": {
+      "import": "./dist/web.esm.js",
+      "types": "./types/web/index.d.ts"
+    }
   },
   "types": "types/index.d.ts",
   "repository": "github:gz65555/ktx2-encoder",

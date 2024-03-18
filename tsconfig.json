@@ -11,7 +11,6 @@
     "allowImportingTsExtensions": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react-jsx",
 
     /* Linting */
@@ -19,7 +18,10 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "typeRoots": ["./node_modules/@webgpu/types", "./node_modules/@types"],
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "outDir": "types"
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
