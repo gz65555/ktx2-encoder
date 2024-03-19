@@ -1,5 +1,5 @@
-import { IBasisModule, IEncodeOptions, SourceType } from "../type";
-import { applyInputOptions } from "../utils";
+import { IBasisModule, IEncodeOptions, SourceType } from "../type.js";
+import { applyInputOptions } from "../utils.js";
 import BASIS from "./basis/basis_encoder.js";
 
 let promise: Promise<IBasisModule> | null = null;

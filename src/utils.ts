@@ -1,4 +1,4 @@
-import { IBasisEncoder, IEncodeOptions } from "./type";
+import { IBasisEncoder, IEncodeOptions } from "./type.js";
 
 export const DefaultOptions = {
   enableDebug: false,
