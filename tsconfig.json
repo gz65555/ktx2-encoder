@@ -8,7 +8,7 @@
 
     /* Bundler mode */
     "moduleResolution": "bundler",
-    "allowImportingTsExtensions": true,
+    "allowImportingTsExtensions": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
@@ -19,9 +19,10 @@
     "noUnusedParameters": false,
     "typeRoots": ["./node_modules/@webgpu/types", "./node_modules/@types"],
     "noFallthroughCasesInSwitch": true,
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": false,
     "declaration": true,
-    "outDir": "types"
+    "declarationDir": "types",
+    "outDir": "dist"
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]

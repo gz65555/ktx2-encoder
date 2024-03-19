@@ -1,8 +1,9 @@
 import resolve from "@rollup/plugin-node-resolve";
 import { swc, defineRollupSwcOption, minify } from "rollup-plugin-swc3";
+import alias from "@rollup/plugin-alias";
 
 const plugins = [
-  resolve({ extensions: [".ts"] }),
+  resolve({ extensions: [".ts"], browser: false }),
   swc(
     defineRollupSwcOption({
       include: /\.[mc]?[jt]sx?$/,
@@ -14,10 +15,13 @@ const plugins = [
       },
       sourceMaps: true
     })
-  ),
-  minify({
-    module: true
-  })
+  )
+  // alias({
+  //   entries: [{ find: "@basis/basis_encoder.js", replacement: "../libs/basis_encoder.js" }]
+  // })
+  // minify({
+  //   module: true
+  // })
 ];
 
 export default [
@@ -34,10 +38,12 @@ export default [
   {
     input: "./src/node/index.ts",
     plugins,
+    external: ["@basis/basis_encoder.js"],
     output: [
       {
         file: "dist/node.esm.js",
-        format: "es"
+        format: "es",
+        inlineDynamicImports: true
       }
     ]
   }
