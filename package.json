@@ -26,8 +26,8 @@
     "docs": "typedoc src/index.ts --plugin typedoc-plugin-markdown --out ./docs",
     "build": "tsc -p tsconfig.json && cp -R src/node/basis dist/node",
     "test": "npm run test:node && npm run test:web",
-    "test:node": "vitest ./test/node.test.ts",
-    "test:web": "vitest --browser.name=chrome ./test/web.test.ts",
+    "test:node": "vitest run ./test/node.test.ts",
+    "test:web": "vitest run --browser.name=chrome ./test/web.test.ts",
     "release": "bumpp"
   },
   "keywords": [
