@@ -1,1 +1,1 @@
-export { encodeToKTX2 } from "./encoder";
+export { encodeToKTX2, encodeKTX2Cube } from "./encoder";
