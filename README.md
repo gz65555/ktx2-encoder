@@ -17,7 +17,7 @@ npm install --save ktx2-encoder
 Import: 
 
 ```javascript
-import { encodeToKTX2, encodeKTX2Cube, release } from 'ktx2-encoder';
+import { encodeToKTX2, encodeKTX2Cube } from 'ktx2-encoder';
 ```
 
 Usage:
