@@ -23,7 +23,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --host",
-    "docs": "typedoc src/index.ts --plugin typedoc-plugin-markdown --out ./docs",
+    "docs": "typedoc src/web/index.ts --plugin typedoc-plugin-markdown --out ./docs",
     "build": "tsc -p tsconfig.json && cp -R src/node/basis dist/node",
     "test": "npm run test:node && npm run test:web",
     "test:node": "vitest run ./test/node.test.ts",
