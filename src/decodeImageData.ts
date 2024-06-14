@@ -98,8 +98,8 @@ export const decodeImageBitmap = (function () {
   }
 
   return async function (imageBitmap: ImageBitmap) {
-    const device = await getDevice();
-    if (device) return webgpuDecode(device, imageBitmap);
-    else return webglDecode(imageBitmap);
+    // const device = await getDevice();
+    // if (device) return webgpuDecode(device, imageBitmap);
+    return webglDecode(imageBitmap);
   };
 })();
