@@ -1,8 +1,4 @@
+dist
 node_modules
 types
-public
 .DS_Store
-dist
-old.html
-new.html
-test.html

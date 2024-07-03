@@ -1,4 +1,6 @@
-ktx2-encoder / [Exports](modules.md)
+**ktx2-encoder** • [**Docs**](globals.md)
+
+***
 
 # ktx-encoder
 
@@ -16,6 +18,7 @@ npm install --save ktx-encoder
 ```
 
 Import: 
+
 ```javascript
 import { encodeKTX2, encodeKTX2Cube, release } from 'ktx-encoder';
 ```
@@ -29,4 +32,16 @@ encodeKTX2(data /** ArrayBuffer of png */, options);
 encodeKTX2Cube([data, ...] /** ArrayBuffer of png */, options);
 ```
 
-See [options](./docs/interfaces/IEncodeOptions.md) API documentation for more details.
+See [options]() API documentation for more details.
+
+## Tool
+
+1. Start server
+
+```
+npm run dev
+```
+
+2. Open the page，default is http://localhost:5174/
+
+3. Use it! Select your images and encode it to ktx2![lock](https://mdn.alipayobjects.com/rms/afts/img/A*himnRpVKEvgAAAAAAAAAAAAAARQnAQ/original/lock.gif)
