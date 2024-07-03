@@ -74,7 +74,7 @@ class BrowserBasisEncoder {
       applyInputOptions(options, encoder);
       encoder.setTexType(BasisTextureType.cBASISTexType2D);
 
-      return options.imageDecoder(imageBuffer).then((imageData) => {
+      return options.imageDecoder!(imageBuffer).then((imageData) => {
         encoder.setSliceSourceImage(
           0,
           new Uint8Array(imageData.data),

@@ -5,16 +5,17 @@
   "type": "module",
   "packageManager": "pnpm@8.6.2",
   "exports": {
-    "node": {
-      "import": "./dist/node/index.js",
-      "types": "./types/node/index.d.ts"
-    },
-    "default": {
-      "import": "./dist/web/index.js",
-      "types": "./types/web/index.d.ts"
+    ".": {
+      "node": {
+        "import": "./dist/node/index.js",
+        "types": "./types/node/index.d.ts"
+      },
+      "default": {
+        "import": "./dist/web/index.js",
+        "types": "./types/web/index.d.ts"
+      }
     }
   },
-  "types": "types/web/index.d.ts",
   "repository": "github:gz65555/ktx2-encoder",
   "author": {
     "name": "Hu Song",
@@ -23,7 +24,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --host",
-    "docs": "typedoc ./src/doc.ts --plugin typedoc-plugin-markdown --out ./docs",
+    "docs": "typedoc ./src/web/index.ts --plugin typedoc-plugin-markdown --out ./docs",
     "build": "tsc -p tsconfig.json && cp -R src/node/basis dist/node",
     "test": "npm run test:node && npm run test:web",
     "test:node": "vitest run ./test/node.test.ts",
@@ -69,7 +70,6 @@
     "webdriverio": "^8.32.4"
   },
   "dependencies": {
-    "@swc/helpers": "^0.5.1",
     "ktx-parse": "^0.6.0"
   }
 }
