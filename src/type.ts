@@ -1,16 +1,4 @@
-export const enum BasisTextureType {
-  cBASISTexType2D,
-  cBASISTexType2DArray,
-  cBASISTexTypeCubemapArray,
-  cBASISTexTypeVideoFrames,
-  cBASISTexTypeVolume
-}
-
-/** image source type */
-export const enum SourceType {
-  RAW,
-  PNG
-}
+import { BasisTextureType, SourceType } from "./enum.js";
 
 export interface IBasisEncoder {
   /**
@@ -20,7 +8,7 @@ export interface IBasisEncoder {
    * @param imageBuffer png image buffer or 32bit RGBA raster image buffer
    * @param width if isPNG is true, width set 0.
    * @param height if isPNG is true, height set 0.
-   * @param isPNG is png buffer
+   * @param type type of the input source.
    */
   setSliceSourceImage(
     sliceIndex: number,
@@ -35,7 +23,7 @@ export interface IBasisEncoder {
    * @param pngBuffer
    * @returns byte length of encoded data
    */
-  encode(outputUint8Array: Uint8Array): number;
+  encode(pngBuffer: Uint8Array): number;
   /**
    * If true, the encoder will output a UASTC texture, otherwise a ETC1S texture.
    * @param isUASTC

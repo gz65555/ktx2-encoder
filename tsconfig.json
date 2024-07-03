@@ -17,13 +17,13 @@
     "strict": false,
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "typeRoots": ["./node_modules/@webgpu/types", "./node_modules/@types"],
+    "typeRoots": ["./node_modules/@types"],
     "noFallthroughCasesInSwitch": true,
     "emitDeclarationOnly": false,
     "declaration": true,
     "declarationDir": "types",
     "outDir": "dist"
   },
-  "include": ["src"],
+  "include": ["./src/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

@@ -1,4 +1,6 @@
-ktx2-encoder / [Exports](modules.md)
+**ktx2-encoder** • [**Docs**](globals.md)
+
+***
 
 # ktx-encoder
 
@@ -30,7 +32,7 @@ encodeKTX2(data /** ArrayBuffer of png */, options);
 encodeKTX2Cube([data, ...] /** ArrayBuffer of png */, options);
 ```
 
-See [options](./docs/interfaces/IEncodeOptions.md) API documentation for more details.
+See [options]() API documentation for more details.
 
 ## Tool
 

@@ -1,4 +1,5 @@
-import { IBasisModule, IEncodeOptions, SourceType } from "../type.js";
+import { SourceType } from "../enum.js";
+import { IBasisModule, IEncodeOptions } from "../type.js";
 import { applyInputOptions } from "../utils.js";
 import BASIS from "./basis/basis_encoder.cjs";
 
@@ -16,7 +17,7 @@ class NodeBasisEncoder {
   }
 
   async encode(imageBitmapSource: Uint8Array, options: Partial<IEncodeOptions> = {}) {
-    const imageData = await options.imageDecoder(imageBitmapSource);
+    const imageData = await options.imageDecoder!(imageBitmapSource);
     const basis = await this.init();
     const basisEncoder = new basis.BasisEncoder();
 

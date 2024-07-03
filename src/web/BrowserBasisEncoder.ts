@@ -1,6 +1,7 @@
 import { read, write } from "ktx-parse";
-import { BasisTextureType, IBasisModule, IEncodeOptions, SourceType } from "../type.js";
+import { IBasisModule, IEncodeOptions } from "../type.js";
 import { applyInputOptions } from "../utils.js";
+import { BasisTextureType, SourceType } from "../enum.js";
 
 declare function importScripts(...args: any): any;
 
