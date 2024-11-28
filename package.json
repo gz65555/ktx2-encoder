@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "name": "ktx2-encoder",
   "description": "KTX2(.ktx2) encoder for browser applications",
   "type": "module",
