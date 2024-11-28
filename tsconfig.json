@@ -24,6 +24,6 @@
     "declarationDir": "types",
     "outDir": "dist"
   },
-  "include": ["./src/*"],
+  "include": ["./src/*", "./src/web/*", "./src/node/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
