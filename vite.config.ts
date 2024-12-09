@@ -14,17 +14,5 @@ export default defineConfig({
       }
     }
   },
-  test: {
-    deps: {
-      interopDefault: true,
-      optimizer: {
-        web: { include: ["./src/node/basis/basis_encoder.cjs"] }
-      }
-    },
-    server: {
-      deps: {
-        fallbackCJS: true
-      }
-    }
-  }
+  test: {}
 });

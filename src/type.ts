@@ -180,4 +180,12 @@ export interface IEncodeOptions {
    * @returns
    */
   imageDecoder?: (buffer: Uint8Array) => Promise<{ width: number; height: number; data: Uint8Array }>;
+  /**
+   * js url
+   */
+  jsUrl?: string;
+  /**
+   * wasm url
+   */
+  wasmUrl?: string;
 }
