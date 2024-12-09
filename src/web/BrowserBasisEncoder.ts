@@ -6,7 +6,6 @@ import { BasisTextureType, SourceType } from "../enum.js";
 declare function importScripts(...args: any): any;
 
 let promise: Promise<IBasisModule> | null = null;
-const isInWorker = typeof document === "undefined";
 
 class BrowserBasisEncoder {
   async init(options?: { jsUrl?: string; wasmUrl?: string }) {
