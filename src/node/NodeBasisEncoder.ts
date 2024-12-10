@@ -1,7 +1,7 @@
 import { SourceType } from "../enum.js";
 import { IBasisModule, IEncodeOptions } from "../type.js";
 import { applyInputOptions } from "../utils.js";
-import BASIS from "./basis/basis_encoder.cjs";
+import BASIS from "../basis/basis_encoder.js";
 
 let promise: Promise<IBasisModule> | null = null;
 

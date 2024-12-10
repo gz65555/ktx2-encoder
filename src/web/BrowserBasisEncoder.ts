@@ -6,61 +6,23 @@ import { BasisTextureType, SourceType } from "../enum.js";
 declare function importScripts(...args: any): any;
 
 let promise: Promise<IBasisModule> | null = null;
-const isInWorker = typeof document === "undefined";
 
 class BrowserBasisEncoder {
-  async init() {
+  async init(options?: { jsUrl?: string; wasmUrl?: string }) {
     if (!promise) {
       function _init(): Promise<IBasisModule> {
         return new Promise((resolve, reject) => {
-          if (!isInWorker) {
-            Promise.all([
-              fetch(
-                "https://mdn.alipayobjects.com/rms/afts/file/A*SrRkQarYYl4AAAAAAAAAAAAAARQnAQ/basis_encoder.js"
-              ).then((res) => res.text()),
-              fetch(
-                "https://mdn.alipayobjects.com/rms/afts/file/A*qFWbTrA0hZYAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm"
-              ).then((res) => res.arrayBuffer())
-            ])
-              .then(([basisEncoderCode, wasmBinary]) => {
-                const script = document.createElement("script");
-                script.onload = () => {
-                  const basisModule = {
-                    wasmBinary
-                  };
-                  // @ts-ignore
-                  BASIS(basisModule)
-                    .then((Module: any) => {
-                      Module.initializeBasis();
-                      resolve(Module);
-                    })
-                    .catch(reject);
-                };
-                script.src = URL.createObjectURL(new Blob([basisEncoderCode]));
-                script.onerror = reject;
-                document.body.appendChild(script);
-              })
-              .catch(reject);
-          } else {
-            importScripts(
-              "https://mdn.alipayobjects.com/rms/afts/file/A*SrRkQarYYl4AAAAAAAAAAAAAARQnAQ/basis_encoder.js"
-            );
-            fetch("https://mdn.alipayobjects.com/rms/afts/file/A*qFWbTrA0hZYAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm")
-              .then((res) => res.arrayBuffer())
-              .then((wasmBinary) => {
-                const basisModule = {
-                  wasmBinary
-                };
-                // @ts-ignore
-                BASIS(basisModule)
-                  .then((Module: any) => {
-                    Module.initializeBasis();
-                    resolve(Module);
-                  })
-                  .catch(reject);
-              })
-              .catch(reject);
-          }
+          Promise.all([
+            options?.jsUrl ? import(/* @vite-ignore */ options.jsUrl) : import("../basis/basis_encoder.js"),
+            options?.wasmUrl ? fetch(options.wasmUrl).then((res) => res.arrayBuffer()) : undefined
+          ])
+            .then(([{ default: BASIS }, wasmBinary]) => {
+              return BASIS({ wasmBinary }).then((Module: IBasisModule) => {
+                Module.initializeBasis();
+                resolve(Module);
+              });
+            })
+            .catch(reject);
         });
       }
       promise = _init();
@@ -69,7 +31,7 @@ class BrowserBasisEncoder {
   }
 
   encode(imageBuffer: Uint8Array, options: Partial<IEncodeOptions> = {}) {
-    return this.init().then((basisModule) => {
+    return this.init(options).then((basisModule) => {
       const encoder = new basisModule.BasisEncoder();
       applyInputOptions(options, encoder);
       encoder.setTexType(BasisTextureType.cBASISTexType2D);

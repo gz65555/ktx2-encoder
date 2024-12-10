@@ -7,7 +7,8 @@ test("uastc", async () => {
     isUASTC: true,
     enableDebug: false,
     qualityLevel: 230,
-    generateMipmap: true
+    generateMipmap: true,
+    wasmUrl: "/basis_encoder.wasm"
   });
 
   const resultBuffer = await fetch("/tests/DuckCM-uastc.ktx2").then((res) => res.arrayBuffer());
