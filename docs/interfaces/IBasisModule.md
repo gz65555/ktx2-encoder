@@ -1,4 +1,4 @@
-[**ktx2-encoder**](../README.md) • **Docs**
+[**ktx2-encoder**](../README.md)
 
 ***
 
@@ -14,7 +14,7 @@
 
 #### Defined in
 
-[type.ts:126](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L126)
+[type.ts:125](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L125)
 
 ***
 
@@ -28,4 +28,4 @@
 
 #### Defined in
 
-[type.ts:127](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L127)
+[type.ts:126](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L126)

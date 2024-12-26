@@ -60,9 +60,8 @@ export interface IBasisEncoder {
   setCompressionLevel(level: number): void;
   /**
    * setNormalMapMode is the same as the basisu.exe "-normal_map" option. It tunes several codec parameters so compression works better on normal maps.
-   * @param isNormalMap
    */
-  setNormalMap(isNormalMap: boolean): void;
+  setNormalMap(): void;
   /**
    * Create .KTX2 files instead of .basis files. By default this is FALSE.
    * @param isKTX2

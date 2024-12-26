@@ -1,4 +1,4 @@
-[**ktx2-encoder**](../README.md) • **Docs**
+[**ktx2-encoder**](../README.md)
 
 ***
 
@@ -14,7 +14,7 @@
 
 #### Defined in
 
-enum.ts:2
+[enum.ts:2](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/enum.ts#L2)
 
 ***
 
@@ -24,7 +24,7 @@ enum.ts:2
 
 #### Defined in
 
-enum.ts:3
+[enum.ts:3](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/enum.ts#L3)
 
 ***
 
@@ -34,7 +34,7 @@ enum.ts:3
 
 #### Defined in
 
-enum.ts:4
+[enum.ts:4](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/enum.ts#L4)
 
 ***
 
@@ -44,7 +44,7 @@ enum.ts:4
 
 #### Defined in
 
-enum.ts:5
+[enum.ts:5](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/enum.ts#L5)
 
 ***
 
@@ -54,4 +54,4 @@ enum.ts:5
 
 #### Defined in
 
-enum.ts:6
+[enum.ts:6](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/enum.ts#L6)

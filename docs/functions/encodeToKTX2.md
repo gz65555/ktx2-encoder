@@ -1,4 +1,4 @@
-[**ktx2-encoder**](../README.md) • **Docs**
+[**ktx2-encoder**](../README.md)
 
 ***
 
@@ -10,9 +10,13 @@
 
 ## Parameters
 
-• **imageBuffer**: `Uint8Array`
+### imageBuffer
 
-• **options**: `Partial`\<[`IEncodeOptions`](../interfaces/IEncodeOptions.md)\> = `{}`
+`Uint8Array`
+
+### options
+
+`Partial`\<[`IEncodeOptions`](../interfaces/IEncodeOptions.md)\> = `{}`
 
 ## Returns
 
@@ -20,4 +24,4 @@
 
 ## Defined in
 
-[web/index.ts:8](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/web/index.ts#L8)
+[web/index.ts:8](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/web/index.ts#L8)

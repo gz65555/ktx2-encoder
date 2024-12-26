@@ -3,8 +3,6 @@ import { IBasisModule, IEncodeOptions } from "../type.js";
 import { applyInputOptions } from "../utils.js";
 import { BasisTextureType, SourceType } from "../enum.js";
 
-declare function importScripts(...args: any): any;
-
 let promise: Promise<IBasisModule> | null = null;
 
 class BrowserBasisEncoder {
