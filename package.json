@@ -34,7 +34,6 @@
     "test:node": "vitest run ./test/node.test.ts",
     "test:web": "vitest run --browser.name=chrome ./test/web.test.ts",
     "test:gltf": "vitest run ./test/gltf-transform.node.test.ts && vitest run --browser.name=chrome ./test/gltf-transform.web.test.ts",
-    "test:gltf:web": "vitest run --browser.name=chrome ./test/gltf-transform.web.test.ts",
     "release": "bumpp"
   },
   "keywords": [

@@ -1,4 +1,5 @@
 import { Document, Transform, Texture } from "@gltf-transform/core";
+import { KHRTextureBasisu } from "@gltf-transform/extensions"
 import { IEncodeOptions } from "../type.js";
 
 const NAME = "ktx2";
@@ -44,6 +45,8 @@ export function ktx2(options: Partial<KTX2Options> = {}): Transform {
 
     const logger = document.getLogger();
     const textures = document.getRoot().listTextures();
+
+    let isKHRTextureBasisu = false;
 
     await Promise.all(
       textures.map(async (texture, textureIndex) => {
@@ -92,6 +95,8 @@ export function ktx2(options: Partial<KTX2Options> = {}): Transform {
           texture.setImage(ktx2Data);
           texture.setMimeType("image/ktx2");
 
+          isKHRTextureBasisu = true;
+
           const dstByteLength = ktx2Data.byteLength;
           logger.debug(`${prefix}: Size = ${srcByteLength} → ${dstByteLength} bytes`);
         } catch (error) {
@@ -102,5 +107,9 @@ export function ktx2(options: Partial<KTX2Options> = {}): Transform {
     );
 
     logger.debug(`${NAME}: Complete.`);
+
+    if (isKHRTextureBasisu) {
+      document.createExtension(KHRTextureBasisu).setRequired(true);
+    }
   });
 }
