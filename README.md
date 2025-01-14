@@ -31,6 +31,26 @@ encodeKTX2Cube([data, ...] /** ArrayBuffer of png */, options);
 
 See [options](./docs/interfaces/IEncodeOptions.md) API documentation for more details.
 
+## For gltf-transform
+
+For the users of gltf-transform, you can use the provided function `ktx`. for example:
+
+```typescript
+import { ktx2 } from "ktx2-encoder/gltf-transform";
+
+await document.transform(
+  ktx2({
+    isUASTC: true,
+    enableDebug: false,
+    generateMipmap: true,
+    wasmUrl: "/basis_encoder.wasm"
+  })
+);
+
+```
+
+You'd better use the `basis_encoder.wasm` hosted by your own server.
+
 ## Tool
 
 1. Start server
