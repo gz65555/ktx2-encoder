@@ -3,8 +3,14 @@
 [![Latest NPM release](https://img.shields.io/npm/v/ktx2-encoder.svg)](https://www.npmjs.com/package/ktx2-encoder)
 [![License](https://img.shields.io/badge/license-MIT-007ec6.svg)](https://github.com/gz65555/ktx2-encoder)
 
+A lightweight JavaScript library for converting images to KTX2 (.ktx2) format. Powered by [BinomialLLC/basis_universal](https://github.com/BinomialLLC/basis_universal).
 
-This is a simple tool to convert images to KTX2(.ktx2) format. Ported from [BinomialLLC/basis_universal](https://github.com/BinomialLLC/basis_universal).
+## Features
+
+- Convert images to KTX2 format
+- Support for both 2D images and cubemaps
+- Integration with gltf-transform
+- Support both browser and node.js
 
 ## Quick Start
 
@@ -33,7 +39,7 @@ See [options](./docs/interfaces/IEncodeOptions.md) API documentation for more de
 
 ## For gltf-transform
 
-For the users of gltf-transform, you can use the provided function `ktx`. for example:
+For the users of [gltf-transform](https://gltf-transform.dev/), you can use the provided function `ktx`. For example:
 
 ```typescript
 import { ktx2 } from "ktx2-encoder/gltf-transform";
