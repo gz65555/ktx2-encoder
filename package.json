@@ -34,7 +34,10 @@
     "test:node": "vitest run ./test/node.test.ts",
     "test:web": "vitest run --browser.name=chrome ./test/web.test.ts",
     "test:gltf": "vitest run ./test/gltf-transform.node.test.ts && vitest run --browser.name=chrome ./test/gltf-transform.web.test.ts",
-    "release": "bumpp"
+    "release": "bumpp",
+    "docs:dev": "vitepress dev website",
+    "docs:build": "vitepress build website",
+    "docs:preview": "vitepress preview website"
   },
   "keywords": [
     "ktx",
@@ -52,6 +55,8 @@
   "devDependencies": {
     "@ant-design/icons": "^5.2.5",
     "@galacean/engine": "^1.1.0-beta.50",
+    "@gltf-transform/core": "^4.1.1",
+    "@gltf-transform/extensions": "^4.1.1",
     "@types/node": "^20.11.10",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
@@ -71,9 +76,8 @@
     "typedoc-plugin-markdown": "^4.3.3",
     "typescript": "~5.6",
     "vite": "^5.1.5",
+    "vitepress": "^1.5.0",
     "vitest": "^2.1.8",
-    "@gltf-transform/core": "^4.1.1",
-    "@gltf-transform/extensions": "^4.1.1",
     "webdriverio": "^9.4.5"
   },
   "dependencies": {
