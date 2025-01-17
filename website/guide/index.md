@@ -1,5 +1,7 @@
 # Getting Started
 
+A lightweight JavaScript library for converting images to KTX2 (.ktx2) format. Powered by [BinomialLLC/basis_universal](https://github.com/BinomialLLC/basis_universal).
+
 ## Installation
 
 ```shell

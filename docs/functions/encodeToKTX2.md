@@ -8,6 +8,8 @@
 
 > **encodeToKTX2**(`imageBuffer`, `options`): `Promise`\<`Uint8Array`\>
 
+Defined in: [web/index.ts:8](https://github.com/gz65555/ktx2-encoder/blob/7c4de41129ab790944f9dc093b94cea7ef1d2328/src/web/index.ts#L8)
+
 ## Parameters
 
 ### imageBuffer
@@ -21,7 +23,3 @@
 ## Returns
 
 `Promise`\<`Uint8Array`\>
-
-## Defined in
-
-[web/index.ts:8](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/web/index.ts#L8)
