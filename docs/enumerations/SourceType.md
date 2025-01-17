@@ -1,4 +1,4 @@
-[**ktx2-encoder**](../README.md) • **Docs**
+[**ktx2-encoder**](../README.md)
 
 ***
 
@@ -16,7 +16,7 @@ image source type
 
 #### Defined in
 
-enum.ts:12
+[enum.ts:12](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/enum.ts#L12)
 
 ***
 
@@ -26,4 +26,4 @@ enum.ts:12
 
 #### Defined in
 
-enum.ts:11
+[enum.ts:11](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/enum.ts#L11)

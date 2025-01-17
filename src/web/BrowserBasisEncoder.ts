@@ -3,18 +3,20 @@ import { IBasisModule, IEncodeOptions } from "../type.js";
 import { applyInputOptions } from "../utils.js";
 import { BasisTextureType, SourceType } from "../enum.js";
 
-declare function importScripts(...args: any): any;
-
 let promise: Promise<IBasisModule> | null = null;
+
+const DEFAULT_WASM_URL = "https://mdn.alipayobjects.com/rms/afts/file/A*r7D4SKbksYcAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm";
 
 class BrowserBasisEncoder {
   async init(options?: { jsUrl?: string; wasmUrl?: string }) {
     if (!promise) {
       function _init(): Promise<IBasisModule> {
+        const wasmUrl = options?.wasmUrl ?? DEFAULT_WASM_URL;
+        const jsUrl = options?.jsUrl ?? "../basis/basis_encoder.js";
         return new Promise((resolve, reject) => {
           Promise.all([
-            options?.jsUrl ? import(/* @vite-ignore */ options.jsUrl) : import("../basis/basis_encoder.js"),
-            options?.wasmUrl ? fetch(options.wasmUrl).then((res) => res.arrayBuffer()) : undefined
+            import(/* @vite-ignore */ jsUrl),
+            wasmUrl ? fetch(wasmUrl).then((res) => res.arrayBuffer()) : undefined
           ])
             .then(([{ default: BASIS }, wasmBinary]) => {
               return BASIS({ wasmBinary }).then((Module: IBasisModule) => {

@@ -22,6 +22,6 @@
     "declarationDir": "types",
     "outDir": "dist"
   },
-  "include": ["./src/*", "./src/web/*", "./src/node/*"],
+  "include": ["./src/*", "./src/web/*", "./src/node/*", "./src/gltf-transform/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

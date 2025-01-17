@@ -1,4 +1,4 @@
-[**ktx2-encoder**](README.md) • **Docs**
+[**ktx2-encoder**](README.md)
 
 ***
 

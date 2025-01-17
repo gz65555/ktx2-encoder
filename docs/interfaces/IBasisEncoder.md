@@ -1,4 +1,4 @@
-[**ktx2-encoder**](../README.md) • **Docs**
+[**ktx2-encoder**](../README.md)
 
 ***
 
@@ -18,7 +18,7 @@
 
 #### Defined in
 
-[type.ts:122](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L122)
+[type.ts:121](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L121)
 
 ## Methods
 
@@ -34,7 +34,7 @@ release memory
 
 #### Defined in
 
-[type.ts:87](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L87)
+[type.ts:86](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L86)
 
 ***
 
@@ -47,7 +47,9 @@ At the minimum, you must provided at least 1 source slice by calling setSliceSou
 
 #### Parameters
 
-• **pngBuffer**: `Uint8Array`
+##### pngBuffer
+
+`Uint8Array`
 
 #### Returns
 
@@ -57,7 +59,7 @@ byte length of encoded data
 
 #### Defined in
 
-[type.ts:26](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L26)
+[type.ts:26](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L26)
 
 ***
 
@@ -69,7 +71,9 @@ The compression_level parameter controls the encoder perf vs. file size tradeoff
 
 #### Parameters
 
-• **level**: `number`
+##### level
+
+`number`
 
 Default is 2, range is [0, 6]
 
@@ -79,7 +83,7 @@ Default is 2, range is [0, 6]
 
 #### Defined in
 
-[type.ts:60](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L60)
+[type.ts:60](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L60)
 
 ***
 
@@ -91,7 +95,9 @@ Create .KTX2 files instead of .basis files. By default this is FALSE.
 
 #### Parameters
 
-• **isKTX2**: `boolean`
+##### isKTX2
+
+`boolean`
 
 #### Returns
 
@@ -99,7 +105,7 @@ Create .KTX2 files instead of .basis files. By default this is FALSE.
 
 #### Defined in
 
-[type.ts:70](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L70)
+[type.ts:69](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L69)
 
 ***
 
@@ -111,7 +117,9 @@ Enables debug output	to stdout
 
 #### Parameters
 
-• **isDebug**: `boolean`
+##### isDebug
+
+`boolean`
 
 #### Returns
 
@@ -119,7 +127,7 @@ Enables debug output	to stdout
 
 #### Defined in
 
-[type.ts:49](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L49)
+[type.ts:49](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L49)
 
 ***
 
@@ -131,7 +139,9 @@ Default is BASISU_DEFAULT_ENDPOINT_RDO_THRESH, range is [0,1e+10]
 
 #### Parameters
 
-• **endpoint\_rdo\_thresh**: `number`
+##### endpoint\_rdo\_thresh
+
+`number`
 
 #### Returns
 
@@ -139,7 +149,7 @@ Default is BASISU_DEFAULT_ENDPOINT_RDO_THRESH, range is [0,1e+10]
 
 #### Defined in
 
-[type.ts:120](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L120)
+[type.ts:119](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L119)
 
 ***
 
@@ -151,7 +161,9 @@ Use sRGB transfer func in the file's DFD. Default is FALSE. This should very pro
 
 #### Parameters
 
-• **srgbTransferFunc**: `boolean`
+##### srgbTransferFunc
+
+`boolean`
 
 need sRGB transfer func
 
@@ -161,7 +173,7 @@ need sRGB transfer func
 
 #### Defined in
 
-[type.ts:80](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L80)
+[type.ts:79](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L79)
 
 ***
 
@@ -173,7 +185,9 @@ Use UASTC Zstandard supercompression. Defaults to disabled or KTX2_SS_NONE
 
 #### Parameters
 
-• **needSupercompression**: `boolean`
+##### needSupercompression
+
+`boolean`
 
 #### Returns
 
@@ -181,7 +195,7 @@ Use UASTC Zstandard supercompression. Defaults to disabled or KTX2_SS_NONE
 
 #### Defined in
 
-[type.ts:40](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L40)
+[type.ts:40](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L40)
 
 ***
 
@@ -194,7 +208,9 @@ Default is 512, range is [1, 16128]
 
 #### Parameters
 
-• **max\_endpoint\_clusters**: `number`
+##### max\_endpoint\_clusters
+
+`number`
 
 #### Returns
 
@@ -202,7 +218,7 @@ Default is 512, range is [1, 16128]
 
 #### Defined in
 
-[type.ts:108](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L108)
+[type.ts:107](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L107)
 
 ***
 
@@ -215,7 +231,9 @@ Default is 512, range is [1, 16128]
 
 #### Parameters
 
-• **max\_selector\_clusters**: `number`
+##### max\_selector\_clusters
+
+`number`
 
 #### Returns
 
@@ -223,7 +241,7 @@ Default is 512, range is [1, 16128]
 
 #### Defined in
 
-[type.ts:114](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L114)
+[type.ts:113](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L113)
 
 ***
 
@@ -235,7 +253,9 @@ If true mipmaps will be generated from the source images
 
 #### Parameters
 
-• **needGenMipmap**: `boolean`
+##### needGenMipmap
+
+`boolean`
 
 #### Returns
 
@@ -243,19 +263,15 @@ If true mipmaps will be generated from the source images
 
 #### Defined in
 
-[type.ts:75](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L75)
+[type.ts:74](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L74)
 
 ***
 
 ### setNormalMap()
 
-> **setNormalMap**(`isNormalMap`): `void`
+> **setNormalMap**(): `void`
 
 setNormalMapMode is the same as the basisu.exe "-normal_map" option. It tunes several codec parameters so compression works better on normal maps.
-
-#### Parameters
-
-• **isNormalMap**: `boolean`
 
 #### Returns
 
@@ -263,7 +279,7 @@ setNormalMapMode is the same as the basisu.exe "-normal_map" option. It tunes se
 
 #### Defined in
 
-[type.ts:65](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L65)
+[type.ts:64](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L64)
 
 ***
 
@@ -275,7 +291,9 @@ If true, the input is assumed to be in sRGB space. Be sure to set this correctly
 
 #### Parameters
 
-• **perceptual**: `boolean`
+##### perceptual
+
+`boolean`
 
 #### Returns
 
@@ -283,7 +301,7 @@ If true, the input is assumed to be in sRGB space. Be sure to set this correctly
 
 #### Defined in
 
-[type.ts:84](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L84)
+[type.ts:83](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L83)
 
 ***
 
@@ -296,7 +314,9 @@ Default is -1 (meaning unused - the compressor will use m_max_endpoint_clusters/
 
 #### Parameters
 
-• **level**: `number`
+##### level
+
+`number`
 
 Range is [1, 255]
 
@@ -306,7 +326,7 @@ Range is [1, 255]
 
 #### Defined in
 
-[type.ts:55](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L55)
+[type.ts:55](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L55)
 
 ***
 
@@ -318,7 +338,9 @@ If true, the RDO post-processor will be applied to the encoded UASTC texture dat
 
 #### Parameters
 
-• **rdoUASTC**: `boolean`
+##### rdoUASTC
+
+`boolean`
 
 #### Returns
 
@@ -326,7 +348,7 @@ If true, the RDO post-processor will be applied to the encoded UASTC texture dat
 
 #### Defined in
 
-[type.ts:90](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L90)
+[type.ts:89](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L89)
 
 ***
 
@@ -338,7 +360,9 @@ Default is 4096, range is [64, 65535]
 
 #### Parameters
 
-• **dictSize**: `number`
+##### dictSize
+
+`number`
 
 #### Returns
 
@@ -346,7 +370,7 @@ Default is 4096, range is [64, 65535]
 
 #### Defined in
 
-[type.ts:96](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L96)
+[type.ts:95](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L95)
 
 ***
 
@@ -358,7 +382,9 @@ Default is 10.0f, range is [01, 100.0]
 
 #### Parameters
 
-• **rdo\_uastc\_max\_allowed\_rms\_increase\_ratio**: `number`
+##### rdo\_uastc\_max\_allowed\_rms\_increase\_ratio
+
+`number`
 
 #### Returns
 
@@ -366,7 +392,7 @@ Default is 10.0f, range is [01, 100.0]
 
 #### Defined in
 
-[type.ts:99](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L99)
+[type.ts:98](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L98)
 
 ***
 
@@ -376,7 +402,9 @@ Default is 10.0f, range is [01, 100.0]
 
 #### Parameters
 
-• **rdo\_quality**: `number`
+##### rdo\_quality
+
+`number`
 
 #### Returns
 
@@ -384,7 +412,7 @@ Default is 10.0f, range is [01, 100.0]
 
 #### Defined in
 
-[type.ts:93](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L93)
+[type.ts:92](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L92)
 
 ***
 
@@ -396,7 +424,9 @@ Default is 8.0f, range is [.01f, 100.0f]
 
 #### Parameters
 
-• **rdo\_uastc\_skip\_block\_rms\_thresh**: `number`
+##### rdo\_uastc\_skip\_block\_rms\_thresh
+
+`number`
 
 #### Returns
 
@@ -404,7 +434,7 @@ Default is 8.0f, range is [.01f, 100.0f]
 
 #### Defined in
 
-[type.ts:102](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L102)
+[type.ts:101](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L101)
 
 ***
 
@@ -416,7 +446,9 @@ Default is BASISU_DEFAULT_SELECTOR_RDO_THRESH, range is [0,1e+10]
 
 #### Parameters
 
-• **selector\_rdo\_thresh**: `number`
+##### selector\_rdo\_thresh
+
+`number`
 
 #### Returns
 
@@ -424,7 +456,7 @@ Default is BASISU_DEFAULT_SELECTOR_RDO_THRESH, range is [0,1e+10]
 
 #### Defined in
 
-[type.ts:117](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L117)
+[type.ts:116](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L116)
 
 ***
 
@@ -437,23 +469,33 @@ The first texel is the top-left texel. The texel byte order in memory is R,G,B,A
 
 #### Parameters
 
-• **sliceIndex**: `number`
+##### sliceIndex
+
+`number`
 
 sliceIndex is the slice to change. Valid range is [0,BASISU_MAX_SLICES-1].
 
-• **imageBuffer**: `Uint8Array`
+##### imageBuffer
+
+`Uint8Array`
 
 png image buffer or 32bit RGBA raster image buffer
 
-• **width**: `number`
+##### width
+
+`number`
 
 if isPNG is true, width set 0.
 
-• **height**: `number`
+##### height
+
+`number`
 
 if isPNG is true, height set 0.
 
-• **type**: [`SourceType`](../enumerations/SourceType.md)
+##### type
+
+[`SourceType`](../enumerations/SourceType.md)
 
 type of the input source.
 
@@ -463,7 +505,7 @@ type of the input source.
 
 #### Defined in
 
-[type.ts:13](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L13)
+[type.ts:13](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L13)
 
 ***
 
@@ -475,7 +517,9 @@ Sets the basis texture type, default is cBASISTexType2D
 
 #### Parameters
 
-• **texType**: [`BasisTextureType`](../enumerations/BasisTextureType.md)
+##### texType
+
+[`BasisTextureType`](../enumerations/BasisTextureType.md)
 
 texType is enum BasisTextureType
 
@@ -485,7 +529,7 @@ texType is enum BasisTextureType
 
 #### Defined in
 
-[type.ts:36](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L36)
+[type.ts:36](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L36)
 
 ***
 
@@ -497,7 +541,9 @@ If true, the encoder will output a UASTC texture, otherwise a ETC1S texture.
 
 #### Parameters
 
-• **isUASTC**: `boolean`
+##### isUASTC
+
+`boolean`
 
 #### Returns
 
@@ -505,7 +551,7 @@ If true, the encoder will output a UASTC texture, otherwise a ETC1S texture.
 
 #### Defined in
 
-[type.ts:31](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L31)
+[type.ts:31](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L31)
 
 ***
 
@@ -517,7 +563,9 @@ If true the source images will be Y flipped before compression.
 
 #### Parameters
 
-• **isYFlip**: `boolean`
+##### isYFlip
+
+`boolean`
 
 #### Returns
 
@@ -525,4 +573,4 @@ If true the source images will be Y flipped before compression.
 
 #### Defined in
 
-[type.ts:44](https://github.com/gz65555/ktx2-encoder/blob/391f15a8ca3f2c3fe73e0e7ccf10b89523bc1467/src/type.ts#L44)
+[type.ts:44](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/type.ts#L44)
