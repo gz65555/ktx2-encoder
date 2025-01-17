@@ -10,7 +10,7 @@ A lightweight JavaScript library for converting images to KTX2 (.ktx2) format. P
 - Convert images to KTX2 format
 - Support for both 2D images and cubemaps
 - Integration with gltf-transform
-- Support both browser and node.js
+- Support both Browser and Node.js
 
 ## Quick Start
 
@@ -55,7 +55,7 @@ await document.transform(
 
 ```
 
-You'd better use the `basis_encoder.wasm` hosted by your own server.
+> **Note:** It's recommended to host the `basis_encoder.wasm` file on your own server.
 
 ## Tool
 
