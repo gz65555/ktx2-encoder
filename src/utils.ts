@@ -8,6 +8,7 @@ export const DefaultOptions = {
   generateMipmap: true,
   needSupercompression: true,
   isSetKTX2SRGBTransferFunc: true,
+  isHDR: false,
   qualityLevel: 150
 };
 
@@ -22,5 +23,6 @@ export function applyInputOptions(options: Partial<IEncodeOptions> = {}, encoder
   options.qualityLevel !== undefined && encoder.setQualityLevel(options.qualityLevel);
   options.compressionLevel !== undefined && encoder.setCompressionLevel(options.compressionLevel);
   options.needSupercompression !== undefined && encoder.setKTX2UASTCSupercompression(options.needSupercompression);
+  options.isHDR !== undefined && encoder.setHDR(options.isHDR);
   options.isNormalMap === true && encoder.setNormalMap();
 }

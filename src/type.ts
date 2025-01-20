@@ -118,6 +118,12 @@ export interface IBasisEncoder {
   /** Default is BASISU_DEFAULT_ENDPOINT_RDO_THRESH, range is [0,1e+10] */
   setEndpointRDOThresh(endpoint_rdo_thresh: number): void;
 
+  /**
+   * Enable HDR mode. Only supported for UASTC encoding.
+   * @param enableHDR Whether to enable HDR encoding mode
+   */
+  setHDR(enableHDR: boolean): void;
+
   new (): IBasisEncoder;
 }
 
@@ -187,4 +193,10 @@ export interface IEncodeOptions {
    * wasm url
    */
   wasmUrl?: string;
+
+  /**
+   * Enable HDR mode. Only supported for UASTC encoding.
+   * Default is false.
+   */
+  isHDR?: boolean;
 }
