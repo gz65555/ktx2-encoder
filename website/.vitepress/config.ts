@@ -11,7 +11,8 @@ export default defineConfig({
     // https://vitepress.dev/reference/default-theme-config
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Guide', link: '/guide/' }
+      { text: 'Guide', link: '/guide/' },
+      { text: 'Tools', link: '/tools/' }
     ],
 
     sidebar: [
@@ -20,6 +21,12 @@ export default defineConfig({
         items: [
           { text: 'Getting Started', link: '/guide/' },
           { text: 'glTF Transform', link: '/guide/gltf-transform' }
+        ]
+      },
+      {
+        text: 'Tools',
+        items: [
+          { text: 'KTX2 Encoder', link: '/tools/' }
         ]
       }
     ],
