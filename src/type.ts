@@ -1,4 +1,4 @@
-import { BasisTextureType, SourceType } from "./enum.js";
+import type { BasisTextureType, HDRSourType, SourceType } from "./enum.js";
 
 export interface IBasisEncoder {
   /**
@@ -95,10 +95,10 @@ export interface IBasisEncoder {
   setRDOUASTCDictSize(dictSize: number): void;
 
   /** Default is 10.0f, range is [01, 100.0] */
-  setRDOUASTCMaxAllowedRMSIncreaseRatio(rdo_uastc_max_allowed_rms_increase_ratio: number);
+  setRDOUASTCMaxAllowedRMSIncreaseRatio(rdo_uastc_max_allowed_rms_increase_ratio: number): void;
 
   /** Default is 8.0f, range is [.01f, 100.0f] */
-  setRDOUASTCSkipBlockRMSThresh(rdo_uastc_skip_block_rms_thresh: number);
+  setRDOUASTCSkipBlockRMSThresh(rdo_uastc_skip_block_rms_thresh: number): void;
 
   /**
    * Sets the max # of endpoint clusters for ETC1S mode. Use instead of setQualityLevel.
@@ -124,6 +124,24 @@ export interface IBasisEncoder {
    */
   setHDR(enableHDR: boolean): void;
 
+  /**
+   * Sets the quality vs. encoder performance tradeoff (0-4, default is 1). Higher=slower but better quality.	
+   * @param level - Quality level(0-4), default is 1
+   */
+  setUASTCHDRQualityLevel(level: number): void;
+
+  /**
+   * setSliceSourceImageHDR is the same as setSliceSourceImage, but for HDR images.
+   * If the input is a raster image, the buffer must be width*height*4 bytes in size. The raster image is stored in top down scanline order.
+   * @param sliceIndex - sliceIndex is the slice to change. Valid range is [0,BASISU_MAX_SLICES-1].
+   * @param imageBuffer - png image buffer or 32bit RGBA raster image buffer
+   * @param width - if it is not raster image, width set 0.
+   * @param height - if it is not raster image, height set 0.
+   * @param type - type of the input source.
+   * @param ldrSrgbToLinear - If true, the input is assumed to be in sRGB space.
+   */
+  setSliceSourceImageHDR(sliceIndex: number, imageBuffer: Uint8Array, width: number, height: number, type: HDRSourType, ldrSrgbToLinear: boolean): void;
+
   new (): IBasisEncoder;
 }
 
@@ -132,53 +150,75 @@ export interface IBasisModule {
   initializeBasis: () => void;
 }
 
-export interface IEncodeOptions {
+interface HDROptions extends BasisOptions {
+  /**
+   * Enable HDR mode. Only supported for UASTC encoding.
+   */
+  isHDR: true;
+  /**
+   * Image type
+   */
+  imageType: "hdr" | "exr";
+  /**
+   * HDR quality level
+   */
+  hdrQualityLevel?: number;
+}
+interface LDROptions extends BasisOptions {
+  /**
+   * Enable HDR mode. Only supported for UASTC encoding.
+   * Default is false.
+   */
+  isHDR?: false;
+}
+
+interface BasisOptions {
   /**
    *  enable debug output, default is false
    */
-  enableDebug: boolean;
+  enableDebug?: boolean;
   /**
    * is UASTC texture, default is true
    */
-  isUASTC: boolean;
+  isUASTC?: boolean;
   /**
    * if true the source images will be Y flipped before compression, default is false
    */
-  isYFlip: boolean;
+  isYFlip?: boolean;
   /**
    * Sets the ETC1S encoder's quality level, which controls the file size vs. quality tradeoff.
    */
-  qualityLevel: number;
+  qualityLevel?: number;
   /**
    * The compression_level parameter controls the encoder perf vs. file size tradeoff for ETC1S files.
    */
-  compressionLevel: number;
+  compressionLevel?: number;
   /**
    * Use UASTC Zstandard supercompression. Defaults to disabled or KTX2_SS_NONE
    */
-  needSupercompression: boolean;
+  needSupercompression?: boolean;
   /**
    * setNormalMapMode is the same as the basisu.exe "-normal_map" option. It tunes several codec parameters so compression works better on normal maps.
    */
-  isNormalMap: boolean;
+  isNormalMap?: boolean;
   /**
    * Input source is sRGB. This should very probably match the "perceptual" setting.
    */
-  isSetKTX2SRGBTransferFunc: boolean;
+  isSetKTX2SRGBTransferFunc?: boolean;
   /**
    * If true mipmaps will be generated from the source images
    */
-  generateMipmap: boolean;
+  generateMipmap?: boolean;
   /**
    * Create .KTX2 files instead of .basis files. By default this is FALSE.
    */
-  isKTX2File: boolean;
+  isKTX2File?: boolean;
 
   /** kv data */
-  kvData: Record<string, string | Uint8Array>;
+  kvData?: Record<string, string | Uint8Array>;
 
   /** type */
-  type: SourceType;
+  type?: SourceType;
   /**
    * Decode compressed image buffer to RGBA imageData.(Required in Node.js)
    * @param buffer
@@ -193,10 +233,6 @@ export interface IEncodeOptions {
    * wasm url
    */
   wasmUrl?: string;
-
-  /**
-   * Enable HDR mode. Only supported for UASTC encoding.
-   * Default is false.
-   */
-  isHDR?: boolean;
 }
+
+export type IEncodeOptions = HDROptions | LDROptions;
