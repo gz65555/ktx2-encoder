@@ -41,7 +41,7 @@ const NaiveUIProvider = defineComponent({
           {
             default: () => [
               h(Layout, null, { default: this.$slots.default?.() }),
-              import.meta.env.SSR ? [h(CssRenderStyle), h(VitepressPath)] : null
+              h(VitepressPath)
             ]
           }
         )
@@ -56,11 +56,5 @@ export default {
   enhanceApp({ app }) {
     // Register naive-ui components
     app.use(naive);
-  },
-  setup() {
-    // Create global naive-ui provider
-    const meta = document.createElement("meta");
-    meta.name = "naive-ui-style";
-    document.head.appendChild(meta);
   }
 };

@@ -59,12 +59,5 @@ await document.transform(
 
 ## Tool
 
-1. Start server
+Open the page of [ktx2 encoder tool](https://husong.me/ktx2-encoder/tools), you can use it to encode your image to ktx2.
 
-```
-npm run dev
-```
-
-2. Open the page，default is http://localhost:5174/
-
-3. Use it! Select your images and encode it to ktx2![lock](https://mdn.alipayobjects.com/rms/afts/img/A*himnRpVKEvgAAAAAAAAAAAAAARQnAQ/original/lock.gif)

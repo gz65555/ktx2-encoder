@@ -12,15 +12,7 @@ Upload an image and convert it to KTX2 format with custom encoding options.
 
 <KtxEncoder />
 
-## Usage Instructions
+## Options
 
-1. Click the file input to upload an image
-2. Configure the encoding options:
-   - **UASTC**: Use UASTC format for higher quality (recommended for normal maps)
-   - **Generate Mipmaps**: Create mipmaps for better rendering at different distances
-   - **Supercompression**: Enable additional compression (Zstandard)
-   - **Normal Map**: Optimize encoding for normal maps
-   - **sRGB Transfer**: Use sRGB transfer function in the file's DFD
-   - **Quality Level**: Controls quality vs file size (1-255)
-   - **Compression Level**: Controls compression speed vs file size (0-6)
-3. Click "Encode to KTX2" to convert and download the KTX2 file 
+See [Configuration Options](../guide/api.md#configuration-options) for more information.
+
