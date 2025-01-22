@@ -52,7 +52,6 @@
     "dist"
   ],
   "devDependencies": {
-    "@ant-design/icons": "^5.2.5",
     "@galacean/engine": "^1.1.0-beta.50",
     "@gltf-transform/core": "^4.1.1",
     "@gltf-transform/extensions": "^4.1.1",
@@ -62,15 +61,12 @@
     "@vitejs/plugin-react": "^4.2.1",
     "@vitest/browser": "^2.1.8",
     "@webgpu/types": "^0.1.40",
-    "antd": "^5.8.2",
     "bumpp": "^9.4.0",
-    "jszip": "^3.10.1",
     "naive-ui": "^2.41.0",
     "prettier": "^2.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sharp": "^0.33.5",
-    "tsconfig-paths": "^4.2.0",
     "typedoc": "^0.27.6",
     "typedoc-plugin-markdown": "^4.3.3",
     "typescript": "~5.6",
