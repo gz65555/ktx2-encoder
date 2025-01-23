@@ -81,7 +81,7 @@
 
 <script lang="ts">
 import { ref, defineComponent, computed } from 'vue'
-import { encodeToKTX2 } from 'ktx2-encoder'
+import { encodeToKTX2 } from '../../../src/web'
 import {
   NCard,
   NUpload,
@@ -156,7 +156,7 @@ export default defineComponent({
 
           imageFile.value
           const arrayBuffer = await imageFile.value.arrayBuffer()
-          const ktx2Data = await encodeToKTX2(arrayBuffer, options.value)
+          const ktx2Data = await encodeToKTX2(new Uint8Array(arrayBuffer), options.value)
 
           // Create and trigger download
           const blob = new Blob([ktx2Data], { type: 'application/octet-stream' })
