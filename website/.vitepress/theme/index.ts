@@ -1,7 +1,9 @@
-import DefaultTheme from "vitepress/theme";
+// .vitepress/theme/index.js
+
+import { setup } from "@css-render/vue3-ssr";
+import { NConfigProvider } from "naive-ui";
 import { useRoute } from "vitepress";
-import naive from "naive-ui";
-import { NConfigProvider, NMessageProvider } from "naive-ui";
+import DefaultTheme from "vitepress/theme";
 import { defineComponent, h, inject } from "vue";
 
 const { Layout } = DefaultTheme;
@@ -22,7 +24,7 @@ const CssRenderStyle = defineComponent({
 
 const VitepressPath = defineComponent({
   setup() {
-    const route: any = useRoute();
+    const route = useRoute();
     return () => {
       return h("vitepress-path", null, [route.path]);
     };
@@ -35,26 +37,24 @@ const NaiveUIProvider = defineComponent({
       NConfigProvider,
       { abstract: true, inlineThemeDisabled: true },
       {
-        default: () => h(
-          NMessageProvider,
-          null,
-          {
-            default: () => [
-              h(Layout, null, { default: this.$slots.default?.() }),
-              h(VitepressPath)
-            ]
-          }
-        )
+        default: () => [
+          h(Layout, null, { default: this.$slots.default?.() }),
+          // @ts-ignore
+          import.meta.env.SSR ? [h(CssRenderStyle), h(VitepressPath)] : null
+        ]
       }
     );
   }
 });
 
 export default {
-  ...DefaultTheme,
+  extends: DefaultTheme,
   Layout: NaiveUIProvider,
-  enhanceApp({ app }) {
-    // Register naive-ui components
-    app.use(naive);
+  enhanceApp: ({ app }) => {
+    // @ts-ignore
+    if (import.meta.env.SSR) {
+      const { collect } = setup(app);
+      app.provide("css-render-collect", collect);
+    }
   }
 };

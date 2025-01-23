@@ -52,6 +52,7 @@
     "dist"
   ],
   "devDependencies": {
+    "@css-render/vue3-ssr": "^0.15.14",
     "@galacean/engine": "^1.1.0-beta.50",
     "@gltf-transform/core": "^4.1.1",
     "@gltf-transform/extensions": "^4.1.1",
