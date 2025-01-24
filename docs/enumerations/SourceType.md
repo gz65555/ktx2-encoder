@@ -6,6 +6,8 @@
 
 # Enumeration: SourceType
 
+Defined in: [enum.ts:10](https://github.com/gz65555/ktx2-encoder/blob/7c4de41129ab790944f9dc093b94cea7ef1d2328/src/enum.ts#L10)
+
 image source type
 
 ## Enumeration Members
@@ -14,9 +16,7 @@ image source type
 
 > **PNG**: `1`
 
-#### Defined in
-
-[enum.ts:12](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/enum.ts#L12)
+Defined in: [enum.ts:12](https://github.com/gz65555/ktx2-encoder/blob/7c4de41129ab790944f9dc093b94cea7ef1d2328/src/enum.ts#L12)
 
 ***
 
@@ -24,6 +24,4 @@ image source type
 
 > **RAW**: `0`
 
-#### Defined in
-
-[enum.ts:11](https://github.com/gz65555/ktx2-encoder/blob/cca15826f8593d3590205c993a17a51f103fa623/src/enum.ts#L11)
+Defined in: [enum.ts:11](https://github.com/gz65555/ktx2-encoder/blob/7c4de41129ab790944f9dc093b94cea7ef1d2328/src/enum.ts#L11)

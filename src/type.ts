@@ -1,5 +1,9 @@
 import type { BasisTextureType, HDRSourType, SourceType } from "./enum.js";
 
+
+/**
+ * which is defined in [basis_wrappers.cpp](https://github.com/BinomialLLC/basis_universal/blob/df079eca71cf83481c45059dce2165348dc1a5ea/webgl/transcoder/basis_wrappers.cpp#L1830)
+ */
 export interface IBasisEncoder {
   /**
    * Sets the slice's source image, either from a PNG file or from a raw 32-bit RGBA raster image.
