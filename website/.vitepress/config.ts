@@ -26,7 +26,7 @@ export default defineConfig({
       },
       {
         text: "Tools",
-        items: [{ text: "KTX2 Encoder", link: "/tools/" }]
+        items: [{ text: "KTX2 Encoder", link: "/tools/" }, { text: "KTX2 Viewer", link: "/tools/viewer" }]
       }
     ],
 
