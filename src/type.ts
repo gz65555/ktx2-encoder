@@ -123,6 +123,12 @@ export interface IBasisEncoder {
   setEndpointRDOThresh(endpoint_rdo_thresh: number): void;
 
   /**
+   * Sets the UASTC(LDR) encoding performance vs. quality tradeoff, and other lesser used UASTC encoder flags.
+   * @param - packUastcFlags 0-4, default is 1, the value is higher, the UASTC's quality is higher
+   */
+  setPackUASTCFlags(packUastcFlags: number):void
+
+  /**
    * Enable HDR mode. Only supported for UASTC encoding.
    * @param enableHDR Whether to enable HDR encoding mode
    */
@@ -162,7 +168,7 @@ interface HDROptions extends BasisOptions {
   /**
    * Image type
    */
-  imageType: "hdr" | "exr";
+  imageType: "hdr" | "exr" | "raster";
   /**
    * HDR quality level
    */
@@ -198,9 +204,21 @@ interface BasisOptions {
    */
   compressionLevel?: number;
   /**
-   * Use UASTC Zstandard supercompression. Defaults to disabled or KTX2_SS_NONE
+   * Use UASTC Zstandard supercompression. Defaults to disabled or KTX2_SS_NONE.
    */
   needSupercompression?: boolean;
+  /**
+   * uastcLDRQualityLevel 0-3, default is 1, the value is higher, the UASTC's quality is higher.
+   */
+  uastcLDRQualityLevel?: number;
+  /**
+   * enableRDO(UASTC LDR), default is false.
+   */
+  enableRDO?: boolean;
+  /**
+   * RDO quality level, 0 - 10 float number, default is 1.0.
+   */
+  rdoQualityLevel?: number;
   /**
    * setNormalMapMode is the same as the basisu.exe "-normal_map" option. It tunes several codec parameters so compression works better on normal maps.
    */

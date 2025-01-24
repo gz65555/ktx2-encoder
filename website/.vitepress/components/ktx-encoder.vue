@@ -4,25 +4,21 @@
       <n-card title="KTX2 Encoder">
         <n-space vertical size="large">
           <div class="upload-section">
-            <n-upload accept="image/*" :max="1" @change="handleFileUpload">
+            <n-upload accept="image/*,.hdr,.exr" :max="1" @change="handleFileUpload">
               <n-button>Select Image</n-button>
             </n-upload>
             <div v-if="imagePreview" class="preview">
-              <img :src="imagePreview" alt="Preview">
+              <img :src="imagePreview" alt="Preview" />
             </div>
           </div>
 
           <n-form label-placement="left" label-width="160">
-            <n-form-item label="Use UASTC">
-              <n-switch v-model="options.isUASTC" />
+            <n-form-item label="Output Type">
+              <n-select v-model:value="options.outputType.value" :options="options.outputType.options" />
             </n-form-item>
 
             <n-form-item label="Generate Mipmaps">
               <n-switch v-model="options.generateMipmap" />
-            </n-form-item>
-
-            <n-form-item label="Enable Supercompression">
-              <n-switch v-model="options.needSupercompression" />
             </n-form-item>
 
             <n-form-item label="Normal Map">
@@ -33,18 +29,41 @@
               <n-switch v-model="options.isSetKTX2SRGBTransferFunc" />
             </n-form-item>
 
-            <n-form-item label="Quality Level">
-              <NInputNumber v-model="options.qualityLevel" :min="1" :max="255" />
+            <n-form-item v-if="options.outputType.value === 'etc1s'" label="Quality Level">
+              <NSlider v-model:value="options.qualityLevel" :min="1" :max="255" />
             </n-form-item>
 
-            <n-form-item label="Compression Level">
-              <NInputNumber v-model="options.compressionLevel" :min="0" :max="6" />
+            <n-form-item v-if="options.outputType.value === 'etc1s'" label="Compression Level">
+              <NSlider v-model="options.compressionLevel" :min="0" :max="6" />
+            </n-form-item>
+
+            <n-form-item v-if="options.outputType.value === 'uastc'" label="Enable Supercompression">
+              <n-switch v-model="options.needSupercompression" />
+            </n-form-item>
+
+            <n-form-item v-if="options.outputType.value === 'uastc'" label="Quality Level">
+              <NSlider v-model:value="options.uastcLDRQualityLevel" :min="0" :max="3" />
+            </n-form-item>
+
+            <n-form-item v-if="options.outputType.value === 'uastc'" label="Enable RDO">
+              <NSwitch v-model:value="options.enableRDO" />
+            </n-form-item>
+
+            <n-form-item
+              v-if="options.outputType.value === 'uastc' && options.enableRDO === true"
+              label="RDO Quality Level"
+            >
+              <NSlider v-model="options.rdoQualityLevel" :min="0.1" :max="10" :step="0.1" />
+            </n-form-item>
+
+            <n-form-item v-if="options.outputType.value === 'hdr'" label="HDR Quality Level">
+              <NSlider v-model="options.hdrQualityLevel" :min="0" :max="3" :step="1" />
             </n-form-item>
           </n-form>
 
           <div class="actions">
             <NButton type="primary" @click="encode" :loading="loading" :disabled="!imageFile">
-              {{ loading ? 'Encoding...' : 'Encode to KTX2' }}
+              {{ loading ? "Encoding..." : "Encode to KTX2" }}
             </NButton>
           </div>
 
@@ -80,8 +99,8 @@
 </style>
 
 <script lang="ts">
-import { ref, defineComponent, computed } from 'vue'
-import { encodeToKTX2 } from '../../../src/web'
+import { ref, defineComponent, computed } from "vue";
+import { encodeToKTX2, IEncodeOptions } from "../../../src/web";
 import {
   NCard,
   NUpload,
@@ -92,11 +111,14 @@ import {
   NAlert,
   NForm,
   NFormItem,
-  useMessage,
+  NSlider,
+  NSelect,
   NMessageProvider,
-  createDiscreteApi, darkTheme, lightTheme
-} from 'naive-ui';
-import { ConfigProviderProps } from 'naive-ui';
+  createDiscreteApi,
+  darkTheme,
+  lightTheme
+} from "naive-ui";
+import { ConfigProviderProps } from "naive-ui";
 
 export default defineComponent({
   components: {
@@ -109,35 +131,55 @@ export default defineComponent({
     NInputNumber,
     NSpace,
     NSwitch,
+    NSlider,
+    NSelect,
     NCard
   },
   setup() {
-    const themeRef = ref<'light' | 'dark'>('light')
+    const themeRef = ref<"light" | "dark">("light");
     const configProviderPropsRef = computed<ConfigProviderProps>(() => ({
-      theme: themeRef.value === 'light' ? lightTheme : darkTheme
-    }))
+      theme: themeRef.value === "light" ? lightTheme : darkTheme
+    }));
 
-    const { message } = createDiscreteApi(
-      ['message'],
-      {
-        configProviderProps: configProviderPropsRef
-      }
-    )
+    const { message } = createDiscreteApi(["message"], {
+      configProviderProps: configProviderPropsRef
+    });
 
-    const imagePreview = ref('')
+    const imagePreview = ref("");
     const options = ref({
-      isUASTC: false,
+      outputType: {
+        value: ref("uastc"),
+        options: [
+          {
+            label: "UASTC",
+            value: "uastc"
+          },
+          {
+            label: "ETC1S",
+            value: "etc1s"
+          },
+          {
+            label: "UASTC_HDR",
+            value: "hdr"
+          }
+        ]
+      },
+      enableRDO: false,
+      rdoQualityLevel: 1.0,
+      uastcLDRQualityLevel: 1,
       generateMipmap: true,
       needSupercompression: false,
       isNormalMap: false,
       isSetKTX2SRGBTransferFunc: true,
       isKTX2File: true,
       qualityLevel: 128,
-      compressionLevel: 2
-    })
-    const loading = ref(false)
-    const error = ref('')
-    const imageFile = ref<{ arrayBuffer: () => Promise<ArrayBuffer>, name: string } | null>(null)
+      compressionLevel: 2,
+      hdrInputType: "hdr",
+      hdrQualityLevel: 0
+    });
+    const loading = ref(false);
+    const error = ref("");
+    const imageFile = ref<{ arrayBuffer: () => Promise<ArrayBuffer>; name: string } | null>(null);
     return {
       imagePreview,
       loading,
@@ -146,48 +188,95 @@ export default defineComponent({
       imageFile,
       async encode() {
         if (!imageFile.value) {
-          message.error('Please select an image first')
-          return
+          message.error("Please select an image first");
+          return;
         }
 
         try {
-          loading.value = true
-          error.value = ''
+          loading.value = true;
+          error.value = "";
 
-          imageFile.value
-          const arrayBuffer = await imageFile.value.arrayBuffer()
-          const ktx2Data = await encodeToKTX2(new Uint8Array(arrayBuffer), options.value)
+          imageFile.value;
+          const arrayBuffer = await imageFile.value.arrayBuffer();
+          let encodeOptions: IEncodeOptions = {};
+          const userOptions = options.value;
+          switch (userOptions.outputType.value) {
+            case "hdr":
+              encodeOptions = {
+                isHDR: true,
+                hdrQualityLevel: userOptions.hdrQualityLevel,
+                imageType: userOptions.hdrInputType as any,
+                generateMipmap: userOptions.generateMipmap,
+                isNormalMap: userOptions.isNormalMap,
+                isSetKTX2SRGBTransferFunc: userOptions.isSetKTX2SRGBTransferFunc
+              };
+              break;
+            case "uastc":
+              encodeOptions = {
+                isHDR: false,
+                isUASTC: true,
+                needSupercompression: userOptions.needSupercompression,
+                uastcLDRQualityLevel: userOptions.uastcLDRQualityLevel,
+                enableRDO: userOptions.enableRDO,
+                rdoQualityLevel: userOptions.rdoQualityLevel,
+                generateMipmap: userOptions.generateMipmap,
+                isNormalMap: userOptions.isNormalMap,
+                isSetKTX2SRGBTransferFunc: userOptions.isSetKTX2SRGBTransferFunc
+              };
+              break;
+            case "etc1s":
+              encodeOptions = {
+                isHDR: false,
+                isUASTC: false,
+                qualityLevel: userOptions.qualityLevel,
+                compressionLevel: userOptions.compressionLevel,
+                generateMipmap: userOptions.generateMipmap,
+                isNormalMap: userOptions.isNormalMap,
+                isSetKTX2SRGBTransferFunc: userOptions.isSetKTX2SRGBTransferFunc
+              };
+              break;
+          }
+          const ktx2Data = await encodeToKTX2(new Uint8Array(arrayBuffer), encodeOptions);
 
           // Create and trigger download
-          const blob = new Blob([ktx2Data], { type: 'application/octet-stream' })
-          const url = URL.createObjectURL(blob)
-          const a = document.createElement('a')
-          a.href = url
-          a.download = imageFile.value.name.replace(/\.[^/.]+$/, '') + '.ktx2'
-          document.body.appendChild(a)
-          a.click()
-          document.body.removeChild(a)
-          URL.revokeObjectURL(url)
-          message.success('KTX2 file generated successfully')
-
+          const blob = new Blob([ktx2Data], { type: "application/octet-stream" });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = imageFile.value.name.replace(/\.[^/.]+$/, "") + ".ktx2";
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          URL.revokeObjectURL(url);
+          message.success("KTX2 file generated successfully");
         } catch (err) {
-          error.value = err.message
-          message.error(err.message)
+          error.value = err.message;
+          message.error(err.message);
         } finally {
-          loading.value = false
+          loading.value = false;
         }
       },
-      handleFileUpload(e) {
-        const file = e.file
-        if (!file) return
+      handleFileUpload(e: { file: any }) {
+        const file = e.file;
+        if (!file) return;
+        const realFile = file.file as File;
+        const filename = realFile.name.toLocaleLowerCase();
+        if (filename.endsWith(".hdr")) {
+          options.value.outputType.value = "hdr";
+          options.value.hdrInputType = "hdr";
+        } else if (filename.endsWith(".exr")) {
+          options.value.outputType.value = "hdr";
+          options.value.hdrInputType = "exr";
+        } else {
+          options.value.outputType.value = "raster";
+          imagePreview.value = URL.createObjectURL(realFile);
+        }
+        imageFile.value = realFile;
 
-        imageFile.value = file.file
-        imagePreview.value = URL.createObjectURL(file.file)
-        message.success('Image uploaded successfully')
-        return false
+        message.success("Image uploaded successfully");
+        return false;
       }
-    }
+    };
   }
-})
-
+});
 </script>
