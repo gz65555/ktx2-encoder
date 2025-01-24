@@ -1,77 +1,79 @@
 <template>
-  <n-message-provider>
-    <div class="encoder-container">
-      <n-card title="KTX2 Encoder">
-        <n-space vertical size="large">
-          <div class="upload-section">
-            <n-upload accept="image/*,.hdr,.exr" :max="1" @change="handleFileUpload">
-              <n-button>Select Image</n-button>
-            </n-upload>
-            <div v-if="imagePreview" class="preview">
-              <img :src="imagePreview" alt="Preview" />
+  <NConfigProvider :theme-overrides="themeOverrides">
+    <n-message-provider>
+      <div class="encoder-container">
+        <n-card title="KTX2 Encoder">
+          <n-space vertical size="large">
+            <div class="upload-section">
+              <n-upload accept="image/*,.hdr,.exr" :max="1" @change="handleFileUpload">
+                <n-button>Select Image</n-button>
+              </n-upload>
+              <div v-if="imagePreview" class="preview">
+                <img :src="imagePreview" alt="Preview" />
+              </div>
             </div>
-          </div>
 
-          <n-form label-placement="left" label-width="160">
-            <n-form-item label="Output Type">
-              <n-select v-model:value="options.outputType.value" :options="options.outputType.options" />
-            </n-form-item>
+            <n-form label-placement="left" label-width="160">
+              <n-form-item label="Output Type">
+                <n-select v-model:value="options.outputType.value" :options="options.outputType.options" />
+              </n-form-item>
 
-            <n-form-item label="Generate Mipmaps">
-              <n-switch v-model="options.generateMipmap" />
-            </n-form-item>
+              <n-form-item label="Generate Mipmaps">
+                <n-switch v-model="options.generateMipmap" />
+              </n-form-item>
 
-            <n-form-item label="Normal Map">
-              <n-switch v-model="options.isNormalMap" />
-            </n-form-item>
+              <n-form-item label="Normal Map">
+                <n-switch v-model="options.isNormalMap" />
+              </n-form-item>
 
-            <n-form-item label="sRGB Transfer Function">
-              <n-switch v-model="options.isSetKTX2SRGBTransferFunc" />
-            </n-form-item>
+              <n-form-item label="sRGB Transfer Function">
+                <n-switch v-model="options.isSetKTX2SRGBTransferFunc" />
+              </n-form-item>
 
-            <n-form-item v-if="options.outputType.value === 'etc1s'" label="Quality Level">
-              <NSlider v-model:value="options.qualityLevel" :min="1" :max="255" />
-            </n-form-item>
+              <n-form-item v-if="options.outputType.value === 'etc1s'" label="Quality Level">
+                <NSlider v-model:value="options.qualityLevel" :min="1" :max="255" />
+              </n-form-item>
 
-            <n-form-item v-if="options.outputType.value === 'etc1s'" label="Compression Level">
-              <NSlider v-model="options.compressionLevel" :min="0" :max="6" />
-            </n-form-item>
+              <n-form-item v-if="options.outputType.value === 'etc1s'" label="Compression Level">
+                <NSlider v-model="options.compressionLevel" :min="0" :max="6" />
+              </n-form-item>
 
-            <n-form-item v-if="options.outputType.value === 'uastc'" label="Enable Supercompression">
-              <n-switch v-model="options.needSupercompression" />
-            </n-form-item>
+              <n-form-item v-if="options.outputType.value === 'uastc'" label="Enable Supercompression">
+                <n-switch v-model="options.needSupercompression" />
+              </n-form-item>
 
-            <n-form-item v-if="options.outputType.value === 'uastc'" label="Quality Level">
-              <NSlider v-model:value="options.uastcLDRQualityLevel" :min="0" :max="3" />
-            </n-form-item>
+              <n-form-item v-if="options.outputType.value === 'uastc'" label="Quality Level">
+                <NSlider v-model:value="options.uastcLDRQualityLevel" :min="0" :max="3" />
+              </n-form-item>
 
-            <n-form-item v-if="options.outputType.value === 'uastc'" label="Enable RDO">
-              <NSwitch v-model:value="options.enableRDO" />
-            </n-form-item>
+              <n-form-item v-if="options.outputType.value === 'uastc'" label="Enable RDO">
+                <NSwitch v-model:value="options.enableRDO" />
+              </n-form-item>
 
-            <n-form-item
-              v-if="options.outputType.value === 'uastc' && options.enableRDO === true"
-              label="RDO Quality Level"
-            >
-              <NSlider v-model="options.rdoQualityLevel" :min="0.1" :max="10" :step="0.1" />
-            </n-form-item>
+              <n-form-item
+                v-if="options.outputType.value === 'uastc' && options.enableRDO === true"
+                label="RDO Quality Level"
+              >
+                <NSlider v-model="options.rdoQualityLevel" :min="0.1" :max="10" :step="0.1" />
+              </n-form-item>
 
-            <n-form-item v-if="options.outputType.value === 'hdr'" label="HDR Quality Level">
-              <NSlider v-model="options.hdrQualityLevel" :min="0" :max="3" :step="1" />
-            </n-form-item>
-          </n-form>
+              <n-form-item v-if="options.outputType.value === 'hdr'" label="HDR Quality Level">
+                <NSlider v-model="options.hdrQualityLevel" :min="0" :max="3" :step="1" />
+              </n-form-item>
+            </n-form>
 
-          <div class="actions">
-            <NButton type="primary" @click="encode" :loading="loading" :disabled="!imageFile">
-              {{ loading ? "Encoding..." : "Encode to KTX2" }}
-            </NButton>
-          </div>
+            <div class="actions">
+              <NButton type="primary" @click="encode" :loading="loading" :disabled="!imageFile">
+                {{ loading ? "Encoding..." : "Encode to KTX2" }}
+              </NButton>
+            </div>
 
-          <NAlert v-if="error" type="error" :title="error" />
-        </n-space>
-      </n-card>
-    </div>
-  </n-message-provider>
+            <NAlert v-if="error" type="error" :title="error" />
+          </n-space>
+        </n-card>
+      </div>
+    </n-message-provider>
+  </NConfigProvider>
 </template>
 
 <style scoped>
@@ -116,7 +118,9 @@ import {
   NMessageProvider,
   createDiscreteApi,
   darkTheme,
-  lightTheme
+  lightTheme,
+  GlobalThemeOverrides,
+  NConfigProvider
 } from "naive-ui";
 import { ConfigProviderProps } from "naive-ui";
 
@@ -133,6 +137,7 @@ export default defineComponent({
     NSwitch,
     NSlider,
     NSelect,
+    NConfigProvider,
     NCard
   },
   setup() {
@@ -144,6 +149,14 @@ export default defineComponent({
     const { message } = createDiscreteApi(["message"], {
       configProviderProps: configProviderPropsRef
     });
+
+    const themeOverrides: GlobalThemeOverrides = {
+      common: {
+        primaryColor: "#5672CD",
+        primaryColorHover: "#3A5CCC"
+        
+      }
+    };
 
     const imagePreview = ref("");
     const options = ref({
@@ -181,6 +194,7 @@ export default defineComponent({
     const error = ref("");
     const imageFile = ref<{ arrayBuffer: () => Promise<ArrayBuffer>; name: string } | null>(null);
     return {
+      themeOverrides,
       imagePreview,
       loading,
       options,
