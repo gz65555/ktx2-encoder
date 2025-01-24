@@ -11,3 +11,8 @@ export const enum SourceType {
   RAW,
   PNG
 }
+
+export const enum HDRSourType {
+  EXR = 3,
+  HDR = 4,
+}
