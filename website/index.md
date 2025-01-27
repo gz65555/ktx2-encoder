@@ -10,9 +10,6 @@ hero:
       text: Get Started
       link: /guide/
     - theme: alt
-      text: Online Viewer
-      link: /viewer
-    - theme: alt
       text: View on GitHub
       link: https://github.com/gz65555/ktx2-encoder
 
