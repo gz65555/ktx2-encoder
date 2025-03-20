@@ -21,7 +21,7 @@ function createTransform(name: string, fn: Transform): Transform {
   return fn;
 }
 
-export interface KTX2Options extends IEncodeOptions {
+export type KTX2Options = IEncodeOptions & {
   /** Pattern identifying textures to compress, matched to name or URI */
   pattern?: RegExp | null;
   /** Pattern matching the material texture slots to be compressed */
