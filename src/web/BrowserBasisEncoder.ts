@@ -1,7 +1,7 @@
 import { read, write } from "ktx-parse";
 import { IBasisModule, IEncodeOptions } from "../type.js";
 import { applyInputOptions } from "../utils.js";
-import { BasisTextureType, HDRSourType, SourceType } from "../enum.js";
+import { BasisTextureType, HDRSourceType, SourceType } from "../enum.js";
 
 let promise: Promise<IBasisModule> | null = null;
 
@@ -45,7 +45,7 @@ class BrowserBasisEncoder {
         imageBuffer,
         0,
         0,
-        options.imageType === "hdr" ? HDRSourType.HDR : HDRSourType.EXR,
+        options.imageType === "hdr" ? HDRSourceType.HDR : HDRSourceType.EXR,
         true
       );
     } else {

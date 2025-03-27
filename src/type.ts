@@ -1,4 +1,4 @@
-import type { BasisTextureType, HDRSourType, SourceType } from "./enum.js";
+import type { BasisTextureType, HDRSourceType, SourceType } from "./enum.js";
 
 /**
  * which is defined in [basis_wrappers.cpp](https://github.com/BinomialLLC/basis_universal/blob/df079eca71cf83481c45059dce2165348dc1a5ea/webgl/transcoder/basis_wrappers.cpp#L1830)
@@ -154,7 +154,7 @@ export interface IBasisEncoder {
     imageBuffer: Uint8Array,
     width: number,
     height: number,
-    type: HDRSourType,
+    type: HDRSourceType,
     ldrSrgbToLinear: boolean
   ): void;
 
