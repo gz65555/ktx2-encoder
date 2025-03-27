@@ -36,4 +36,5 @@ export function applyInputOptions(options: Partial<IEncodeOptions> = {}, encoder
   if (options.isHDR) {
     options.hdrQualityLevel && encoder.setUASTCHDRQualityLevel(options.hdrQualityLevel);
   }
+  options.isPerceptual !== undefined && encoder.setPerceptual(options.isPerceptual);
 }

@@ -1,6 +1,5 @@
 import type { BasisTextureType, HDRSourType, SourceType } from "./enum.js";
 
-
 /**
  * which is defined in [basis_wrappers.cpp](https://github.com/BinomialLLC/basis_universal/blob/df079eca71cf83481c45059dce2165348dc1a5ea/webgl/transcoder/basis_wrappers.cpp#L1830)
  */
@@ -126,7 +125,7 @@ export interface IBasisEncoder {
    * Sets the UASTC(LDR) encoding performance vs. quality tradeoff, and other lesser used UASTC encoder flags.
    * @param - packUastcFlags 0-4, default is 1, the value is higher, the UASTC's quality is higher
    */
-  setPackUASTCFlags(packUastcFlags: number):void
+  setPackUASTCFlags(packUastcFlags: number): void;
 
   /**
    * Enable HDR mode. Only supported for UASTC encoding.
@@ -135,7 +134,7 @@ export interface IBasisEncoder {
   setHDR(enableHDR: boolean): void;
 
   /**
-   * Sets the quality vs. encoder performance tradeoff (0-4, default is 1). Higher=slower but better quality.	
+   * Sets the quality vs. encoder performance tradeoff (0-4, default is 1). Higher=slower but better quality.
    * @param level - Quality level(0-4), default is 1
    */
   setUASTCHDRQualityLevel(level: number): void;
@@ -150,7 +149,14 @@ export interface IBasisEncoder {
    * @param type - type of the input source.
    * @param ldrSrgbToLinear - If true, the input is assumed to be in sRGB space.
    */
-  setSliceSourceImageHDR(sliceIndex: number, imageBuffer: Uint8Array, width: number, height: number, type: HDRSourType, ldrSrgbToLinear: boolean): void;
+  setSliceSourceImageHDR(
+    sliceIndex: number,
+    imageBuffer: Uint8Array,
+    width: number,
+    height: number,
+    type: HDRSourType,
+    ldrSrgbToLinear: boolean
+  ): void;
 
   new (): IBasisEncoder;
 }
@@ -223,6 +229,11 @@ interface BasisOptions {
    * setNormalMapMode is the same as the basisu.exe "-normal_map" option. It tunes several codec parameters so compression works better on normal maps.
    */
   isNormalMap?: boolean;
+
+  /**
+   * If true, the input is assumed to be in sRGB space. Be sure to set this correctly! (Examples: True on photos, albedo/spec maps, and false on normal maps.)
+   */
+  isPerceptual?: boolean;
   /**
    * Input source is sRGB. This should very probably match the "perceptual" setting.
    */
