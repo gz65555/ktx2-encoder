@@ -28,6 +28,7 @@
   "license": "MIT",
   "scripts": {
     "docs": "typedoc ./src/web/index.ts --plugin typedoc-plugin-markdown --out ./docs",
+    "watch": "tsc -p tsconfig.json --watch",
     "build": "tsc -p tsconfig.json && cp -R src/basis dist",
     "test": "npm run test:node && npm run test:web",
     "test:node": "vitest run ./test/node.test.ts",
@@ -60,6 +61,7 @@
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@types/three": "^0.172.0",
+    "@vitejs/plugin-react": "^4.3.4",
     "@vitest/browser": "^2.1.8",
     "@webgpu/types": "^0.1.53",
     "bumpp": "^9.11.1",
