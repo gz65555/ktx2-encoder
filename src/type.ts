@@ -268,4 +268,8 @@ interface BasisOptions {
   wasmUrl?: string;
 }
 
+declare global {
+  var DEBUG: boolean;
+}
+
 export type IEncodeOptions = HDROptions | LDROptions;

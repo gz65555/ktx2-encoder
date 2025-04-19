@@ -7,5 +7,6 @@ export * from "../type.js";
 
 export function encodeToKTX2(imageBuffer: Uint8Array, options: IEncodeOptions): Promise<Uint8Array> {
   options.imageDecoder ??= decodeImageBitmap;
+  globalThis.DEBUG = options.enableDebug ?? false;
   return browserEncoder.encode(imageBuffer, options);
 }
