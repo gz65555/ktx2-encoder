@@ -269,7 +269,7 @@ interface BasisOptions {
 }
 
 declare global {
-  var DEBUG: boolean;
+  var __KTX2_DEBUG__: boolean;
 }
 
 export type IEncodeOptions = HDROptions | LDROptions;

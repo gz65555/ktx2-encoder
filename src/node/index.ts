@@ -5,6 +5,6 @@ export function encodeToKTX2(imageBuffer: Uint8Array, options: Partial<IEncodeOp
   if (!options.imageDecoder) {
     throw "imageDecoder is required in Node.js.";
   }
-  globalThis.DEBUG = options.enableDebug ?? false;
+  globalThis.__KTX2_DEBUG__ = options.enableDebug ?? false;
   return nodeEncoder.encode(imageBuffer, options);
 }
