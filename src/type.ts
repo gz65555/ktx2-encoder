@@ -268,4 +268,8 @@ interface BasisOptions {
   wasmUrl?: string;
 }
 
+declare global {
+  var __KTX2_DEBUG__: boolean;
+}
+
 export type IEncodeOptions = HDROptions | LDROptions;
