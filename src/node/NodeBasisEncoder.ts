@@ -1,6 +1,6 @@
-import { SourceType } from "../enum.js";
-import { IBasisModule, IEncodeOptions } from "../type.js";
-import { applyInputOptions } from "../utils.js";
+import { HDRSourceType, SourceType } from "../enum.js";
+import { CubeBufferData, IBasisModule, IEncodeOptions } from "../type.js";
+import { applyInputOptions } from "../applyInputOptions.js";
 import BASIS from "../basis/basis_encoder.js";
 
 let promise: Promise<IBasisModule> | null = null;
@@ -16,25 +16,41 @@ class NodeBasisEncoder {
     return promise as Promise<IBasisModule>;
   }
 
-  async encode(imageBitmapSource: Uint8Array, options: Partial<IEncodeOptions> = {}) {
-    const imageData = await options.imageDecoder!(imageBitmapSource);
+  async encode(bufferOrBufferArray: Uint8Array | CubeBufferData, options: Partial<IEncodeOptions> = {}) {
     const basis = await this.init();
-    const basisEncoder = new basis.BasisEncoder();
+    const encoder = new basis.BasisEncoder();
 
-    const w = imageData.width;
-    const h = imageData.height;
-    const rgbaPixels = imageData.data;
+    const bufferArray = Array.isArray(bufferOrBufferArray) ? bufferOrBufferArray : [bufferOrBufferArray];
+    applyInputOptions(options, encoder);
 
-    basisEncoder.setSliceSourceImage(0, new Uint8Array(rgbaPixels), w, h, SourceType.RAW);
-
-    applyInputOptions(options, basisEncoder);
-
-    const resultData = new Uint8Array(w * h * 4 * 2);
-    const resultSize = basisEncoder.encode(resultData);
-    if (resultSize === 0) {
-      throw "Something wrong";
+    for (let i = 0; i < bufferArray.length; i++) {
+      const buffer = bufferArray[i];
+      if (options.isHDR) {
+        encoder.setSliceSourceImageHDR(
+          i,
+          buffer,
+          0,
+          0,
+          options.imageType === "hdr" ? HDRSourceType.HDR : HDRSourceType.EXR,
+          true
+        );
+      } else {
+        const imageData = await options.imageDecoder!(buffer);
+        encoder.setSliceSourceImage(
+          i,
+          new Uint8Array(imageData.data),
+          imageData.width,
+          imageData.height,
+          SourceType.RAW
+        );
+      }
     }
 
+    const resultData = new Uint8Array(1024 * 1024 * (options.isHDR ? 24 : 10));
+    const resultSize = encoder.encode(resultData);
+    if (resultSize === 0) {
+      throw new Error("Encode failed");
+    }
     return Buffer.from(resultData.subarray(0, resultSize));
   }
 }
