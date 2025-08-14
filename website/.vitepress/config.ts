@@ -1,6 +1,6 @@
 import { defineConfig } from "vitepress";
 
-const fileAndStyles: Record<string, string> = {}
+const fileAndStyles: Record<string, string> = {};
 
 export default defineConfig({
   title: "KTX2-Encoder",
@@ -26,11 +26,17 @@ export default defineConfig({
       },
       {
         text: "Tools",
-        items: [{ text: "KTX2 Encoder", link: "/tools/" }, { text: "KTX2 Viewer", link: "/tools/viewer" }]
+        items: [
+          { text: "KTX2 Encoder", link: "/tools/" },
+          { text: "KTX2 Viewer", link: "/tools/viewer" }
+        ]
       }
     ],
 
     socialLinks: [{ icon: "github", link: "https://github.com/gz65555/ktx2-encoder" }]
+  },
+  markdown: {
+    toc: { level: [2, 3, 4] }
   },
   // native ui
   vite: {
