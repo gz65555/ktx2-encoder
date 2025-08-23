@@ -2,15 +2,17 @@
 import { onMounted, onUnmounted, ref } from "vue";
 import * as THREE from "three";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { NUpload, NUploadDragger, NIcon, NP, NText } from "naive-ui";
 
 const canvasRef = ref<HTMLCanvasElement | null>(null);
-const uploaderOpacity = ref(1.0);
-const currentTexture = ref<THREE.CompressedTexture | null>(null);
+
+const currentTexture = ref<THREE.Texture | null>(null);
 let renderer: THREE.WebGLRenderer | null = null;
 let scene: THREE.Scene | null = null;
 let camera: THREE.PerspectiveCamera | null = null;
 let mesh: THREE.Mesh | null = null;
+let controls: OrbitControls | null = null;
 
 // Initialize Three.js scene
 function init() {
@@ -26,6 +28,10 @@ function init() {
   camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
   camera.position.z = 2;
 
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+
   window.addEventListener("resize", handleResize);
   handleResize();
 }
@@ -37,7 +43,6 @@ async function handleFileUpload(options: { file: any }) {
   const url = URL.createObjectURL(file.file);
   await loadTexture(url);
   URL.revokeObjectURL(url);
-  uploaderOpacity.value = 0.0;
 }
 
 function loadTexture(src: string) {
@@ -58,19 +63,25 @@ function loadTexture(src: string) {
     .detectSupport(renderer);
 
   return loader.loadAsync(src).then((texture) => {
-    currentTexture.value = texture;
-    const material = new THREE.MeshBasicMaterial({ map: texture });
-    const geometry = new THREE.PlaneGeometry(2, 2);
-    mesh = new THREE.Mesh(geometry, material);
-    const baseScale = 1.6;
-    const ratioX = texture.image.width > texture.image.height ? 1.0 : texture.image.width / texture.image.height;
-    const ratioY = texture.image.height > texture.image.width ? 1.0 : texture.image.height / texture.image.width;
-    mesh.scale.y = -1;
-    mesh.scale.x = baseScale * ratioX;
-    mesh.scale.y *= baseScale * ratioY;
-    scene!.add(mesh);
-    uploaderOpacity.value = 0.0;
-    console.log(texture.image);
+    if (texture instanceof THREE.CompressedCubeTexture) {
+      currentTexture.value = texture;
+      const geometry = new THREE.SphereGeometry(0.9, 128, 128);
+      const material = new THREE.MeshBasicMaterial({ color: 0xffffff, envMap: texture });
+      mesh = new THREE.Mesh(geometry, material);
+      scene!.add(mesh);
+    } else {
+      currentTexture.value = texture;
+      const material = new THREE.MeshBasicMaterial({ map: texture });
+      const geometry = new THREE.PlaneGeometry(2, 2);
+      mesh = new THREE.Mesh(geometry, material);
+      const baseScale = 1.6;
+      const ratioX = texture.image.width > texture.image.height ? 1.0 : texture.image.width / texture.image.height;
+      const ratioY = texture.image.height > texture.image.width ? 1.0 : texture.image.height / texture.image.width;
+      mesh.scale.y = -1;
+      mesh.scale.x = baseScale * ratioX;
+      mesh.scale.y *= baseScale * ratioY;
+      scene!.add(mesh);
+    }
   });
 }
 
@@ -92,6 +103,7 @@ function animate() {
   if (!renderer || !scene || !camera) return;
 
   requestAnimationFrame(animate);
+  controls?.update();
   renderer.render(scene, camera);
 }
 
@@ -106,12 +118,16 @@ onUnmounted(() => {
     renderer.dispose();
     renderer = null;
   }
+  if (controls) {
+    controls.dispose();
+    controls = null;
+  }
 });
 </script>
 
 <template>
   <div class="viewer-container">
-    <n-upload accept=".ktx2" @change="handleFileUpload" :show-file-list="false" :style="{ opacity: uploaderOpacity }">
+    <n-upload v-if="!currentTexture" accept=".ktx2" @change="handleFileUpload" :show-file-list="false">
       <n-upload-dragger>
         <div style="margin-bottom: 12px">
           <n-icon size="48" :depth="3">

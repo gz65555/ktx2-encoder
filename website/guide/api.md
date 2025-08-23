@@ -8,52 +8,25 @@ The main function for converting images to KTX2 format.
 
 ```typescript
 async function encodeToKTX2(
-  imageBuffer: Uint8Array, 
+  imageBuffer: Uint8Array | Uint8Array[],
   options?: Partial<IEncodeOptions>
-): Promise<Uint8Array>
+): Promise<Uint8Array>;
 ```
 
 #### Parameters
 
-- `imageBuffer`: Raw image data as Uint8Array
+- `imageBuffer`: Raw image data as Uint8Array / Array of exactly 6 image buffers for each cubemap face in the order: `[posx, negx, posy, negy, posz, negz]`
 - `options`: Optional configuration object (see IEncodeOptions below)
 
 #### Example
 
 ```typescript
-import { encodeToKTX2 } from 'ktx2-encoder';
+import { encodeToKTX2 } from "ktx2-encoder";
 
 const ktx2Data = await encodeToKTX2(imageBuffer, {
   isUASTC: true,
   generateMipmap: true,
   isNormalMap: false
-});
-```
-
-### encodeKTX2Cube
-
-Function for converting cubemap images to KTX2 format.
-
-```typescript
-async function encodeKTX2Cube(
-  imageBuffers: Uint8Array[], 
-  options?: Partial<IEncodeOptions>
-): Promise<Uint8Array>
-```
-
-#### Parameters
-
-- `imageBuffers`: Array of 6 image buffers for each cubemap face
-- `options`: Same options as encodeToKTX2
-
-#### Example
-
-```typescript
-const ktx2Data = await encodeKTX2Cube([
-  posx, negx, posy, negy, posz, negz
-], {
-  isUASTC: true,
-  generateMipmap: true
 });
 ```
 
@@ -64,7 +37,7 @@ const ktx2Data = await encodeKTX2Cube([
 Complete configuration options for the encoder:
 
 | Option | Type | Default | Description |
-|--------|------|---------|-------------|
+| --- | --- | --- | --- |
 | `isUASTC` | boolean | true | Use UASTC texture format instead of ETC1S |
 | `enableDebug` | boolean | false | Enable debug output |
 | `isYFlip` | boolean | false | If true, the source images will be Y flipped before compression |
@@ -86,9 +59,7 @@ Complete configuration options for the encoder:
 For Node.js usage, the `imageDecoder` function should match this signature:
 
 ```typescript
-type ImageDecoder = (
-  buffer: Uint8Array
-) => Promise<{
+type ImageDecoder = (buffer: Uint8Array) => Promise<{
   width: number;
   height: number;
   data: Uint8Array;
@@ -120,9 +91,9 @@ const ktx2Data = await encodeToKTX2(imageBuffer, {
 
 ```typescript
 const normalMapData = await encodeToKTX2(normalMapBuffer, {
-  isUASTC: true,  // Recommended for normal maps
+  isUASTC: true, // Recommended for normal maps
   isNormalMap: true,
-  isSetKTX2SRGBTransferFunc: false  // Important for normal maps
+  isSetKTX2SRGBTransferFunc: false // Important for normal maps
 });
 ```
 
@@ -136,13 +107,47 @@ const etc1sData = await encodeToKTX2(imageBuffer, {
 });
 ```
 
+### Cubemap Encoding
+
+```typescript
+import { encode } from "ktx2-encoder";
+
+// Load your 6 cubemap face images
+Promise.all([
+  loadImage("posx.jpg"),
+  loadImage("negx.jpg"),
+  loadImage("posy.jpg"),
+  loadImage("negy.jpg"),
+  loadImage("posz.jpg"),
+  loadImage("negz.jpg")
+]).then((buffers) => {
+  // Encode to KTX2 cubemap
+  return encode(buffers, {
+    isUASTC: true,
+    generateMipmap: true,
+    qualityLevel: 128
+  });
+});
+```
+
+#### Face Order
+
+The cubemap faces must be provided in this specific order:
+
+- `posx`: Positive X face (+X)
+- `negx`: Negative X face (-X)
+- `posy`: Positive Y face (+Y)
+- `negy`: Negative Y face (-Y)
+- `posz`: Positive Z face (+Z)
+- `negz`: Negative Z face (-Z)
+
 ### With Custom Metadata
 
 ```typescript
 const ktx2Data = await encodeToKTX2(imageBuffer, {
   kvData: {
-    'myKey': 'myValue',
-    'customData': new Uint8Array([1, 2, 3])
+    myKey: "myValue",
+    customData: new Uint8Array([1, 2, 3])
   }
 });
-``` 
+```
