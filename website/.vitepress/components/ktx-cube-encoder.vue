@@ -59,6 +59,18 @@
               >
                 <NSlider v-model="options.rdoQualityLevel" :min="0.1" :max="10" :step="0.1" />
               </n-form-item>
+
+              <n-form-item v-if="options.outputType.value === 'uastc_hdr'" label="Image Type">
+                <n-select v-model:value="options.imageType" :options="[
+                  { label: 'HDR', value: 'hdr' },
+                  { label: 'EXR', value: 'exr' },
+                  { label: 'Raster', value: 'raster' }
+                ]" />
+              </n-form-item>
+
+              <n-form-item v-if="options.outputType.value === 'uastc_hdr'" label="HDR Quality Level">
+                <NSlider v-model="options.hdrQualityLevel" :min="0" :max="4" />
+              </n-form-item>
             </n-form>
 
             <div class="actions">
@@ -179,6 +191,7 @@ export default defineComponent({
         value: ref("uastc"),
         options: [
           { label: "UASTC", value: "uastc" },
+          { label: "UASTC_HDR", value: "uastc_hdr" },
           { label: "ETC1S", value: "etc1s" }
         ]
       },
@@ -191,7 +204,10 @@ export default defineComponent({
       isSetKTX2SRGBTransferFunc: true,
       isKTX2File: true,
       qualityLevel: 128,
-      compressionLevel: 2
+      compressionLevel: 2,
+      // HDR options
+      imageType: "hdr",
+      hdrQualityLevel: 1
     });
 
     const loading = ref(false);
@@ -234,6 +250,17 @@ export default defineComponent({
                 uastcLDRQualityLevel: userOptions.uastcLDRQualityLevel,
                 enableRDO: userOptions.enableRDO,
                 rdoQualityLevel: userOptions.rdoQualityLevel,
+                generateMipmap: userOptions.generateMipmap,
+                isNormalMap: userOptions.isNormalMap,
+                isSetKTX2SRGBTransferFunc: userOptions.isSetKTX2SRGBTransferFunc
+              };
+              break;
+            case "uastc_hdr":
+              encodeOptions = {
+                isHDR: true,
+                isUASTC: true,
+                imageType: userOptions.imageType,
+                hdrQualityLevel: userOptions.hdrQualityLevel,
                 generateMipmap: userOptions.generateMipmap,
                 isNormalMap: userOptions.isNormalMap,
                 isSetKTX2SRGBTransferFunc: userOptions.isSetKTX2SRGBTransferFunc
