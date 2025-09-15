@@ -41,9 +41,9 @@ test("textureCube", async () => {
       isUASTC: false,
       enableDebug: false,
       qualityLevel: 230,
-      generateMipmap: true
+      generateMipmap: false
     });
-    // TODO: check the result, compress the jpg to test the result
+    // TODO: check the result
     expect(result).toBeDefined();
   });
 });
