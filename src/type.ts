@@ -159,6 +159,13 @@ export interface IBasisEncoder {
     ldrSrgbToLinear: boolean
   ): void;
 
+  /**
+   * enables or disables multithreading
+   * @param enableMultithreading - Whether to enable multithreading
+   * @param numThreads - The number of threads to use, must be > 0
+   */
+  controlThreading(enableMultithreading: boolean, numThreads: number): void;
+
   new (): IBasisEncoder;
 }
 
@@ -267,6 +274,10 @@ interface BasisOptions {
    * wasm url
    */
   wasmUrl?: string;
+  /**
+   * extra worker threads count, default is 0
+   */
+  extraWorkerThreads?: number;
 }
 
 declare global {

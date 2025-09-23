@@ -250,7 +250,11 @@ export default defineComponent({
               };
               break;
           }
+          console.time("encode");
+          encodeOptions.enableDebug = true;
+          encodeOptions.extraWorkerThreads = 8;
           const ktx2Data = await encodeToKTX2(new Uint8Array(arrayBuffer), encodeOptions);
+          console.timeEnd("encode");
 
           // Create and trigger download
           const blob = new Blob([ktx2Data], { type: "application/octet-stream" });

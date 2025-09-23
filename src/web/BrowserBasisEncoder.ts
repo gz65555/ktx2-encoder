@@ -5,8 +5,7 @@ import { BasisTextureType, HDRSourceType, SourceType } from "../enum.js";
 
 let promise: Promise<IBasisModule> | null = null;
 
-const DEFAULT_WASM_URL =
-  "https://mdn.alipayobjects.com/rms/afts/file/A*r7D4SKbksYcAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm";
+const DEFAULT_WASM_URL = "/ktx2-encoder/basis/basis_encoder.wasm";
 
 class BrowserBasisEncoder {
   async init(options?: { jsUrl?: string; wasmUrl?: string }) {
@@ -54,9 +53,7 @@ class BrowserBasisEncoder {
     const encoder = new basisModule.BasisEncoder();
     applyInputOptions(options, encoder);
     const isCube = Array.isArray(bufferOrBufferArray) && bufferOrBufferArray.length === 6;
-    encoder.setTexType(
-      isCube ? BasisTextureType.cBASISTexTypeCubemapArray : BasisTextureType.cBASISTexType2D
-    );
+    encoder.setTexType(isCube ? BasisTextureType.cBASISTexTypeCubemapArray : BasisTextureType.cBASISTexType2D);
 
     const bufferArray = Array.isArray(bufferOrBufferArray) ? bufferOrBufferArray : [bufferOrBufferArray];
 

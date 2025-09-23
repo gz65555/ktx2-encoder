@@ -27,4 +27,8 @@ export function applyInputOptions(options: Partial<IEncodeOptions> = {}, encoder
     options.hdrQualityLevel && encoder.setUASTCHDRQualityLevel(options.hdrQualityLevel);
   }
   options.isPerceptual !== undefined && encoder.setPerceptual(options.isPerceptual);
+  if(options.extraWorkerThreads !== undefined && options.extraWorkerThreads > 0) {
+    console.log('numberThreads', options.extraWorkerThreads);
+    encoder.controlThreading(true, options.extraWorkerThreads);
+  }
 }
