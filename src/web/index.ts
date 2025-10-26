@@ -5,8 +5,14 @@ import { decodeImageBitmap } from "./decodeImageData.js";
 export * from "../enum.js";
 export * from "../type.js";
 
+// document.addEventListener("DOMContentLoaded", () => {
+//   console.log("init");
+//   browserEncoder.init();
+// });
+
 export function encodeToKTX2(imageBuffer: Uint8Array | CubeBufferData, options: IEncodeOptions): Promise<Uint8Array> {
   options.imageDecoder ??= decodeImageBitmap;
   globalThis.__KTX2_DEBUG__ = options.enableDebug ?? false;
+  // browserEncoder.init();
   return browserEncoder.encode(imageBuffer, options);
 }

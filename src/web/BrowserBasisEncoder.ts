@@ -5,21 +5,37 @@ import { BasisTextureType, HDRSourceType, SourceType } from "../enum.js";
 
 let promise: Promise<IBasisModule> | null = null;
 
-const DEFAULT_WASM_URL = "/ktx2-encoder/basis/basis_encoder.wasm";
+const DEFAULT_WASM_URL = "/ktx2-encoder/basis/basis_encoder_threads.wasm";
+
+function loadScript(jsUrl: string) {
+  return new Promise((resolve, reject) => {
+    const script = document.createElement("script");
+    script.src = jsUrl;
+    script.onload = () => {
+      resolve(true);
+    };
+    script.onerror = () => {
+      reject(new Error("Failed to load script"));
+    };
+    document.head.appendChild(script);
+  });
+}
 
 class BrowserBasisEncoder {
   async init(options?: { jsUrl?: string; wasmUrl?: string }) {
     if (!promise) {
       function _init(): Promise<IBasisModule> {
         const wasmUrl = options?.wasmUrl ?? DEFAULT_WASM_URL;
-        const jsUrl = options?.jsUrl ?? "../basis/basis_encoder.js";
+        const jsUrl = options?.jsUrl ?? "../basis/basis_encoder_threads.js";
+
         return new Promise((resolve, reject) => {
           Promise.all([
-            import(/* @vite-ignore */ jsUrl),
+            loadScript(jsUrl),
             wasmUrl ? fetch(wasmUrl).then((res) => res.arrayBuffer()) : undefined
           ])
-            .then(([{ default: BASIS }, wasmBinary]) => {
-              return BASIS({ wasmBinary }).then((Module: IBasisModule) => {
+            .then(([_, wasmBinary]) => {
+              // @ts-ignore
+              return BASIS().then((Module: IBasisModule) => {
                 Module.initializeBasis();
                 resolve(Module);
               });

@@ -50,10 +50,8 @@
                 <NSwitch v-model:value="options.enableRDO" />
               </n-form-item>
 
-              <n-form-item
-                v-if="options.outputType.value === 'uastc' && options.enableRDO === true"
-                label="RDO Quality Level"
-              >
+              <n-form-item v-if="options.outputType.value === 'uastc' && options.enableRDO === true"
+                label="RDO Quality Level">
                 <NSlider v-model="options.rdoQualityLevel" :min="0.1" :max="10" :step="0.1" />
               </n-form-item>
 
@@ -154,7 +152,7 @@ export default defineComponent({
       common: {
         primaryColor: "#5672CD",
         primaryColorHover: "#3A5CCC"
-        
+
       }
     };
 
@@ -251,8 +249,8 @@ export default defineComponent({
               break;
           }
           console.time("encode");
-          encodeOptions.enableDebug = true;
-          encodeOptions.extraWorkerThreads = 8;
+          // encodeOptions.enableDebug = true;
+          encodeOptions.extraWorkerThreads = 18;
           const ktx2Data = await encodeToKTX2(new Uint8Array(arrayBuffer), encodeOptions);
           console.timeEnd("encode");
 

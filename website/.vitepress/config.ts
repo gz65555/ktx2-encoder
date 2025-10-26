@@ -1,4 +1,5 @@
 import { defineConfig } from "vitepress";
+import crossOriginIsolation from "vite-plugin-cross-origin-isolation";
 
 const fileAndStyles: Record<string, string> = {};
 
@@ -42,7 +43,8 @@ export default defineConfig({
   vite: {
     ssr: {
       noExternal: ["naive-ui", "date-fns", "vueuc"]
-    }
+    },
+    plugins: [crossOriginIsolation()]
   },
   postRender(context) {
     const styleRegex = /<css-render-style>((.|\s)+)<\/css-render-style>/;
