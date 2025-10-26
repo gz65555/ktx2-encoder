@@ -54,9 +54,7 @@ class BrowserBasisEncoder {
     const encoder = new basisModule.BasisEncoder();
     applyInputOptions(options, encoder);
     const isCube = Array.isArray(bufferOrBufferArray) && bufferOrBufferArray.length === 6;
-    encoder.setTexType(
-      isCube ? BasisTextureType.cBASISTexTypeCubemapArray : BasisTextureType.cBASISTexType2D
-    );
+    encoder.setTexType(isCube ? BasisTextureType.cBASISTexTypeCubemapArray : BasisTextureType.cBASISTexType2D);
 
     const bufferArray = Array.isArray(bufferOrBufferArray) ? bufferOrBufferArray : [bufferOrBufferArray];
 
@@ -94,7 +92,7 @@ class BrowserBasisEncoder {
       for (let k in options.kvData) {
         container.keyValue[k] = options.kvData[k];
       }
-      actualKTX2FileData = write(container, { keepWriter: true });
+      actualKTX2FileData = write(container, { keepWriter: true }) as Uint8Array<ArrayBuffer>;
     }
     return actualKTX2FileData;
   }
