@@ -1,5 +1,5 @@
-import { IEncodeOptions, IBasisEncoder } from "./type";
-import { DefaultOptions } from "./utils";
+import { IEncodeOptions, IBasisEncoder } from "./type.js";
+import { DefaultOptions } from "./utils.js";
 
 export function applyInputOptions(options: Partial<IEncodeOptions> = {}, encoder: IBasisEncoder) {
   options = { ...DefaultOptions, ...options };
