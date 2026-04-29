@@ -19,39 +19,46 @@ class NodeBasisEncoder {
   async encode(bufferOrBufferArray: Uint8Array | CubeBufferData, options: Partial<IEncodeOptions> = {}) {
     const basis = await this.init();
     const encoder = new basis.BasisEncoder();
+    try {
+      const bufferArray = Array.isArray(bufferOrBufferArray) ? bufferOrBufferArray : [bufferOrBufferArray];
+      applyInputOptions(options, encoder);
 
-    const bufferArray = Array.isArray(bufferOrBufferArray) ? bufferOrBufferArray : [bufferOrBufferArray];
-    applyInputOptions(options, encoder);
-
-    for (let i = 0; i < bufferArray.length; i++) {
-      const buffer = bufferArray[i];
-      if (options.isHDR) {
-        encoder.setSliceSourceImageHDR(
-          i,
-          buffer,
-          0,
-          0,
-          options.imageType === "hdr" ? HDRSourceType.HDR : HDRSourceType.EXR,
-          true
-        );
-      } else {
-        const imageData = await options.imageDecoder!(buffer);
-        encoder.setSliceSourceImage(
-          i,
-          new Uint8Array(imageData.data),
-          imageData.width,
-          imageData.height,
-          SourceType.RAW
-        );
+      for (let i = 0; i < bufferArray.length; i++) {
+        const buffer = bufferArray[i];
+        if (options.isHDR) {
+          encoder.setSliceSourceImageHDR(
+            i,
+            buffer,
+            0,
+            0,
+            options.imageType === "hdr" ? HDRSourceType.HDR : HDRSourceType.EXR,
+            true
+          );
+        } else {
+          const imageData = await options.imageDecoder!(buffer);
+          encoder.setSliceSourceImage(
+            i,
+            new Uint8Array(imageData.data),
+            imageData.width,
+            imageData.height,
+            SourceType.RAW
+          );
+        }
       }
-    }
 
-    const resultData = new Uint8Array(1024 * 1024 * (options.isHDR ? 24 : 10));
-    const resultSize = encoder.encode(resultData);
-    if (resultSize === 0) {
-      throw new Error("Encode failed");
+      const resultData = new Uint8Array(1024 * 1024 * (options.isHDR ? 24 : 10));
+      const resultSize = encoder.encode(resultData);
+      if (resultSize === 0) {
+        throw new Error("Encode failed");
+      }
+      return Buffer.from(resultData.subarray(0, resultSize));
+    } finally {
+      // Free the WASM-allocated encoder. Without this, every encode call leaks
+      // the encoder struct in the WASM heap, eventually exhausting it and
+      // causing `new BasisEncoder()` itself to throw "Out of bounds memory access"
+      // after ~65 calls in long-running processes (batch tools, workers).
+      encoder.delete();
     }
-    return Buffer.from(resultData.subarray(0, resultSize));
   }
 }
 
