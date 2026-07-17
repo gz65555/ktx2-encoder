@@ -40,6 +40,9 @@ export default defineConfig({
   },
   // native ui
   vite: {
+    build: {
+      target: "esnext"
+    },
     ssr: {
       noExternal: ["naive-ui", "date-fns", "vueuc"]
     }
