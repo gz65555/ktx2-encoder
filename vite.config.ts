@@ -1,7 +1,16 @@
-/// <reference types="vitest" />
-import { defineConfig } from "vite";
+import { playwright } from "@vitest/browser-playwright";
+import { defineConfig } from "vitest/config";
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  test: {}
+  test: {
+    server: {
+      deps: {
+        external: [/\/src\/basis\/basis_encoder\.js$/]
+      }
+    },
+    browser: {
+      provider: playwright(),
+      instances: [{ browser: "chromium" }]
+    }
+  }
 });
