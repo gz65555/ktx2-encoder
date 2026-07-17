@@ -88,9 +88,9 @@ class BrowserBasisEncoder {
       if (byteLength === 0) {
         throw new Error("Encode failed");
       }
-      let actualKTX2FileData: Uint8Array = new Uint8Array(ktx2FileData.buffer, 0, byteLength);
+      let actualKTX2FileData: Uint8Array = ktx2FileData.slice(0, byteLength);
       if (options.kvData) {
-        const container = read(ktx2FileData);
+        const container = read(actualKTX2FileData);
         for (let k in options.kvData) {
           container.keyValue[k] = options.kvData[k];
         }

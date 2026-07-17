@@ -1,4 +1,5 @@
 import { expect, test } from "vitest";
+import { read } from "ktx-parse";
 import { CubeBufferData, encodeToKTX2 } from "../src/web";
 
 test("uastc", async () => {
@@ -13,6 +14,21 @@ test("uastc", async () => {
 
   const resultBuffer = await fetch("/tests/DuckCM-uastc.ktx2").then((res) => res.arrayBuffer());
   expect(result).toEqual(new Uint8Array(resultBuffer));
+  expect(result.buffer.byteLength).toBe(result.byteLength);
+});
+
+test("kvData", async () => {
+  const buffer = await fetch("/tests/DuckCM.png").then((res) => res.arrayBuffer());
+  const result = await encodeToKTX2(new Uint8Array(buffer), {
+    isUASTC: true,
+    enableDebug: false,
+    qualityLevel: 230,
+    generateMipmap: true,
+    kvData: { testKey: "testValue" }
+  });
+
+  expect(result.buffer.byteLength).toBe(result.byteLength);
+  expect(read(result).keyValue.testKey).toEqual(new TextEncoder().encode("testValue\0"));
 });
 
 test("etc1s", async () => {
