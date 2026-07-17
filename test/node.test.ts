@@ -7,13 +7,14 @@ async function imageDecoder(buffer: Uint8Array) {
   const image = sharp(buffer);
   const metadata = await image.metadata();
   const { width, height } = metadata;
+  if (!width || !height) throw new Error("Unable to read image dimensions");
   const rawBuffer = await image.ensureAlpha().raw().toBuffer();
   const data = new Uint8Array(rawBuffer);
 
   // 创建 imageData 对象
   const imageData = {
-    width: width!,
-    height: height!,
+    width,
+    height,
     data
   };
 

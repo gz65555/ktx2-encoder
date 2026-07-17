@@ -37,7 +37,15 @@ test("textureCube", async () => {
     fetch("/tests/cubemap/posz.jpg").then((res) => res.arrayBuffer()),
     fetch("/tests/cubemap/negz.jpg").then((res) => res.arrayBuffer())
   ]).then(async (buffers) => {
-    const result = await encodeToKTX2(buffers.map((buffer) => new Uint8Array(buffer)) as CubeBufferData, {
+    const cubeData: CubeBufferData = [
+      new Uint8Array(buffers[0]),
+      new Uint8Array(buffers[1]),
+      new Uint8Array(buffers[2]),
+      new Uint8Array(buffers[3]),
+      new Uint8Array(buffers[4]),
+      new Uint8Array(buffers[5])
+    ];
+    const result = await encodeToKTX2(cubeData, {
       isUASTC: false,
       enableDebug: false,
       qualityLevel: 230,

@@ -158,12 +158,10 @@ export interface IBasisEncoder {
     type: HDRSourceType,
     ldrSrgbToLinear: boolean
   ): void;
-
-  new (): IBasisEncoder;
 }
 
 export interface IBasisModule {
-  BasisEncoder: IBasisEncoder;
+  BasisEncoder: new () => IBasisEncoder;
   initializeBasis: () => void;
 }
 

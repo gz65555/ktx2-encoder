@@ -57,10 +57,11 @@ export default defineConfig({
   },
   transformHtml(code, id) {
     const html = id.split("/").pop();
-    if (!html) return;
+    if (!html) return code;
     const style = fileAndStyles[`/${html}`];
     if (style) {
       return code.replace(/<\/head>/, `${style}</head>`);
     }
+    return code;
   }
 });

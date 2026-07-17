@@ -3,10 +3,10 @@ import { KHRTextureBasisu } from "@gltf-transform/extensions";
 import { IEncodeOptions } from "../type.js";
 
 const NAME = "ktx2";
-const SUPPORTED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
+const SUPPORTED_MIME_TYPES = new Set(["image/jpeg", "image/png", "image/webp"]);
 
 function listTextureSlots(texture: Texture): string[] {
-  const document = Document.fromGraph(texture.getGraph())!;
+  const document = Document.fromGraph(texture.getGraph());
   const root = document.getRoot();
   const slots = texture
     .getGraph()
@@ -60,7 +60,7 @@ export function ktx2(options: Partial<KTX2Options> = {}): Transform {
         }
 
         // Skip unsupported mime types
-        if (!SUPPORTED_MIME_TYPES.includes(texture.getMimeType())) {
+        if (!SUPPORTED_MIME_TYPES.has(texture.getMimeType())) {
           logger.debug(`${prefix}: Skipping, unsupported texture type "${texture.getMimeType()}"`);
           return;
         }

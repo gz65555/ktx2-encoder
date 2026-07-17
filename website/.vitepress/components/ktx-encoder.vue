@@ -209,7 +209,6 @@ export default defineComponent({
           loading.value = true;
           error.value = "";
 
-          imageFile.value;
           const arrayBuffer = await imageFile.value.arrayBuffer();
           let encodeOptions: IEncodeOptions = {};
           const userOptions = options.value;
