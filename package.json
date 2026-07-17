@@ -3,7 +3,7 @@
   "name": "ktx2-encoder",
   "description": "KTX2(.ktx2) encoder for browser applications",
   "type": "module",
-  "packageManager": "pnpm@8.15.9",
+  "packageManager": "pnpm@10.34.5",
   "exports": {
     ".": {
       "node": {
@@ -80,5 +80,11 @@
   },
   "dependencies": {
     "ktx-parse": "^0.7.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "sharp"
+    ]
   }
 }
