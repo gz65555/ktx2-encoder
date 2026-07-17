@@ -1,7 +1,7 @@
 import { expect, test, vi } from "vitest";
 import { read } from "ktx-parse";
 import { CubeBufferData, encodeToKTX2 } from "../src/web";
-import { browserEncoder } from "../src/web/BrowserBasisEncoder";
+import { browserEncoder, fetchWasmBinary } from "../src/web/BrowserBasisEncoder";
 
 test("uastc", async () => {
   const buffer = await fetch("/tests/DuckCM.png").then((res) => res.arrayBuffer());
@@ -26,6 +26,23 @@ test("warns when deprecated jsUrl is provided", async () => {
       "The jsUrl option is deprecated and ignored. The bundled Basis encoder module is always used."
     );
   } finally {
+    warn.mockRestore();
+  }
+});
+
+test("falls back to the CDN when the bundled WASM cannot be loaded", async () => {
+  const fetchMock = vi
+    .spyOn(globalThis, "fetch")
+    .mockResolvedValueOnce(new Response(null, { status: 404 }))
+    .mockResolvedValueOnce(new Response(new Uint8Array([1, 2, 3])));
+  const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+  const fallbackUrl = "https://mdn.alipayobjects.com/rms/afts/file/A*r7D4SKbksYcAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm";
+  try {
+    expect(new Uint8Array(await fetchWasmBinary("/bundled.wasm", fallbackUrl))).toEqual(new Uint8Array([1, 2, 3]));
+    expect(fetchMock).toHaveBeenNthCalledWith(1, "/bundled.wasm");
+    expect(fetchMock).toHaveBeenNthCalledWith(2, fallbackUrl);
+  } finally {
+    fetchMock.mockRestore();
     warn.mockRestore();
   }
 });

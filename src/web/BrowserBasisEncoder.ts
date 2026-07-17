@@ -5,6 +5,26 @@ import BASIS from "../basis/basis_encoder.js";
 let promise: Promise<IBasisModule> | null = null;
 
 const DEFAULT_WASM_URL = new URL("../basis/basis_encoder.wasm", import.meta.url).href;
+const FALLBACK_WASM_URL =
+  "https://mdn.alipayobjects.com/rms/afts/file/A*r7D4SKbksYcAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm";
+
+async function fetchWasm(wasmUrl: string): Promise<ArrayBuffer> {
+  const response = await fetch(wasmUrl);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch basis_encoder.wasm from ${wasmUrl}: ${response.status}`);
+  }
+  return response.arrayBuffer();
+}
+
+export async function fetchWasmBinary(wasmUrl: string, fallbackUrl?: string): Promise<ArrayBuffer> {
+  try {
+    return await fetchWasm(wasmUrl);
+  } catch (error) {
+    if (!fallbackUrl) throw error;
+    console.warn(`Failed to load bundled basis_encoder.wasm; falling back to ${fallbackUrl}`);
+    return fetchWasm(fallbackUrl);
+  }
+}
 
 class BrowserBasisEncoder {
   async init(options?: { jsUrl?: string; wasmUrl?: string }) {
@@ -14,11 +34,8 @@ class BrowserBasisEncoder {
     if (!promise) {
       async function initModule(): Promise<IBasisModule> {
         const wasmUrl = options?.wasmUrl ?? DEFAULT_WASM_URL;
-        const response = await fetch(wasmUrl);
-        if (!response.ok) {
-          throw new Error(`Failed to fetch basis_encoder.wasm from ${wasmUrl}: ${response.status}`);
-        }
-        const module: IBasisModule = await BASIS({ wasmBinary: await response.arrayBuffer() });
+        const wasmBinary = await fetchWasmBinary(wasmUrl, options?.wasmUrl ? undefined : FALLBACK_WASM_URL);
+        const module: IBasisModule = await BASIS({ wasmBinary });
         module.initializeBasis();
         return module;
       }

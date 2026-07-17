@@ -46,7 +46,7 @@ const options = {
 
 ## Custom WASM Loading
 
-Browser builds load the package's version-matched `basis_encoder.wasm` asset by default. No third-party network request or additional configuration is required with modern bundlers such as Vite, Webpack 5, Rollup, and esbuild.
+Browser builds first load the package's version-matched `basis_encoder.wasm` asset. If that request fails, the encoder falls back to the project's CDN-hosted copy. No third-party request is made when the bundled asset is available.
 
 To host the WASM asset yourself or use a CDN, override `wasmUrl`:
 
@@ -57,6 +57,8 @@ const ktx2Data = await encodeToKTX2(imageBuffer, {
 ```
 
 The custom WASM file must come from the same `ktx2-encoder` version as the bundled JavaScript glue. The legacy `jsUrl` option is deprecated and ignored because replacing only the glue can create an incompatible module pair.
+
+When `wasmUrl` is set explicitly, a failed request is reported directly and does not fall back to the default CDN.
 
 ## Node.js Usage
 

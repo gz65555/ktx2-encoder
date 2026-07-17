@@ -52,7 +52,7 @@ await document.transform(
 );
 ```
 
-The browser build loads its bundled `basis_encoder.wasm` by default. To serve a matching WASM file from a custom location or CDN, set `wasmUrl` explicitly. See the [advanced guide](./website/guide/advanced.md#custom-wasm-loading).
+The browser build loads its bundled `basis_encoder.wasm` by default and falls back to the project's CDN copy if the bundled asset cannot be fetched. To serve a matching WASM file from a custom location or CDN, set `wasmUrl` explicitly. See the [advanced guide](./website/guide/advanced.md#custom-wasm-loading).
 
 ## Tool
 
