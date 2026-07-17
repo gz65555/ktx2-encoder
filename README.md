@@ -35,7 +35,7 @@ encodeToKTX2(data /** ArrayBuffer of png */, options);
 encodeKTX2Cube([data, ...] /** ArrayBuffer of png */, options);
 ```
 
-See [options](./docs/interfaces/IEncodeOptions.md) API documentation for more details.
+See the [API guide](./website/guide/api.md) for more details.
 
 ## For gltf-transform
 
@@ -60,4 +60,3 @@ await document.transform(
 ## Tool
 
 Open the page of [ktx2 encoder tool](https://husong.me/ktx2-encoder/tools), you can use it to encode your image to ktx2.
-

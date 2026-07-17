@@ -27,7 +27,6 @@
   },
   "license": "MIT",
   "scripts": {
-    "docs": "typedoc ./src/web/index.ts --plugin typedoc-plugin-markdown --out ./docs",
     "watch": "tsc -p tsconfig.json --watch",
     "build": "tsc -p tsconfig.json && cp -R src/basis dist",
     "test": "npm run test:node && npm run test:web",
@@ -66,9 +65,7 @@
     "prettier": "^2.8.8",
     "sharp": "^0.35.3",
     "three": "^0.172.0",
-    "typedoc": "^0.27.6",
-    "typedoc-plugin-markdown": "^4.4.1",
-    "typescript": "~5.6.3",
+    "typescript": "~7.0.2",
     "vite": "^5.4.14",
     "vitepress": "^1.6.3",
     "vitest": "^2.1.8",
