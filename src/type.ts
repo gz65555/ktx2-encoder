@@ -249,6 +249,12 @@ interface BasisOptions {
   /** kv data */
   kvData?: Record<string, string | Uint8Array>;
 
+  /**
+   * Initial output buffer capacity in bytes. The encoder retries once with twice this capacity if encoding fails.
+   * By default, capacity is estimated from the decoded input dimensions.
+   */
+  outputBufferSize?: number;
+
   /** type */
   type?: SourceType;
   /**
