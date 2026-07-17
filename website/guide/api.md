@@ -51,8 +51,8 @@ Complete configuration options for the encoder:
 | `kvData` | Record<string, string \| Uint8Array> | {} | Custom key-value metadata for the KTX2 file |
 | `type` | SourceType | - | Type of input source (RAW = 0, PNG = 1) |
 | `imageDecoder` | Function | undefined | Function to decode compressed image buffer to RGBA (Required for Node.js) |
-| `jsUrl` | string | undefined | URL to the JavaScript module |
-| `wasmUrl` | string | undefined | URL to the WebAssembly module |
+| `jsUrl` | string | undefined | Deprecated and ignored; the bundled JavaScript module is always used |
+| `wasmUrl` | string | bundled asset | Optional URL overriding the bundled WebAssembly module |
 
 ### Image Decoder Function Type
 

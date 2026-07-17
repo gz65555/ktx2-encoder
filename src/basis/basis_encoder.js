@@ -3,7 +3,7 @@
 const ENVIRONMENT_IS_NODE=typeof process=="object"&&typeof process.versions=="object"&&typeof 
 process.versions.node=="string";
 if(ENVIRONMENT_IS_NODE){
-  const { createRequire } = await import('module');
+  const { createRequire } = await import(/* webpackIgnore: true */ /* @vite-ignore */ 'module');
   /** @suppress{duplicate} */
   var require = createRequire(import.meta.url);
   const path = require('node:path');

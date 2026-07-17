@@ -257,9 +257,7 @@ interface BasisOptions {
    * @returns
    */
   imageDecoder?: (buffer: Uint8Array) => Promise<{ width: number; height: number; data: Uint8Array }>;
-  /**
-   * js url
-   */
+  /** @deprecated The bundled Basis encoder module is always used. */
   jsUrl?: string;
   /**
    * wasm url

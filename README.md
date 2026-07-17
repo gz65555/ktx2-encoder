@@ -47,13 +47,12 @@ await document.transform(
   ktx2({
     isUASTC: true,
     enableDebug: false,
-    generateMipmap: true,
-    wasmUrl: "/basis_encoder.wasm"
+    generateMipmap: true
   })
 );
 ```
 
-> **Note:** It's recommended to host the `basis_encoder.wasm` file on your own server.
+The browser build loads its bundled `basis_encoder.wasm` by default and falls back to the project's CDN copy if the bundled asset cannot be fetched. To serve a matching WASM file from a custom location or CDN, set `wasmUrl` explicitly. See the [advanced guide](./website/guide/advanced.md#custom-wasm-loading).
 
 ## Tool
 

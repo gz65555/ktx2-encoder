@@ -1,30 +1,43 @@
 import { CubeBufferData, IBasisModule, IEncodeOptions } from "../type.js";
 import { encodeWithModule } from "../encodeCore.js";
+import BASIS from "../basis/basis_encoder.js";
 
 let promise: Promise<IBasisModule> | null = null;
 
-const DEFAULT_WASM_URL =
+const DEFAULT_WASM_URL = new URL("../basis/basis_encoder.wasm", import.meta.url).href;
+const FALLBACK_WASM_URL =
   "https://mdn.alipayobjects.com/rms/afts/file/A*r7D4SKbksYcAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm";
+
+async function fetchWasm(wasmUrl: string): Promise<ArrayBuffer> {
+  const response = await fetch(wasmUrl);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch basis_encoder.wasm from ${wasmUrl}: ${response.status}`);
+  }
+  return response.arrayBuffer();
+}
+
+export async function fetchWasmBinary(wasmUrl: string, fallbackUrl?: string): Promise<ArrayBuffer> {
+  try {
+    return await fetchWasm(wasmUrl);
+  } catch (error) {
+    if (!fallbackUrl) throw error;
+    console.warn(`Failed to load bundled basis_encoder.wasm; falling back to ${fallbackUrl}`);
+    return fetchWasm(fallbackUrl);
+  }
+}
 
 class BrowserBasisEncoder {
   async init(options?: { jsUrl?: string; wasmUrl?: string }) {
+    if (options?.jsUrl) {
+      console.warn("The jsUrl option is deprecated and ignored. The bundled Basis encoder module is always used.");
+    }
     if (!promise) {
-      function initModule(): Promise<IBasisModule> {
+      async function initModule(): Promise<IBasisModule> {
         const wasmUrl = options?.wasmUrl ?? DEFAULT_WASM_URL;
-        const jsUrl = options?.jsUrl ?? "../basis/basis_encoder.js";
-        return new Promise((resolve, reject) => {
-          Promise.all([
-            import(/* @vite-ignore */ jsUrl),
-            wasmUrl ? fetch(wasmUrl).then((res) => res.arrayBuffer()) : undefined
-          ])
-            .then(([{ default: BASIS }, wasmBinary]) => {
-              return BASIS({ wasmBinary }).then((Module: IBasisModule) => {
-                Module.initializeBasis();
-                resolve(Module);
-              });
-            })
-            .catch(reject);
-        });
+        const wasmBinary = await fetchWasmBinary(wasmUrl, options?.wasmUrl ? undefined : FALLBACK_WASM_URL);
+        const module: IBasisModule = await BASIS({ wasmBinary });
+        module.initializeBasis();
+        return module;
       }
       promise = initModule();
     }
