@@ -1,4 +1,4 @@
 import type { IBasisModule } from "../../type";
 
-declare const BASIS: () => IBasisModule;
+declare const BASIS: (options?: { wasmBinary?: ArrayBuffer }) => Promise<IBasisModule>;
 export default BASIS;

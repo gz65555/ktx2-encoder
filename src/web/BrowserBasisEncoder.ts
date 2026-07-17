@@ -1,30 +1,26 @@
 import { CubeBufferData, IBasisModule, IEncodeOptions } from "../type.js";
 import { encodeWithModule } from "../encodeCore.js";
+import BASIS from "../basis/basis_encoder.js";
 
 let promise: Promise<IBasisModule> | null = null;
 
-const DEFAULT_WASM_URL =
-  "https://mdn.alipayobjects.com/rms/afts/file/A*r7D4SKbksYcAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm";
+const DEFAULT_WASM_URL = new URL("../basis/basis_encoder.wasm", import.meta.url).href;
 
 class BrowserBasisEncoder {
   async init(options?: { jsUrl?: string; wasmUrl?: string }) {
+    if (options?.jsUrl) {
+      console.warn("The jsUrl option is deprecated and ignored. The bundled Basis encoder module is always used.");
+    }
     if (!promise) {
-      function initModule(): Promise<IBasisModule> {
+      async function initModule(): Promise<IBasisModule> {
         const wasmUrl = options?.wasmUrl ?? DEFAULT_WASM_URL;
-        const jsUrl = options?.jsUrl ?? "../basis/basis_encoder.js";
-        return new Promise((resolve, reject) => {
-          Promise.all([
-            import(/* @vite-ignore */ jsUrl),
-            wasmUrl ? fetch(wasmUrl).then((res) => res.arrayBuffer()) : undefined
-          ])
-            .then(([{ default: BASIS }, wasmBinary]) => {
-              return BASIS({ wasmBinary }).then((Module: IBasisModule) => {
-                Module.initializeBasis();
-                resolve(Module);
-              });
-            })
-            .catch(reject);
-        });
+        const response = await fetch(wasmUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch basis_encoder.wasm from ${wasmUrl}: ${response.status}`);
+        }
+        const module: IBasisModule = await BASIS({ wasmBinary: await response.arrayBuffer() });
+        module.initializeBasis();
+        return module;
       }
       promise = initModule();
     }
