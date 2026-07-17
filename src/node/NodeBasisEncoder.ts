@@ -13,7 +13,7 @@ class NodeBasisEncoder {
         return basis;
       });
     }
-    return promise as Promise<IBasisModule>;
+    return promise;
   }
 
   async encode(bufferOrBufferArray: Uint8Array | CubeBufferData, options: Partial<IEncodeOptions> = {}) {
@@ -35,7 +35,8 @@ class NodeBasisEncoder {
             true
           );
         } else {
-          const imageData = await options.imageDecoder!(buffer);
+          if (!options.imageDecoder) throw new Error("imageDecoder is required for non-HDR images");
+          const imageData = await options.imageDecoder(buffer);
           encoder.setSliceSourceImage(
             i,
             new Uint8Array(imageData.data),

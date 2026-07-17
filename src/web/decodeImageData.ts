@@ -4,9 +4,11 @@ export const decodeImageBitmap = (function () {
     return function () {
       if (!gl) {
         const canvas = new OffscreenCanvas(128, 128);
-        gl = canvas.getContext("webgl2", { premultipliedAlpha: false });
+        const context = canvas.getContext("webgl2", { premultipliedAlpha: false });
+        if (!context) throw new Error("WebGL2 is not supported");
+        gl = context;
       }
-      return gl as WebGL2RenderingContext;
+      return gl;
     };
   })();
 

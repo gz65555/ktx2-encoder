@@ -8,10 +8,11 @@ async function imageDecoder(buffer: Uint8Array) {
   const image = sharp(buffer);
   const metadata = await image.metadata();
   const { width, height } = metadata;
+  if (!width || !height) throw new Error("Unable to read image dimensions");
   const rawBuffer = await image.ensureAlpha().raw().toBuffer();
   const data = new Uint8Array(rawBuffer);
 
-  return { width: width!, height: height!, data };
+  return { width, height, data };
 }
 
 describe("ktx2 transform node", () => {

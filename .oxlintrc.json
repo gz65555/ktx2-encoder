@@ -1,0 +1,27 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "vitest", "vue"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "rules": {
+    "no-await-in-loop": "off",
+    "no-underscore-dangle": ["warn", { "allow": ["__KTX2_DEBUG__"] }],
+    "typescript/no-unnecessary-boolean-literal-compare": "off",
+    "typescript/no-unnecessary-type-assertion": "off",
+    "typescript/no-useless-default-assignment": "off"
+  },
+  "env": {
+    "builtin": true,
+    "browser": true,
+    "node": true
+  },
+  "ignorePatterns": [
+    "src/basis/**",
+    "website/public/basis/**",
+    "website/.vitepress/.temp/**",
+    "website/.vitepress/dist/**"
+  ]
+}

@@ -11,7 +11,7 @@ const DEFAULT_WASM_URL =
 class BrowserBasisEncoder {
   async init(options?: { jsUrl?: string; wasmUrl?: string }) {
     if (!promise) {
-      function _init(): Promise<IBasisModule> {
+      function initModule(): Promise<IBasisModule> {
         const wasmUrl = options?.wasmUrl ?? DEFAULT_WASM_URL;
         const jsUrl = options?.jsUrl ?? "../basis/basis_encoder.js";
         return new Promise((resolve, reject) => {
@@ -28,7 +28,7 @@ class BrowserBasisEncoder {
             .catch(reject);
         });
       }
-      promise = _init();
+      promise = initModule();
     }
     return promise;
   }
@@ -71,7 +71,8 @@ class BrowserBasisEncoder {
             true
           );
         } else {
-          const imageData = await options.imageDecoder!(buffer);
+          if (!options.imageDecoder) throw new Error("imageDecoder is required for non-HDR images");
+          const imageData = await options.imageDecoder(buffer);
           encoder.setSliceSourceImage(
             i,
             new Uint8Array(imageData.data),
