@@ -2,8 +2,6 @@ import { CubeBufferData, IBasisModule, IEncodeOptions } from "../type.js";
 import { encodeWithModule } from "../encodeCore.js";
 import BASIS from "../basis/basis_encoder.js";
 
-let promise: Promise<IBasisModule> | null = null;
-
 const DEFAULT_WASM_URL = new URL("../basis/basis_encoder.wasm", import.meta.url).href;
 const FALLBACK_WASM_URL =
   "https://mdn.alipayobjects.com/rms/afts/file/A*r7D4SKbksYcAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm";
@@ -26,22 +24,39 @@ export async function fetchWasmBinary(wasmUrl: string, fallbackUrl?: string): Pr
   }
 }
 
-class BrowserBasisEncoder {
-  async init(options?: { jsUrl?: string; wasmUrl?: string }) {
+export class BrowserBasisEncoder {
+  private modulePromise: Promise<IBasisModule> | null = null;
+  private loadedWasmUrl: string | null = null;
+
+  init(options?: { jsUrl?: string; wasmUrl?: string }): Promise<IBasisModule> {
     if (options?.jsUrl) {
       console.warn("The jsUrl option is deprecated and ignored. The bundled Basis encoder module is always used.");
     }
-    if (!promise) {
+    const requestedWasmUrl = options?.wasmUrl ?? DEFAULT_WASM_URL;
+    if (this.modulePromise && requestedWasmUrl !== this.loadedWasmUrl) {
+      console.warn(
+        `[ktx2-encoder] init() is already using ${this.loadedWasmUrl}; ignoring different wasmUrl ${requestedWasmUrl}. ` +
+          "Create a new BrowserBasisEncoder instance to use another URL."
+      );
+    }
+    if (!this.modulePromise) {
       async function initModule(): Promise<IBasisModule> {
-        const wasmUrl = options?.wasmUrl ?? DEFAULT_WASM_URL;
-        const wasmBinary = await fetchWasmBinary(wasmUrl, options?.wasmUrl ? undefined : FALLBACK_WASM_URL);
+        const wasmBinary = await fetchWasmBinary(requestedWasmUrl, options?.wasmUrl ? undefined : FALLBACK_WASM_URL);
         const module: IBasisModule = await BASIS({ wasmBinary });
         module.initializeBasis();
         return module;
       }
-      promise = initModule();
+      this.loadedWasmUrl = requestedWasmUrl;
+      const modulePromise = initModule().catch((error) => {
+        if (this.modulePromise === modulePromise) {
+          this.modulePromise = null;
+          this.loadedWasmUrl = null;
+        }
+        throw error;
+      });
+      this.modulePromise = modulePromise;
     }
-    return promise;
+    return this.modulePromise;
   }
 
   /**

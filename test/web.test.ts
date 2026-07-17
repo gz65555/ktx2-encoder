@@ -1,7 +1,7 @@
 import { expect, test, vi } from "vitest";
 import { read } from "ktx-parse";
 import { CubeBufferData, encodeToKTX2 } from "../src/web";
-import { browserEncoder, fetchWasmBinary } from "../src/web/BrowserBasisEncoder";
+import { BrowserBasisEncoder, browserEncoder, fetchWasmBinary } from "../src/web/BrowserBasisEncoder";
 
 test("uastc", async () => {
   const buffer = await fetch("/tests/DuckCM.png").then((res) => res.arrayBuffer());
@@ -47,6 +47,31 @@ test("falls back to the CDN when the bundled WASM cannot be loaded", async () =>
   }
 });
 
+test("retries module initialization after a failure", async () => {
+  const encoder = new BrowserBasisEncoder();
+  const fetchMock = vi.spyOn(globalThis, "fetch").mockRejectedValueOnce(new Error("Temporary network failure"));
+
+  await expect(encoder.init({ wasmUrl: "/basis_encoder.wasm" })).rejects.toThrow("Temporary network failure");
+  fetchMock.mockRestore();
+  await expect(encoder.init({ wasmUrl: "/basis_encoder.wasm" })).resolves.toBeDefined();
+});
+
+test("warns and reuses the module when wasmUrl changes", async () => {
+  const encoder = new BrowserBasisEncoder();
+  const firstModule = await encoder.init({ wasmUrl: "/basis_encoder.wasm" });
+  const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+  try {
+    const secondModule = await encoder.init({ wasmUrl: "/another-basis-encoder.wasm" });
+    expect(secondModule).toBe(firstModule);
+    expect(warn).toHaveBeenCalledWith(
+      "[ktx2-encoder] init() is already using /basis_encoder.wasm; ignoring different wasmUrl " +
+        "/another-basis-encoder.wasm. Create a new BrowserBasisEncoder instance to use another URL."
+    );
+  } finally {
+    warn.mockRestore();
+  }
+});
+
 test("kvData", async () => {
   const buffer = await fetch("/tests/DuckCM.png").then((res) => res.arrayBuffer());
   const result = await encodeToKTX2(new Uint8Array(buffer), {
@@ -54,7 +79,8 @@ test("kvData", async () => {
     enableDebug: false,
     qualityLevel: 230,
     generateMipmap: true,
-    kvData: { testKey: "testValue" }
+    kvData: { testKey: "testValue" },
+    wasmUrl: "/basis_encoder.wasm"
   });
 
   expect(result.buffer.byteLength).toBe(result.byteLength);
@@ -67,7 +93,8 @@ test("etc1s", async () => {
     isUASTC: false,
     enableDebug: false,
     qualityLevel: 230,
-    generateMipmap: true
+    generateMipmap: true,
+    wasmUrl: "/basis_encoder.wasm"
   });
 
   const resultBuffer = await fetch("/tests/DuckCM-etc1s.ktx2").then((res) => res.arrayBuffer());
@@ -95,7 +122,8 @@ test("textureCube", async () => {
       isUASTC: false,
       enableDebug: false,
       qualityLevel: 230,
-      generateMipmap: false
+      generateMipmap: false,
+      wasmUrl: "/basis_encoder.wasm"
     });
     // TODO: check the result
     expect(result).toBeDefined();
