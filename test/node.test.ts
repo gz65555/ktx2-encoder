@@ -2,6 +2,7 @@ import { expect, test } from "vitest";
 import { encodeToKTX2 } from "../src/node";
 import { nodeEncoder } from "../src/node/NodeBasisEncoder";
 import { CubeBufferData } from "../src/type";
+import { estimateOutputCapacity } from "../src/encodeCore";
 import { read } from "ktx-parse";
 import { readFile } from "fs/promises";
 import sharp from "sharp";
@@ -26,18 +27,50 @@ async function imageDecoder(buffer: Uint8Array) {
 
 test("uastc", { timeout: Infinity }, async () => {
   const buffer = await readFile("./public/tests/DuckCM.png");
+  const resultBuffer = await readFile("./public/tests/DuckCM-uastc.ktx2");
   const result = await encodeToKTX2(new Uint8Array(buffer), {
     isUASTC: true,
     enableDebug: false,
     qualityLevel: 230,
     generateMipmap: true,
-    imageDecoder
+    imageDecoder,
+    outputBufferSize: Math.ceil(resultBuffer.byteLength / 2)
   });
 
-  const resultBuffer = await readFile("./public/tests/DuckCM-uastc.ktx2");
   const testArray = Array.from(new Uint8Array(resultBuffer));
   const resultArray = Array.from(result);
   expect(testArray).toEqual(resultArray);
+});
+
+test("estimates output buffer capacity", () => {
+  const headerSlack = 64 * 1024;
+
+  expect(estimateOutputCapacity([{ width: 4, height: 4 }], 0, false, false)).toBe(headerSlack + 64);
+  expect(estimateOutputCapacity([{ width: 3, height: 5 }], 0, false, true)).toBe(headerSlack + 80);
+  expect(
+    estimateOutputCapacity(
+      Array.from({ length: 6 }, () => ({ width: 4, height: 4 })),
+      0,
+      false,
+      false
+    )
+  ).toBe(headerSlack + 384);
+  expect(estimateOutputCapacity([{ width: 0, height: 0 }], 0, false, false)).toBe(headerSlack);
+  expect(estimateOutputCapacity(null, 1024, true, true)).toBe(24 * 1024 * 1024 + headerSlack);
+});
+
+test("reports attempted output buffer sizes when encoding fails", { timeout: Infinity }, async () => {
+  const buffer = await readFile("./public/tests/DuckCM.png");
+
+  await expect(
+    encodeToKTX2(new Uint8Array(buffer), {
+      isUASTC: true,
+      imageDecoder,
+      outputBufferSize: 1
+    })
+  ).rejects.toThrow(
+    "Encode failed after attempts with 1 and 2 byte output buffers. The output may be too large, the input or encoder options may be invalid, or the WASM encoder may have exceeded its resource limits."
+  );
 });
 
 test("etc1s", { timeout: Infinity }, async () => {

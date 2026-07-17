@@ -49,6 +49,7 @@ Complete configuration options for the encoder:
 | `generateMipmap` | boolean | false | Generate mipmaps from source images |
 | `isKTX2File` | boolean | false | Create .KTX2 files instead of .basis files |
 | `kvData` | Record<string, string \| Uint8Array> | {} | Custom key-value metadata for the KTX2 file |
+| `outputBufferSize` | number | estimated | Initial output buffer capacity in bytes; encoding retries once at twice this size on failure |
 | `type` | SourceType | - | Type of input source (RAW = 0, PNG = 1) |
 | `imageDecoder` | Function | undefined | Function to decode compressed image buffer to RGBA (Required for Node.js) |
 | `jsUrl` | string | undefined | Deprecated and ignored; the bundled JavaScript module is always used |
