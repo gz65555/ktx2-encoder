@@ -27,6 +27,8 @@
   },
   "license": "MIT",
   "scripts": {
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
     "watch": "tsc -p tsconfig.json --watch",
     "build": "tsc -p tsconfig.json && cp -R src/basis dist",
     "test": "npm run test:node && npm run test:web",
@@ -62,8 +64,8 @@
     "@webgpu/types": "^0.1.53",
     "bumpp": "^11.1.0",
     "naive-ui": "^2.41.0",
+    "oxfmt": "^0.59.0",
     "playwright": "^1.61.1",
-    "prettier": "^2.8.8",
     "sharp": "^0.35.3",
     "three": "^0.172.0",
     "typescript": "~7.0.2",

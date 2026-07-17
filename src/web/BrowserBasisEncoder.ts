@@ -55,9 +55,7 @@ class BrowserBasisEncoder {
     try {
       applyInputOptions(options, encoder);
       const isCube = Array.isArray(bufferOrBufferArray) && bufferOrBufferArray.length === 6;
-      encoder.setTexType(
-        isCube ? BasisTextureType.cBASISTexTypeCubemapArray : BasisTextureType.cBASISTexType2D
-      );
+      encoder.setTexType(isCube ? BasisTextureType.cBASISTexTypeCubemapArray : BasisTextureType.cBASISTexType2D);
 
       const bufferArray = Array.isArray(bufferOrBufferArray) ? bufferOrBufferArray : [bufferOrBufferArray];
 

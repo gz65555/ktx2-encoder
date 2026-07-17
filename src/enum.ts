@@ -14,5 +14,5 @@ export const enum SourceType {
 
 export const enum HDRSourceType {
   EXR = 3,
-  HDR = 4,
+  HDR = 4
 }

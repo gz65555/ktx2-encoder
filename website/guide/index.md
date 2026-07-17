@@ -11,7 +11,7 @@ npm install ktx2-encoder
 ## Basic Usage
 
 ```javascript
-import { encodeToKTX2 } from 'ktx2-encoder';
+import { encodeToKTX2 } from "ktx2-encoder";
 
 // Convert a single image
 const ktx2Data = await encodeToKTX2(imageArrayBuffer, {
@@ -43,4 +43,4 @@ Start the development server:
 npm run dev
 ```
 
-Then open http://127.0.0.1:5174 in your browser to use the web-based conversion tool. 
+Then open http://127.0.0.1:5174 in your browser to use the web-based conversion tool.

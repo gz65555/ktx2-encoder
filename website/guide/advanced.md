@@ -49,14 +49,11 @@ const options = {
 When using in Node.js, you need to provide an image decoder:
 
 ```typescript
-import sharp from 'sharp';
+import sharp from "sharp";
 
 const imageDecoder = async (buffer: Uint8Array) => {
-  const { data, info } = await sharp(buffer)
-    .raw()
-    .ensureAlpha()
-    .toBuffer({ resolveWithObject: true });
-    
+  const { data, info } = await sharp(buffer).raw().ensureAlpha().toBuffer({ resolveWithObject: true });
+
   return {
     data: new Uint8Array(data),
     width: info.width,
@@ -76,7 +73,8 @@ You can include custom key-value metadata in the KTX2 file:
 ```typescript
 const ktx2Data = await encodeToKTX2(imageBuffer, {
   kvData: {
-    'myKey': 'myValue',
-    'customData': new Uint8Array([1, 2, 3])
+    myKey: "myValue",
+    customData: new Uint8Array([1, 2, 3])
   }
-}); 
+});
+```

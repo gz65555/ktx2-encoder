@@ -22,7 +22,7 @@
     "emitDeclarationOnly": false,
     "declaration": true,
     "declarationDir": "types",
-    "outDir": "dist",
+    "outDir": "dist"
   },
   "include": ["./src/*", "./src/web/*", "./src/node/*", "./src/gltf-transform/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
