@@ -7,11 +7,9 @@ describe("ktx2 transform browser", () => {
     const document = new Document();
     const imageResponse = await fetch("/tests/DuckCM.png");
     const imageBuffer = await imageResponse.arrayBuffer();
-    
-    const texture = document.createTexture("test")
-      .setImage(new Uint8Array(imageBuffer))
-      .setMimeType("image/png");
-      
+
+    const texture = document.createTexture("test").setImage(new Uint8Array(imageBuffer)).setMimeType("image/png");
+
     await document.transform(
       ktx2({
         isUASTC: true,
@@ -23,7 +21,7 @@ describe("ktx2 transform browser", () => {
     );
 
     expect(texture.getMimeType()).toBe("image/ktx2");
-    
+
     const ktx2Data = texture.getImage()!;
     const expectedResponse = await fetch("/tests/DuckCM-uastc.ktx2");
     const expectedBuffer = new Uint8Array(await expectedResponse.arrayBuffer());
@@ -34,14 +32,15 @@ describe("ktx2 transform browser", () => {
     const document = new Document();
     const imageResponse = await fetch("/tests/DuckCM.png");
     const imageBuffer = await imageResponse.arrayBuffer();
-    
-    const texture1 = document.createTexture("color")
+
+    const texture1 = document
+      .createTexture("color")
       .setImage(new Uint8Array(imageBuffer))
       .setMimeType("image/png")
       .setURI("color.png");
 
-      
-    const texture2 = document.createTexture("normal")
+    const texture2 = document
+      .createTexture("normal")
       .setImage(new Uint8Array(imageBuffer))
       .setMimeType("image/png")
       .setURI("normal.png");
@@ -57,4 +56,4 @@ describe("ktx2 transform browser", () => {
     expect(texture1.getMimeType()).toBe("image/ktx2");
     expect(texture2.getMimeType()).toBe("image/png");
   });
-}); 
+});

@@ -1,4 +1,3 @@
-
 export const DefaultOptions = {
   enableDebug: false,
   isUASTC: true,
@@ -10,4 +9,3 @@ export const DefaultOptions = {
   isHDR: false,
   qualityLevel: 150
 };
-

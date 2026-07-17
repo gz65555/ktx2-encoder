@@ -13,4 +13,4 @@ Upload a ktx2
 
 <script setup>
 import Ktx2Viewer from '../.vitepress/components/ktx2-viewer.vue'
-</script> 
+</script>

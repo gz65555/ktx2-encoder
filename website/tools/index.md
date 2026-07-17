@@ -22,4 +22,3 @@ Upload 6 images named with posx, negx, posy, negy, posz, negz to create a KTX2 c
 ## Options
 
 See [Configuration Options](../guide/api.md#configuration-options) for more information.
-

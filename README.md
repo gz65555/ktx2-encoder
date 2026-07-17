@@ -1,7 +1,6 @@
 # ktx2-encoder
 
-[![Latest NPM release](https://img.shields.io/npm/v/ktx2-encoder.svg)](https://www.npmjs.com/package/ktx2-encoder)
-[![License](https://img.shields.io/badge/license-MIT-007ec6.svg)](https://github.com/gz65555/ktx2-encoder)
+[![Latest NPM release](https://img.shields.io/npm/v/ktx2-encoder.svg)](https://www.npmjs.com/package/ktx2-encoder) [![License](https://img.shields.io/badge/license-MIT-007ec6.svg)](https://github.com/gz65555/ktx2-encoder)
 
 A lightweight JavaScript library for converting images to KTX2 (.ktx2) format. Powered by [BinomialLLC/basis_universal](https://github.com/BinomialLLC/basis_universal).
 
@@ -20,10 +19,10 @@ Install:
 npm install --save ktx2-encoder
 ```
 
-Import: 
+Import:
 
 ```javascript
-import { encodeToKTX2, encodeKTX2Cube } from 'ktx2-encoder';
+import { encodeToKTX2, encodeKTX2Cube } from "ktx2-encoder";
 ```
 
 Usage:
@@ -52,7 +51,6 @@ await document.transform(
     wasmUrl: "/basis_encoder.wasm"
   })
 );
-
 ```
 
 > **Note:** It's recommended to host the `basis_encoder.wasm` file on your own server.

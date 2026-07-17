@@ -17,7 +17,8 @@ async function imageDecoder(buffer: Uint8Array) {
 describe("ktx2 transform node", () => {
   test("converts png to ktx2", async () => {
     const document = new Document();
-    const texture = document.createTexture("test")
+    const texture = document
+      .createTexture("test")
       .setImage(await readFile("./public/tests/DuckCM.png"))
       .setMimeType("image/png");
 
@@ -32,7 +33,7 @@ describe("ktx2 transform node", () => {
     );
 
     expect(texture.getMimeType()).toBe("image/ktx2");
-    
+
     const ktx2Data = Array.from(texture.getImage()!);
     const expectedData = Array.from(new Uint8Array(await readFile("./public/tests/DuckCM-uastc.ktx2")));
     expect(ktx2Data).toEqual(expectedData);
@@ -41,13 +42,11 @@ describe("ktx2 transform node", () => {
   test("filters textures by pattern", async () => {
     const document = new Document();
     const imageBuffer = await readFile("./public/tests/DuckCM.png");
-    
-    const texture1 = document.createTexture("color")
-      .setImage(imageBuffer)
-      .setMimeType("image/png")
-      .setURI("color.png");
-      
-    const texture2 = document.createTexture("normal")
+
+    const texture1 = document.createTexture("color").setImage(imageBuffer).setMimeType("image/png").setURI("color.png");
+
+    const texture2 = document
+      .createTexture("normal")
       .setImage(imageBuffer)
       .setMimeType("image/png")
       .setURI("normal.png");
@@ -63,4 +62,4 @@ describe("ktx2 transform node", () => {
     expect(texture1.getMimeType()).toBe("image/ktx2");
     expect(texture2.getMimeType()).toBe("image/png");
   });
-}); 
+});

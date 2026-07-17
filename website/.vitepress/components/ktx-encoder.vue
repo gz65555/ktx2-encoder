@@ -154,7 +154,6 @@ export default defineComponent({
       common: {
         primaryColor: "#5672CD",
         primaryColorHover: "#3A5CCC"
-        
       }
     };
 

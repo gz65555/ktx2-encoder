@@ -1,5 +1,5 @@
 import { Document, Transform, Texture } from "@gltf-transform/core";
-import { KHRTextureBasisu } from "@gltf-transform/extensions"
+import { KHRTextureBasisu } from "@gltf-transform/extensions";
 import { IEncodeOptions } from "../type.js";
 
 const NAME = "ktx2";
@@ -26,7 +26,7 @@ export type KTX2Options = IEncodeOptions & {
   pattern?: RegExp | null;
   /** Pattern matching the material texture slots to be compressed */
   slots?: RegExp | null;
-}
+};
 /**
  * Transforms compatible textures in a glTF asset to KTX2 format.
  * @param options KTX2 compression options
@@ -39,9 +39,8 @@ export function ktx2(options: Partial<KTX2Options> = {}): Transform {
 
   return createTransform(NAME, async (document: Document): Promise<void> => {
     // Dynamically import the appropriate encoder
-    const { encodeToKTX2 } = typeof window !== "undefined" 
-      ? await import("../web/index.js")
-      : await import("../node/index.js");
+    const { encodeToKTX2 } =
+      typeof window !== "undefined" ? await import("../web/index.js") : await import("../node/index.js");
 
     const logger = document.getLogger();
     const textures = document.getRoot().listTextures();
@@ -89,7 +88,7 @@ export function ktx2(options: Partial<KTX2Options> = {}): Transform {
 
           // Encode to KTX2
           const ktx2Data = await encodeToKTX2(image, {
-            ...options,
+            ...options
           });
           // Update texture with new KTX2 data
           texture.setImage(ktx2Data);

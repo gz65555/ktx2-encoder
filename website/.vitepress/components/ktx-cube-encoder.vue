@@ -61,11 +61,14 @@
               </n-form-item>
 
               <n-form-item v-if="options.outputType.value === 'uastc_hdr'" label="Image Type">
-                <n-select v-model:value="options.imageType" :options="[
-                  { label: 'HDR', value: 'hdr' },
-                  { label: 'EXR', value: 'exr' },
-                  { label: 'Raster', value: 'raster' }
-                ]" />
+                <n-select
+                  v-model:value="options.imageType"
+                  :options="[
+                    { label: 'HDR', value: 'hdr' },
+                    { label: 'EXR', value: 'exr' },
+                    { label: 'Raster', value: 'raster' }
+                  ]"
+                />
               </n-form-item>
 
               <n-form-item v-if="options.outputType.value === 'uastc_hdr'" label="HDR Quality Level">
