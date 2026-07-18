@@ -21,6 +21,7 @@ export default defineConfig({
         items: [
           { text: "Getting Started", link: "/guide/" },
           { text: "glTF Transform", link: "/guide/gltf-transform" },
+          { text: "Advanced Usage", link: "/guide/advanced" },
           { text: "API", link: "/guide/api" }
         ]
       },

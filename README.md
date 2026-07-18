@@ -19,35 +19,41 @@ Install:
 npm install --save ktx2-encoder
 ```
 
-Import:
+Import and encode an image:
 
 ```javascript
-import { encodeToKTX2, encodeKTX2Cube } from "ktx2-encoder";
+import { encodeToKTX2 } from "ktx2-encoder";
+
+const source = new Uint8Array(await file.arrayBuffer());
+const ktx2Data = await encodeToKTX2(source, {
+  isUASTC: true,
+  generateMipmap: true
+});
 ```
 
-Usage:
-
-```javascript
-// encode a 2D image
-encodeToKTX2(data /** ArrayBuffer of png */, options);
-// encode a cube map
-encodeKTX2Cube([data, ...] /** ArrayBuffer of png */, options);
-```
+In browsers, `encodeToKTX2` also accepts exactly six `Uint8Array` images to encode a cubemap, ordered as `[posx, negx, posy, negy, posz, negz]`.
 
 See the [API guide](./website/guide/api.md) for more details.
 
 ## For gltf-transform
 
-For the users of [gltf-transform](https://gltf-transform.dev/), you can use the provided function `ktx`. For example:
+For users of [glTF Transform](https://gltf-transform.dev/), use the provided `ktx2` transform. In Node.js, pass an `imageDecoder`; browser builds provide one automatically.
 
 ```typescript
 import { ktx2 } from "ktx2-encoder/gltf-transform";
+import sharp from "sharp";
+
+const imageDecoder = async (buffer: Uint8Array) => {
+  const { data, info } = await sharp(buffer).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
+  return { data: new Uint8Array(data), width: info.width, height: info.height };
+};
 
 await document.transform(
   ktx2({
     isUASTC: true,
     enableDebug: false,
-    generateMipmap: true
+    generateMipmap: true,
+    imageDecoder
   })
 );
 ```
