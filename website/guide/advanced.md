@@ -47,8 +47,7 @@ const options = {
 
 #### Rate-Distortion Optimization (RDO)
 
-RDO shrinks the supercompressed UASTC LDR output at some quality cost. It is disabled
-by default; enable it and tune the quality scalar as needed:
+RDO shrinks the supercompressed UASTC LDR output at some quality cost. It is disabled by default; enable it and tune the quality scalar as needed:
 
 ```typescript
 const options = {
@@ -61,14 +60,11 @@ const options = {
 
 ## HDR Encoding
 
-The encoder can produce HDR textures via UASTC HDR. HDR mode differs from the normal
-(LDR) path in a few important ways:
+The encoder can produce HDR textures via UASTC HDR. HDR mode differs from the normal (LDR) path in a few important ways:
 
 - It is only supported together with UASTC (`isHDR` implies UASTC HDR encoding).
-- The source must be the **raw bytes of a `.hdr` (Radiance RGBE) or `.exr` file**, and
-  `imageType` must say which container it is.
-- **No `imageDecoder` is required** — HDR buffers are handed to the encoder directly,
-  so this path works the same in browsers and Node.js.
+- The source must be the **raw bytes of a `.hdr` (Radiance RGBE) or `.exr` file**, and `imageType` must say which container it is.
+- HDR buffers are handed to the encoder directly, so the browser helper does not need an `imageDecoder`. In Node.js, use `NodeBasisEncoder` directly to avoid the functional helper's decoder validation.
 
 ```typescript
 import { encodeToKTX2 } from "ktx2-encoder";
@@ -78,6 +74,19 @@ const ktx2Data = await encodeToKTX2(source, {
   isHDR: true,
   imageType: "hdr", // "hdr" for Radiance .hdr, "exr" for OpenEXR
   hdrQualityLevel: 1 // Optional, range 0-4; higher is slower/better
+});
+```
+
+In Node.js, encode the same input through an encoder instance:
+
+```typescript
+import { NodeBasisEncoder } from "ktx2-encoder";
+
+const encoder = new NodeBasisEncoder();
+const ktx2Data = await encoder.encode(source, {
+  isHDR: true,
+  imageType: "hdr",
+  hdrQualityLevel: 1
 });
 ```
 
@@ -134,13 +143,9 @@ const ktx2Data = await encodeToKTX2(imageBuffer, {
 
 ## Output Buffer Size
 
-Encoding writes into a pre-allocated output buffer. By default its capacity is
-estimated from the decoded input dimensions, and if encoding overflows that buffer the
-encoder automatically retries **once** with twice the capacity.
+Encoding writes into a pre-allocated output buffer. By default its capacity is estimated from the decoded input dimensions, and if encoding overflows that buffer the encoder automatically retries **once** with twice the capacity.
 
-You normally don't need to touch this. Set `outputBufferSize` (in bytes) only to skip
-the estimate — for example when you already know the output is unusually large and want
-to avoid the retry, or to cap the initial allocation:
+You normally don't need to touch this. Set `outputBufferSize` (in bytes) only to skip the estimate — for example when you already know the output is unusually large and want to avoid the retry, or to cap the initial allocation:
 
 ```typescript
 const ktx2Data = await encodeToKTX2(imageBuffer, {
@@ -150,9 +155,7 @@ const ktx2Data = await encodeToKTX2(imageBuffer, {
 
 ## Using an Encoder Instance
 
-The package also exports the encoder classes directly. Reusing a single instance keeps
-the WebAssembly module initialized once across many `encode()` calls, which is useful in
-batch tools or long-running workers:
+The package also exports the encoder classes directly. Reusing a single instance keeps the WebAssembly module initialized once across many `encode()` calls, which is useful in batch tools or long-running workers:
 
 ```typescript
 // Browser
@@ -171,5 +174,4 @@ const encoder = new NodeBasisEncoder();
 const ktx2Data = await encoder.encode(pngBuffer, { imageDecoder });
 ```
 
-The functional `encodeToKTX2` helpers are thin wrappers around shared default instances
-(`browserEncoder` / `nodeEncoder`), so most callers can just use those.
+The functional `encodeToKTX2` helpers are thin wrappers around shared default instances (`browserEncoder` / `nodeEncoder`), so most callers can just use those.
