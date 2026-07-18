@@ -57,7 +57,7 @@ Complete configuration options for the encoder:
 | `generateMipmap` | boolean | true | Generate mipmaps from source images |
 | `isKTX2File` | boolean | true | Create a KTX2 file instead of a Basis file |
 | `isHDR` | boolean | false | Enable UASTC HDR encoding |
-| `imageType` | `"hdr" \| "exr"` | required for HDR | HDR source container type |
+| `imageType` | `"hdr" \| "exr" \| "raster"` | required for HDR | HDR source container type (`"exr"` and `"raster"` share the EXR code path) |
 | `hdrQualityLevel` | number | encoder default | Controls UASTC HDR quality (0-4) |
 | `kvData` | Record<string, string \| Uint8Array> | undefined | Custom key-value metadata for the KTX2 file |
 | `outputBufferSize` | number | estimated | Initial output buffer capacity in bytes; encoding retries once at twice this size on failure |
