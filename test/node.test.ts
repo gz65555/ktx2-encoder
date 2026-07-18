@@ -1,7 +1,7 @@
 import { expect, test, vi } from "vitest";
 import { encodeToKTX2 } from "../src/node";
 import { nodeEncoder } from "../src/node/NodeBasisEncoder";
-import { CubeBufferData, IBasisEncoder } from "../src/type";
+import { CubeBufferData } from "../src/type";
 import { estimateOutputCapacity } from "../src/encodeCore";
 import { applyInputOptions } from "../src/applyInputOptions";
 import { read } from "ktx-parse";
@@ -26,21 +26,16 @@ async function imageDecoder(buffer: Uint8Array) {
   return imageData;
 }
 
-test("applies an HDR quality level of zero", () => {
-  const methods = new Map<PropertyKey, ReturnType<typeof vi.fn>>();
-  const encoder = new Proxy(
-    {},
-    {
-      get(_target, property) {
-        if (!methods.has(property)) methods.set(property, vi.fn());
-        return methods.get(property);
-      }
-    }
-  ) as IBasisEncoder;
-
-  applyInputOptions({ isHDR: true, imageType: "hdr", hdrQualityLevel: 0 }, encoder);
-
-  expect(methods.get("setUASTCHDRQualityLevel")).toHaveBeenCalledWith(0);
+test("applies an HDR quality level of zero", async () => {
+  const module = await nodeEncoder.init();
+  const encoder = new module.BasisEncoder();
+  const setQualityLevel = vi.spyOn(encoder, "setUASTCHDRQualityLevel");
+  try {
+    applyInputOptions({ isHDR: true, imageType: "hdr", hdrQualityLevel: 0 }, encoder);
+    expect(setQualityLevel).toHaveBeenCalledWith(0);
+  } finally {
+    encoder.delete();
+  }
 });
 
 test("uastc", { timeout: Infinity }, async () => {
