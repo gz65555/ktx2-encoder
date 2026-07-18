@@ -1,8 +1,9 @@
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { encodeToKTX2 } from "../src/node";
 import { nodeEncoder } from "../src/node/NodeBasisEncoder";
 import { CubeBufferData } from "../src/type";
 import { estimateOutputCapacity } from "../src/encodeCore";
+import { applyInputOptions } from "../src/applyInputOptions";
 import { read } from "ktx-parse";
 import { readFile } from "fs/promises";
 import sharp from "sharp";
@@ -24,6 +25,18 @@ async function imageDecoder(buffer: Uint8Array) {
 
   return imageData;
 }
+
+test("applies an HDR quality level of zero", async () => {
+  const module = await nodeEncoder.init();
+  const encoder = new module.BasisEncoder();
+  const setQualityLevel = vi.spyOn(encoder, "setUASTCHDRQualityLevel");
+  try {
+    applyInputOptions({ isHDR: true, imageType: "hdr", hdrQualityLevel: 0 }, encoder);
+    expect(setQualityLevel).toHaveBeenCalledWith(0);
+  } finally {
+    encoder.delete();
+  }
+});
 
 test("uastc", { timeout: Infinity }, async () => {
   const buffer = await readFile("./public/tests/DuckCM.png");

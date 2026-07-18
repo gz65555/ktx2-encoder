@@ -25,7 +25,7 @@ export function applyInputOptions(options: Partial<IEncodeOptions> = {}, encoder
   /** see {@link https://github.com/BinomialLLC/basis_universal/blob/1172d07395a890c782c4f2ef09d2f08606c3f743/webgl/transcoder/basis_wrappers.cpp#L2307-L2321} */
   if (options.isHDR) {
     encoder.setHDR(options.isHDR);
-    if (options.hdrQualityLevel) encoder.setUASTCHDRQualityLevel(options.hdrQualityLevel);
+    if (options.hdrQualityLevel !== undefined) encoder.setUASTCHDRQualityLevel(options.hdrQualityLevel);
   }
   if (options.isPerceptual !== undefined) encoder.setPerceptual(options.isPerceptual);
 }

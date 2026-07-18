@@ -14,11 +14,14 @@ npm install ktx2-encoder
 import { encodeToKTX2 } from "ktx2-encoder";
 
 // Convert a single image
-const ktx2Data = await encodeToKTX2(imageArrayBuffer, {
+const imageBytes = new Uint8Array(await file.arrayBuffer());
+const ktx2Data = await encodeToKTX2(imageBytes, {
   isUASTC: false,
   generateMipmap: true
 });
 ```
+
+Browser builds decode supported image formats automatically. Node.js callers must provide an `imageDecoder`; see [Advanced Usage](./advanced.md#nodejs-usage).
 
 ## glTF Transform Integration
 
@@ -29,8 +32,7 @@ await document.transform(
   ktx2({
     isUASTC: true,
     enableDebug: false,
-    generateMipmap: true,
-    wasmUrl: "/basis_encoder.wasm"
+    generateMipmap: true
   })
 );
 ```
@@ -40,7 +42,7 @@ await document.transform(
 Start the development server:
 
 ```shell
-npm run dev
+npm run docs:dev
 ```
 
-Then open http://127.0.0.1:5174 in your browser to use the web-based conversion tool.
+Open the local URL printed by VitePress to use the web-based conversion tool.
