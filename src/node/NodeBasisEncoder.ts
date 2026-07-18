@@ -2,17 +2,17 @@ import { CubeBufferData, IBasisModule, IEncodeOptions } from "../type.js";
 import { encodeWithModule } from "../encodeCore.js";
 import BASIS from "../basis/basis_encoder.js";
 
-let promise: Promise<IBasisModule> | null = null;
+export class NodeBasisEncoder {
+  private modulePromise: Promise<IBasisModule> | null = null;
 
-class NodeBasisEncoder {
   async init(): Promise<IBasisModule> {
-    if (!promise) {
-      promise = BASIS().then((basis: IBasisModule) => {
+    if (!this.modulePromise) {
+      this.modulePromise = BASIS().then((basis: IBasisModule) => {
         basis.initializeBasis();
         return basis;
       });
     }
-    return promise;
+    return this.modulePromise;
   }
 
   async encode(
