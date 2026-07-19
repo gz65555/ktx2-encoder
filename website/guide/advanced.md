@@ -92,9 +92,9 @@ const ktx2Data = await encoder.encode(source, {
 
 ## Custom WASM Loading
 
-Browser builds first load the package's version-matched `basis_encoder.wasm` asset. If that request fails, the encoder falls back to the project's CDN-hosted copy. No third-party request is made when the bundled asset is available.
+Browser builds load the package's version-matched, bundled `basis_encoder.wasm` asset automatically. No third-party or CDN request is ever made.
 
-To host the WASM asset yourself or use a CDN, override `wasmUrl`:
+To host the WASM asset yourself, override `wasmUrl`:
 
 ```typescript
 const ktx2Data = await encodeToKTX2(imageBuffer, {
@@ -104,7 +104,7 @@ const ktx2Data = await encodeToKTX2(imageBuffer, {
 
 The custom WASM file must come from the same `ktx2-encoder` version as the bundled JavaScript glue. The legacy `jsUrl` option is deprecated and ignored because replacing only the glue can create an incompatible module pair.
 
-When `wasmUrl` is set explicitly, a failed request is reported directly and does not fall back to the default CDN.
+If the WASM asset (bundled or custom) cannot be fetched, the encoder throws an error that includes the URL and HTTP status — it does not fall back to any other source.
 
 ## Node.js Usage
 

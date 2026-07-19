@@ -3,25 +3,19 @@ import { encodeWithModule } from "../encodeCore.js";
 import BASIS from "../basis/basis_encoder.js";
 
 const DEFAULT_WASM_URL = new URL("../basis/basis_encoder.wasm", import.meta.url).href;
-const FALLBACK_WASM_URL =
-  "https://mdn.alipayobjects.com/rms/afts/file/A*r7D4SKbksYcAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm";
 
-async function fetchWasm(wasmUrl: string): Promise<ArrayBuffer> {
+/**
+ * Fetches the WASM binary from the given URL. There is no CDN or other fallback:
+ * only the version-matched, bundled asset is used by default, and an explicit
+ * `wasmUrl` is fetched as-is. A failed request throws with the URL and status so
+ * a stale or mismatched WASM never loads silently.
+ */
+export async function fetchWasmBinary(wasmUrl: string): Promise<ArrayBuffer> {
   const response = await fetch(wasmUrl);
   if (!response.ok) {
     throw new Error(`Failed to fetch basis_encoder.wasm from ${wasmUrl}: ${response.status}`);
   }
   return response.arrayBuffer();
-}
-
-export async function fetchWasmBinary(wasmUrl: string, fallbackUrl?: string): Promise<ArrayBuffer> {
-  try {
-    return await fetchWasm(wasmUrl);
-  } catch (error) {
-    if (!fallbackUrl) throw error;
-    console.warn(`Failed to load bundled basis_encoder.wasm; falling back to ${fallbackUrl}`);
-    return fetchWasm(fallbackUrl);
-  }
 }
 
 export class BrowserBasisEncoder {
@@ -41,7 +35,7 @@ export class BrowserBasisEncoder {
     }
     if (!this.modulePromise) {
       async function initModule(): Promise<IBasisModule> {
-        const wasmBinary = await fetchWasmBinary(requestedWasmUrl, options?.wasmUrl ? undefined : FALLBACK_WASM_URL);
+        const wasmBinary = await fetchWasmBinary(requestedWasmUrl);
         const module: IBasisModule = await BASIS({ wasmBinary });
         module.initializeBasis();
         return module;
