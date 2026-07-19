@@ -1,7 +1,8 @@
 // Phase 2 (WASM_UPDATE_PLAN §5.4/§6.3/§6.5): verify encodeWithModule's
 // generation-gated behavior — HDR nit-multiplier arg, source-setter return
 // checks, and the v2.5 source-texel ceiling — against BOTH WASM generations,
-// using a mock module so the v2.5 paths are covered before the real WASM lands.
+// using a mock module so both paths are covered in isolation, including the
+// legacy branch the shipped v2.5 WASM never takes.
 import { describe, expect, test, vi } from "vitest";
 import { encodeWithModule } from "../src/encodeCore";
 import type { IBasisModule } from "../src/type";

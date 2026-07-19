@@ -9,8 +9,9 @@ export function applyInputOptions(options: Partial<IEncodeOptions> = {}, encoder
   if (options.isKTX2File !== undefined) encoder.setCreateKTX2File(options.isKTX2File);
   // extra
   // The following three setters were renamed in Basis Universal v2.5. Prefer the
-  // new name and fall back to the legacy one so a single build works against
-  // both WASM generations during the migration (WASM_UPDATE_PLAN §5.2).
+  // new name and fall back to the legacy one so the same code works against both
+  // WASM generations, e.g. a custom wasmUrl pointing at an older build
+  // (WASM_UPDATE_PLAN §5.2).
   if (options.isSetKTX2SRGBTransferFunc !== undefined) {
     if (encoder.setKTX2AndBasisSRGBTransferFunc)
       encoder.setKTX2AndBasisSRGBTransferFunc(options.isSetKTX2SRGBTransferFunc);

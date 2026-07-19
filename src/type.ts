@@ -73,8 +73,8 @@ export interface IBasisEncoder {
   setNormalMap(): void;
   /**
    * v2.5 rename of {@link setNormalMap}. Optional so the compat layer can bridge
-   * both WASM generations; see WASM_UPDATE_PLAN §5.2. Arity assumed unchanged
-   * (no args); confirm against the v2.5 wrapper when the WASM lands.
+   * both WASM generations; see WASM_UPDATE_PLAN §5.2. Verified against the v2.5
+   * wrapper: takes no arguments.
    */
   setNormalMapPreset?(): void;
   /**

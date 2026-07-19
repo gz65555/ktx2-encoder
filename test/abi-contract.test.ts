@@ -8,10 +8,11 @@
 // It asserts EXACTLY ONE target generation via the `EXPECT_ABI` switch below,
 // so that a JS-glue / WASM mismatch fails loudly instead of being papered over.
 //
-//   - Currently the repo ships the legacy WASM  -> EXPECT_ABI = "legacy".
-//   - Phase 3 (product sync) swaps in the v2.5 WASM. When that happens, flip
-//     EXPECT_ABI to "v2.5" IN THE SAME COMMIT. If the glue and WASM disagree
-//     with EXPECT_ABI, this test fails, which is the intended signal.
+// The repo now ships the v2.5 WASM, so EXPECT_ABI is "v2.5": the test requires
+// the renamed method surface (new names present, legacy names gone). If a build
+// ever pairs this glue with a legacy WASM (or vice versa), this test fails,
+// which is the intended signal. Keep EXPECT_ABI in lockstep with the bundled
+// src/basis/basis_encoder.wasm.
 //
 // Method inventory and enum values were verified against basis_universal
 // @ 1b33fd5098c6e7b58324146b8f5518cbb4cdfb72 (webgl/transcoder/basis_wrappers.cpp
@@ -22,8 +23,7 @@ import { nodeEncoder } from "../src/node/NodeBasisEncoder";
 import { BasisTextureType, SourceType, HDRSourceType } from "../src/enum";
 
 // ---------------------------------------------------------------------------
-// Phase 3 migration switch. Flip to "v2.5" in the commit that bundles the new
-// WASM. See header.
+// The ABI generation the bundled WASM must match. Currently "v2.5". See header.
 // ---------------------------------------------------------------------------
 const EXPECT_ABI: "legacy" | "v2.5" = "v2.5";
 

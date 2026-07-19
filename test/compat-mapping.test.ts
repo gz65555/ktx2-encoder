@@ -1,6 +1,7 @@
 // Phase 2 (WASM_UPDATE_PLAN §5.2): verify applyInputOptions bridges the three
 // setters renamed in Basis Universal v2.5 across BOTH WASM generations, using
-// mock encoders — so the v2.5 branch is covered before the real v2.5 WASM lands.
+// mock encoders — so both branches are covered in isolation, including the
+// legacy fallback that the shipped v2.5 WASM never exercises.
 import { describe, expect, test, vi } from "vitest";
 import { applyInputOptions } from "../src/applyInputOptions";
 
