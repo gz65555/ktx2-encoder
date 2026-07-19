@@ -20,7 +20,7 @@ export interface IBasisEncoder {
     width: number,
     height: number,
     type: SourceType
-  ): void;
+  ): boolean | void;
   /**
    * Compresses the provided source slice(s) to an output .basis file.
    * At the minimum, you must provided at least 1 source slice by calling setSliceSourceImage() before calling this method.
@@ -165,6 +165,8 @@ export interface IBasisEncoder {
    * @param height - if it is not raster image, height set 0.
    * @param type - type of the input source.
    * @param ldrSrgbToLinear - If true, the input is assumed to be in sRGB space.
+   * @param ldrToHdrNitMultiplier - v2.5 only. Nit multiplier for LDR->HDR
+   *   upconversion (must be > 0). Ignored for already-HDR (.hdr/.exr) inputs.
    */
   setSliceSourceImageHDR(
     sliceIndex: number,
@@ -172,8 +174,9 @@ export interface IBasisEncoder {
     width: number,
     height: number,
     type: HDRSourceType,
-    ldrSrgbToLinear: boolean
-  ): void;
+    ldrSrgbToLinear: boolean,
+    ldrToHdrNitMultiplier?: number
+  ): boolean | void;
 }
 
 export interface IBasisModule {
