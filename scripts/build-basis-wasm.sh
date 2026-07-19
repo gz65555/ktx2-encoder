@@ -79,7 +79,18 @@ fi
 # Never reuse the stale untracked artifacts under webgl/encoder (see plan §1).
 BUILD_DIR="$(mktemp -d "${TMPDIR:-/tmp}/ktx2-basis-build.XXXXXX")"
 echo "Building in clean dir: ${BUILD_DIR}"
-trap 'rm -rf "${BUILD_DIR}"' EXIT
+
+# Optimize for size (-Os). The upstream CMakeLists hardcodes -O3 (speed) for
+# Release, which cannot be overridden via CMAKE_CXX_FLAGS (target_compile_options
+# wins). So patch -O3 -> -Os in place and restore on exit. Measured: -Os cuts
+# the gzipped WASM ~18% for only ~11-29% slower encoding (output bytes and SSIM
+# are unchanged — optimization level does not affect the encoder's math). -Oz
+# would cut ~28% but at +66-80% encode time, losing the v2.5 speed win.
+CMAKE_FILE="${BASIS_UNIVERSAL_DIR}/webgl/encoder/CMakeLists.txt"
+cp "${CMAKE_FILE}" "${CMAKE_FILE}.ktx2bak"
+# Restore the upstream file and clean the build dir no matter how we exit.
+trap 'rm -rf "${BUILD_DIR}"; mv -f "${CMAKE_FILE}.ktx2bak" "${CMAKE_FILE}" 2>/dev/null || true' EXIT
+sed 's/-O3/-Os/g' "${CMAKE_FILE}.ktx2bak" > "${CMAKE_FILE}"
 
 # Deterministic timestamps in the output.
 export SOURCE_DATE_EPOCH="${SOURCE_DATE_EPOCH:-$(git -C "${BASIS_UNIVERSAL_DIR}" show -s --format=%ct "${PINNED_COMMIT}")}"
@@ -123,6 +134,7 @@ echo "=== build provenance ==="
 echo "upstream_commit  : ${PINNED_COMMIT}"
 echo "emsdk_version    : ${ACTUAL_EMSDK_VERSION} (pinned ${EXPECTED_EMSDK_VERSION})"
 echo "source_date_epoch: ${SOURCE_DATE_EPOCH}"
+echo "optimization     : -Os (size), patched from upstream -O3"
 echo "linker_flags     : ${LINKER_FLAGS}"
 echo "js  sha256/size  : $(sha256 "${OUT_JS}"  | awk '{print $1}')  $(wc -c < "${OUT_JS}") bytes"
 echo "wasm sha256/size : $(sha256 "${OUT_WASM}" | awk '{print $1}')  $(wc -c < "${OUT_WASM}") bytes"

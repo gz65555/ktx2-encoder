@@ -32,8 +32,8 @@ The `basis_encoder.{js,wasm}` shipped in this package were built from:
 
 - Upstream commit: `1b33fd5098c6e7b58324146b8f5518cbb4cdfb72` (2026-07-05)
 - Toolchain: Emscripten 4.0.15
-- Config: wasm32 (non-threaded) Release, `KTX2_ZSTANDARD=ON`, `SUPPORT_ASTCENC=OFF`, `-s EXPORT_ES6=1`
-- `basis_encoder.wasm` SHA-256: `9807719e87cf3d979b0d69ae7112eb88aec6a0e0206c0b2d00dc0bed0d581b80`
+- Config: wasm32 (non-threaded) Release, size-optimized (`-Os`), `KTX2_ZSTANDARD=ON`, `SUPPORT_ASTCENC=OFF`, `-s EXPORT_ES6=1`
+- `basis_encoder.wasm` SHA-256: `411b6ac26eea4fb1ad76417b9ffaab857014676d799d5b251bcfc3079e8d3c4d`
 
 This build is a redistribution of the upstream binary; the ktx2-encoder project does not modify the Basis Universal source.
 
