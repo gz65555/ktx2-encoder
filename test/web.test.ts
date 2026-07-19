@@ -30,20 +30,17 @@ test("warns when deprecated jsUrl is provided", async () => {
   }
 });
 
-test("falls back to the CDN when the bundled WASM cannot be loaded", async () => {
-  const fetchMock = vi
-    .spyOn(globalThis, "fetch")
-    .mockResolvedValueOnce(new Response(null, { status: 404 }))
-    .mockResolvedValueOnce(new Response(new Uint8Array([1, 2, 3])));
-  const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
-  const fallbackUrl = "https://mdn.alipayobjects.com/rms/afts/file/A*r7D4SKbksYcAAAAAAAAAAAAAARQnAQ/basis_encoder.wasm";
+test("throws with the URL and status when the WASM cannot be loaded (no CDN fallback)", async () => {
+  const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(new Response(null, { status: 404 }));
   try {
-    expect(new Uint8Array(await fetchWasmBinary("/bundled.wasm", fallbackUrl))).toEqual(new Uint8Array([1, 2, 3]));
-    expect(fetchMock).toHaveBeenNthCalledWith(1, "/bundled.wasm");
-    expect(fetchMock).toHaveBeenNthCalledWith(2, fallbackUrl);
+    await expect(fetchWasmBinary("/missing.wasm")).rejects.toThrow(
+      "Failed to fetch basis_encoder.wasm from /missing.wasm: 404"
+    );
+    // No second request: the fallback is gone.
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    expect(fetchMock).toHaveBeenCalledWith("/missing.wasm");
   } finally {
     fetchMock.mockRestore();
-    warn.mockRestore();
   }
 });
 

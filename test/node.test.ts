@@ -137,3 +137,28 @@ test("textureCube", { timeout: Infinity }, async () => {
 
   expect(read(result).faceCount).toBe(6);
 });
+
+test("encodes HDR (.hdr) input without an imageDecoder", { timeout: Infinity }, async () => {
+  const hdr = await readFile("./public/tests/pretoria_gardens_1k.hdr");
+  const result = await encodeToKTX2(new Uint8Array(hdr), {
+    isHDR: true,
+    imageType: "hdr",
+    generateMipmap: true
+  });
+
+  const container = read(result);
+  expect(result.byteLength).toBeGreaterThan(0);
+  expect(container.pixelWidth).toBe(1024);
+  expect(container.pixelHeight).toBe(512);
+  expect(container.levels.length).toBeGreaterThan(1);
+});
+
+test("rejects sources over the encoder texel limit with a clear error", async () => {
+  await expect(
+    encodeToKTX2(new Uint8Array(1), {
+      isUASTC: false,
+      // 4096x4096 = 16.78 Mpix, over the v2.5 12 Mpix source-texel ceiling.
+      imageDecoder: async () => ({ width: 4096, height: 4096, data: new Uint8Array(4096 * 4096 * 4) })
+    })
+  ).rejects.toThrow(/exceed the encoder limit/);
+});

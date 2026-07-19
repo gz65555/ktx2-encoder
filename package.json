@@ -33,9 +33,13 @@
     "lint:fix": "oxlint --type-aware --fix --deny-warnings .",
     "watch": "tsc -p tsconfig.json --watch",
     "build": "tsc -p tsconfig.json && cp -R src/basis dist",
+    "prepack": "npm run build",
     "test": "npm run test:node && npm run test:web",
     "test:node": "vitest run ./test/node.test.ts",
     "test:web": "vitest run --browser.enabled ./test/web.test.ts",
+    "test:abi": "vitest run ./test/abi-contract.test.ts",
+    "test:quality": "vitest run --browser.enabled ./test/quality.test.ts",
+    "build:wasm": "bash ./scripts/build-basis-wasm.sh",
     "test:gltf": "vitest run ./test/gltf-transform.node.test.ts && vitest run --browser.enabled ./test/gltf-transform.web.test.ts",
     "release": "bumpp",
     "docs:dev": "vitepress dev website",
@@ -53,7 +57,8 @@
   ],
   "files": [
     "types",
-    "dist"
+    "dist",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "devDependencies": {
     "@css-render/vue3-ssr": "^0.15.14",
@@ -71,6 +76,7 @@
     "oxlint-tsgolint": "^0.25.0",
     "playwright": "^1.61.1",
     "sharp": "^0.35.3",
+    "ssim.js": "^3.5.0",
     "three": "^0.172.0",
     "typescript": "~7.0.2",
     "vite": "^8.1.5",
