@@ -25,7 +25,7 @@ import { BasisTextureType, SourceType, HDRSourceType } from "../src/enum";
 // Phase 3 migration switch. Flip to "v2.5" in the commit that bundles the new
 // WASM. See header.
 // ---------------------------------------------------------------------------
-const EXPECT_ABI: "legacy" | "v2.5" = "legacy";
+const EXPECT_ABI: "legacy" | "v2.5" = "v2.5";
 
 // Methods present in BOTH the legacy and v2.5 wrappers that the compat layer
 // (src/applyInputOptions.ts + src/encodeCore.ts) depends on.
