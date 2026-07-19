@@ -33,6 +33,7 @@
     "lint:fix": "oxlint --type-aware --fix --deny-warnings .",
     "watch": "tsc -p tsconfig.json --watch",
     "build": "tsc -p tsconfig.json && cp -R src/basis dist",
+    "prepack": "npm run build",
     "test": "npm run test:node && npm run test:web",
     "test:node": "vitest run ./test/node.test.ts",
     "test:web": "vitest run --browser.enabled ./test/web.test.ts",
@@ -55,7 +56,8 @@
   ],
   "files": [
     "types",
-    "dist"
+    "dist",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "devDependencies": {
     "@css-render/vue3-ssr": "^0.15.14",

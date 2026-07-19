@@ -106,6 +106,8 @@ The custom WASM file must come from the same `ktx2-encoder` version as the bundl
 
 If the WASM asset (bundled or custom) cannot be fetched, the encoder throws an error that includes the URL and HTTP status — it does not fall back to any other source.
 
+When self-hosting the `.wasm` file, serve it with the `application/wasm` MIME type so the browser can stream-compile it. If your host sends a generic type (e.g. `application/octet-stream`), loading still works but skips streaming compilation.
+
 ## Node.js Usage
 
 When using in Node.js, you need to provide an image decoder:
