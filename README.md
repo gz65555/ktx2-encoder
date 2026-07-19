@@ -10,6 +10,7 @@ A lightweight JavaScript library for converting images to KTX2 (.ktx2) format. P
 - Support for both 2D images and cubemaps
 - Integration with gltf-transform
 - Support both Browser and Node.js
+- Optional multithreaded encoding in cross-origin isolated browsers
 
 ## Quick Start
 
@@ -32,6 +33,8 @@ const ktx2Data = await encodeToKTX2(source, {
 ```
 
 In browsers, `encodeToKTX2` also accepts exactly six `Uint8Array` images to encode a cubemap, ordered as `[posx, negx, posy, negy, posz, negz]`.
+
+To speed up encoding of large textures in a [cross-origin isolated](https://developer.mozilla.org/en-US/docs/Web/API/Window/crossOriginIsolated) page, opt into multithreading with `useThreads: true`. See [Multithreaded Encoding](./website/guide/advanced.md#multithreaded-encoding).
 
 See the [API guide](./website/guide/api.md) for more details.
 

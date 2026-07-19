@@ -5,7 +5,7 @@ export default defineConfig({
   test: {
     server: {
       deps: {
-        external: [/\/src\/basis\/basis_encoder\.js$/]
+        external: [/\/src\/basis\/basis_encoder\.js$/, /\/src\/basis-threads\/basis_encoder_threads\.js$/]
       }
     },
     browser: {

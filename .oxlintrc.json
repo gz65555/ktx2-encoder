@@ -9,6 +9,12 @@
   "rules": {
     "no-await-in-loop": "off",
     "no-underscore-dangle": ["warn", { "allow": ["__KTX2_DEBUG__"] }],
+    "vitest/expect-expect": [
+      "error",
+      {
+        "assertFunctionNames": ["expect", "expectModuleSurface", "expectEncoderSurface", "expectEnumAbi"]
+      }
+    ],
     "typescript/no-unnecessary-boolean-literal-compare": "off",
     "typescript/no-unnecessary-type-assertion": "off",
     "typescript/no-useless-default-assignment": "off"
@@ -20,7 +26,9 @@
   },
   "ignorePatterns": [
     "src/basis/**",
+    "src/basis-threads/**",
     "website/public/basis/**",
+    "website/public/basis-threads/**",
     "website/.vitepress/.temp/**",
     "website/.vitepress/dist/**"
   ]

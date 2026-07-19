@@ -90,6 +90,86 @@ const ktx2Data = await encoder.encode(source, {
 });
 ```
 
+## Multithreaded Encoding
+
+The browser build ships a second, multithreaded encoder that can use WASM threads to speed up encoding. It is **opt-in** and **off by default**. Enable it per call with `useThreads`:
+
+```typescript
+const ktx2Data = await encodeToKTX2(imageBuffer, {
+  useThreads: true,
+  numThreads: 4 // optional; extra worker threads (total = 1 + numThreads)
+});
+```
+
+- `numThreads` is the number of **extra** worker threads (total parallelism is `1 + numThreads`). It is clamped to `[0, 8]`; `0` disables threading. The default is `min(navigator.hardwareConcurrency - 1, 8)`.
+- Threading helps most on **large textures**. Small inputs see little benefit because the encoder's serial phases dominate; a 2K image is only modestly faster, while a near-cap (~11 Mpix) ETC1S encode can be several times faster.
+
+### Requirement: cross-origin isolation
+
+WASM threads use `SharedArrayBuffer`, which browsers only expose to **cross-origin isolated** pages. Your page must be served with these response headers:
+
+```
+Cross-Origin-Opener-Policy: same-origin
+Cross-Origin-Embedder-Policy: require-corp
+```
+
+You can confirm at runtime that `crossOriginIsolated === true`. If `useThreads` is requested on a page that is **not** cross-origin isolated, the encoder logs one warning and transparently falls back to the single-threaded build — encoding still succeeds. (Note that COEP `require-corp` also constrains other cross-origin resources your page loads.)
+
+For local Vite development and preview, configure both servers ([Vite server headers](https://vite.dev/config/server-options.html#server-headers)):
+
+```typescript
+import { defineConfig } from "vite";
+
+const isolationHeaders = {
+  "Cross-Origin-Opener-Policy": "same-origin",
+  "Cross-Origin-Embedder-Policy": "require-corp"
+};
+
+export default defineConfig({
+  server: { headers: isolationHeaders },
+  preview: { headers: isolationHeaders }
+});
+```
+
+On Vercel, add response headers in [`vercel.json`](https://vercel.com/docs/project-configuration/vercel-json#headers):
+
+```json
+{
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Cross-Origin-Opener-Policy", "value": "same-origin" },
+        { "key": "Cross-Origin-Embedder-Policy", "value": "require-corp" }
+      ]
+    }
+  ]
+}
+```
+
+On Netlify, put a [`_headers`](https://docs.netlify.com/manage/routing/headers/) file in the publish directory:
+
+```text
+/*
+  Cross-Origin-Opener-Policy: same-origin
+  Cross-Origin-Embedder-Policy: require-corp
+```
+
+After deployment, check both headers on the top-level document and verify `crossOriginIsolated` in the browser console. Any cross-origin scripts, images, fonts, or other assets must also satisfy COEP through CORS or an appropriate `Cross-Origin-Resource-Policy` response header.
+
+The multithreaded WASM (`basis_encoder_threads.wasm`, ~3.3 MB) is loaded lazily only when you first opt in, so it costs nothing for consumers that don't use it. To self-host it, point `wasmUrl` at the **threaded** asset when `useThreads` is enabled:
+
+```typescript
+const ktx2Data = await encodeToKTX2(imageBuffer, {
+  useThreads: true,
+  wasmUrl: "/assets/basis_encoder_threads.wasm"
+});
+```
+
+Multithreading is **browser-only**; `useThreads` is ignored in Node.js.
+
+Thread scheduling can change work ordering, so output produced with different thread counts is not guaranteed to be byte-for-byte identical. Decode and compare quality when reproducibility matters; the library's tests use SSIM rather than encoded-byte equality across variants.
+
 ## Custom WASM Loading
 
 Browser builds load the package's version-matched, bundled `basis_encoder.wasm` asset automatically. No third-party or CDN request is ever made.

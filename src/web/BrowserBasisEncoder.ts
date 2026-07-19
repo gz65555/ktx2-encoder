@@ -3,6 +3,31 @@ import { encodeWithModule } from "../encodeCore.js";
 import BASIS from "../basis/basis_encoder.js";
 
 const DEFAULT_WASM_URL = new URL("../basis/basis_encoder.wasm", import.meta.url).href;
+const DEFAULT_THREADS_WASM_URL = new URL("../basis-threads/basis_encoder_threads.wasm", import.meta.url).href;
+
+type BasisFactory = (moduleArg?: { wasmBinary?: ArrayBuffer }) => Promise<IBasisModule>;
+type Variant = "single" | "threads";
+
+interface VariantSlot {
+  promise: Promise<IBasisModule> | null;
+  wasmUrl: string | null;
+}
+
+/**
+ * Lazily import the multithreaded glue so its ~3.3 MB payload never enters the
+ * main bundle for consumers that don't opt into threading.
+ */
+function loadThreadsFactory(): Promise<BasisFactory> {
+  return import("../basis-threads/basis_encoder_threads.js").then((m) => m.default as BasisFactory);
+}
+
+/**
+ * WASM threads need `SharedArrayBuffer`, which browsers only expose to
+ * cross-origin isolated pages (COOP `same-origin` + COEP `require-corp`).
+ */
+function threadsAvailable(): boolean {
+  return typeof SharedArrayBuffer !== "undefined" && globalThis.crossOriginIsolated === true;
+}
 
 /**
  * Fetches the WASM binary from the given URL. There is no CDN or other fallback:
@@ -19,38 +44,62 @@ export async function fetchWasmBinary(wasmUrl: string): Promise<ArrayBuffer> {
 }
 
 export class BrowserBasisEncoder {
-  private modulePromise: Promise<IBasisModule> | null = null;
-  private loadedWasmUrl: string | null = null;
+  // The two builds are cached independently so an app can use both without one
+  // evicting the other.
+  private single: VariantSlot = { promise: null, wasmUrl: null };
+  private threads: VariantSlot = { promise: null, wasmUrl: null };
+  private warnedThreadsFallback = false;
 
-  init(options?: { jsUrl?: string; wasmUrl?: string }): Promise<IBasisModule> {
+  init(options?: { jsUrl?: string; wasmUrl?: string; useThreads?: boolean }): Promise<IBasisModule> {
     if (options?.jsUrl) {
       console.warn("The jsUrl option is deprecated and ignored. The bundled Basis encoder module is always used.");
     }
-    const requestedWasmUrl = options?.wasmUrl ?? DEFAULT_WASM_URL;
-    if (this.modulePromise && requestedWasmUrl !== this.loadedWasmUrl) {
+    const variant = this.resolveVariant(options);
+    const defaultUrl = variant === "threads" ? DEFAULT_THREADS_WASM_URL : DEFAULT_WASM_URL;
+    return this.initVariant(variant, options?.wasmUrl ?? defaultUrl);
+  }
+
+  private resolveVariant(options?: { useThreads?: boolean }): Variant {
+    if (!options?.useThreads) return "single";
+    if (threadsAvailable()) return "threads";
+    if (!this.warnedThreadsFallback) {
       console.warn(
-        `[ktx2-encoder] init() is already using ${this.loadedWasmUrl}; ignoring different wasmUrl ${requestedWasmUrl}. ` +
+        "[ktx2-encoder] useThreads was requested but this page is not cross-origin isolated " +
+          "(crossOriginIsolated is false); serve it with COOP 'same-origin' + COEP 'require-corp' " +
+          "to enable WASM threads. Falling back to the single-threaded encoder."
+      );
+      this.warnedThreadsFallback = true;
+    }
+    return "single";
+  }
+
+  private initVariant(variant: Variant, requestedWasmUrl: string): Promise<IBasisModule> {
+    const slot = variant === "threads" ? this.threads : this.single;
+    if (slot.promise && requestedWasmUrl !== slot.wasmUrl) {
+      console.warn(
+        `[ktx2-encoder] init() is already using ${slot.wasmUrl}; ignoring different wasmUrl ${requestedWasmUrl}. ` +
           "Create a new BrowserBasisEncoder instance to use another URL."
       );
     }
-    if (!this.modulePromise) {
+    if (!slot.promise) {
+      slot.wasmUrl = requestedWasmUrl;
+      const factory: Promise<BasisFactory> = variant === "threads" ? loadThreadsFactory() : Promise.resolve(BASIS);
       async function initModule(): Promise<IBasisModule> {
-        const wasmBinary = await fetchWasmBinary(requestedWasmUrl);
-        const module: IBasisModule = await BASIS({ wasmBinary });
+        const [wasmBinary, basis] = await Promise.all([fetchWasmBinary(requestedWasmUrl), factory]);
+        const module: IBasisModule = await basis({ wasmBinary });
         module.initializeBasis();
         return module;
       }
-      this.loadedWasmUrl = requestedWasmUrl;
       const modulePromise = initModule().catch((error) => {
-        if (this.modulePromise === modulePromise) {
-          this.modulePromise = null;
-          this.loadedWasmUrl = null;
+        if (slot.promise === modulePromise) {
+          slot.promise = null;
+          slot.wasmUrl = null;
         }
         throw error;
       });
-      this.modulePromise = modulePromise;
+      slot.promise = modulePromise;
     }
-    return this.modulePromise;
+    return slot.promise;
   }
 
   /**

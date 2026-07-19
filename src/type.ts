@@ -102,6 +102,16 @@ export interface IBasisEncoder {
    */
   setPerceptual(perceptual: boolean): void;
 
+  /**
+   * Enables threaded compression using `numExtraWorkerThreads` *extra* helper
+   * threads (total parallelism = 1 + numExtraWorkerThreads). Bound by both WASM
+   * generations, but only has an effect in the multithreaded build
+   * (`src/basis-threads`); in the single-threaded build it is a no-op. Optional
+   * because a custom `wasmUrl` may point at a build predating this method.
+   * See WASM_THREADS_PLAN.md.
+   */
+  controlThreading?(enable: boolean, numExtraWorkerThreads: number): void;
+
   /** release memory */
   delete(): void;
 
@@ -288,6 +298,24 @@ interface BasisOptions {
    * wasm url
    */
   wasmUrl?: string;
+  /**
+   * Opt into the multithreaded encoder build (browser only). Default is false.
+   *
+   * Requires a cross-origin isolated page (`crossOriginIsolated === true`, i.e.
+   * the document is served with COOP `same-origin` + COEP `require-corp`), which
+   * is what enables `SharedArrayBuffer`/wasm threads. When requested but the
+   * context is not isolated, the encoder warns once and falls back to the
+   * single-threaded build. Ignored in Node.js.
+   *
+   * Threading helps most on large textures; small inputs see little benefit.
+   */
+  useThreads?: boolean;
+  /**
+   * Number of *extra* worker threads to use when {@link useThreads} is active
+   * (total parallelism = 1 + numThreads). Clamped to [0, 8]; 0 disables
+   * threading. Defaults to `min(navigator.hardwareConcurrency - 1, 8)`.
+   */
+  numThreads?: number;
 }
 
 declare global {

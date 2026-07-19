@@ -64,6 +64,8 @@ Complete configuration options for the encoder:
 | `imageDecoder` | Function | browser built-in | Function that decodes an image buffer to RGBA; required in Node.js for non-HDR images |
 | `jsUrl` | string | undefined | Deprecated and ignored in browsers; the bundled JavaScript module is always used |
 | `wasmUrl` | string | bundled asset | Browser-only URL overriding the bundled WebAssembly module |
+| `useThreads` | boolean | false | Browser-only. Opt into multithreaded encoding; requires a cross-origin isolated page, falls back to single-threaded otherwise. Ignored in Node.js |
+| `numThreads` | number | `min(hardwareConcurrency - 1, 8)` | Extra worker threads when `useThreads` is active (total = 1 + numThreads); clamped to [0, 8], 0 disables |
 
 ### Image Decoder Function Type
 

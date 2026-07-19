@@ -33,11 +33,13 @@ interface MockOpts {
   v25: boolean;
   sourceReturn?: boolean; // what setSliceSourceImage(HDR) returns
   encodeBytes?: number; // what encode() returns
+  hasControlThreading?: boolean; // whether the encoder exposes controlThreading (default true)
 }
 
-function mockModule({ v25, sourceReturn, encodeBytes = 8 }: MockOpts) {
+function mockModule({ v25, sourceReturn, encodeBytes = 8, hasControlThreading = true }: MockOpts) {
   const hdrCalls: unknown[][] = [];
   const ldrCalls: unknown[][] = [];
+  const threadCalls: unknown[][] = [];
 
   class BasisEncoder {
     setSliceSourceImage(...args: unknown[]) {
@@ -54,6 +56,13 @@ function mockModule({ v25, sourceReturn, encodeBytes = 8 }: MockOpts) {
     }
     delete() {}
   }
+  // controlThreading exists on BOTH real builds; omit only to exercise the
+  // typeof guard for a hypothetical older custom wasm.
+  if (hasControlThreading) {
+    // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- prototype patched for the mock
+    (BasisEncoder.prototype as unknown as Record<string, unknown>).controlThreading = (...args: unknown[]) =>
+      void threadCalls.push(args);
+  }
   // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- prototype patched for the mock
   const proto = BasisEncoder.prototype as unknown as Record<string, unknown>;
   for (const name of ALWAYS_METHODS) proto[name] = noop();
@@ -66,7 +75,7 @@ function mockModule({ v25, sourceReturn, encodeBytes = 8 }: MockOpts) {
 
   // oxlint-disable-next-line typescript/no-unsafe-type-assertion -- deliberate module mock
   const module = { BasisEncoder, initializeBasis: noop() } as unknown as IBasisModule;
-  return { module, hdrCalls, ldrCalls };
+  return { module, hdrCalls, ldrCalls, threadCalls };
 }
 
 function decoderFor(width: number, height: number) {
@@ -122,6 +131,54 @@ describe("v2.5 source-texel ceiling", () => {
   test("v2.5 allows inputs within the ceiling", async () => {
     const { module } = mockModule({ v25: true, sourceReturn: true });
     const out = await encodeWithModule(module, new Uint8Array(4), { imageDecoder: decoderFor(2048, 2048) });
+    expect(out.byteLength).toBe(8);
+  });
+});
+
+describe("threaded compression (controlThreading enablement)", () => {
+  test("not called without useThreads", async () => {
+    const { module, threadCalls } = mockModule({ v25: true, sourceReturn: true });
+    await encodeWithModule(module, new Uint8Array(4), { imageDecoder: decoderFor(64, 64) });
+    expect(threadCalls).toHaveLength(0);
+  });
+
+  test("called with the requested extra-thread count when useThreads", async () => {
+    const { module, threadCalls } = mockModule({ v25: true, sourceReturn: true });
+    await encodeWithModule(module, new Uint8Array(4), {
+      imageDecoder: decoderFor(64, 64),
+      useThreads: true,
+      numThreads: 4
+    });
+    expect(threadCalls).toEqual([[true, 4]]);
+  });
+
+  test("numThreads is clamped to the pool size (8)", async () => {
+    const { module, threadCalls } = mockModule({ v25: true, sourceReturn: true });
+    await encodeWithModule(module, new Uint8Array(4), {
+      imageDecoder: decoderFor(64, 64),
+      useThreads: true,
+      numThreads: 100
+    });
+    expect(threadCalls).toEqual([[true, 8]]);
+  });
+
+  test("numThreads 0 disables threading (not called)", async () => {
+    const { module, threadCalls } = mockModule({ v25: true, sourceReturn: true });
+    await encodeWithModule(module, new Uint8Array(4), {
+      imageDecoder: decoderFor(64, 64),
+      useThreads: true,
+      numThreads: 0
+    });
+    expect(threadCalls).toHaveLength(0);
+  });
+
+  test("no-op and no throw when the encoder lacks controlThreading (older custom wasm)", async () => {
+    const { module } = mockModule({ v25: true, sourceReturn: true, hasControlThreading: false });
+    const out = await encodeWithModule(module, new Uint8Array(4), {
+      imageDecoder: decoderFor(64, 64),
+      useThreads: true,
+      numThreads: 4
+    });
     expect(out.byteLength).toBe(8);
   });
 });
