@@ -8,14 +8,26 @@ export function applyInputOptions(options: Partial<IEncodeOptions> = {}, encoder
   if (options.isUASTC !== undefined) encoder.setUASTC(options.isUASTC);
   if (options.isKTX2File !== undefined) encoder.setCreateKTX2File(options.isKTX2File);
   // extra
-  if (options.isSetKTX2SRGBTransferFunc !== undefined)
-    encoder.setKTX2SRGBTransferFunc(options.isSetKTX2SRGBTransferFunc);
+  // The following three setters were renamed in Basis Universal v2.5. Prefer the
+  // new name and fall back to the legacy one so a single build works against
+  // both WASM generations during the migration (WASM_UPDATE_PLAN §5.2).
+  if (options.isSetKTX2SRGBTransferFunc !== undefined) {
+    if (encoder.setKTX2AndBasisSRGBTransferFunc)
+      encoder.setKTX2AndBasisSRGBTransferFunc(options.isSetKTX2SRGBTransferFunc);
+    else encoder.setKTX2SRGBTransferFunc(options.isSetKTX2SRGBTransferFunc);
+  }
   if (options.generateMipmap !== undefined) encoder.setMipGen(options.generateMipmap);
   if (options.isYFlip !== undefined) encoder.setYFlip(options.isYFlip);
-  if (options.isNormalMap) encoder.setNormalMap();
+  if (options.isNormalMap) {
+    if (encoder.setNormalMapPreset) encoder.setNormalMapPreset();
+    else encoder.setNormalMap();
+  }
   // etc1s
   if (options.qualityLevel !== undefined) encoder.setQualityLevel(options.qualityLevel);
-  if (options.compressionLevel !== undefined) encoder.setCompressionLevel(options.compressionLevel);
+  if (options.compressionLevel !== undefined) {
+    if (encoder.setETC1SCompressionLevel) encoder.setETC1SCompressionLevel(options.compressionLevel);
+    else encoder.setCompressionLevel(options.compressionLevel);
+  }
   // uastc
   if (options.needSupercompression !== undefined) encoder.setKTX2UASTCSupercompression(options.needSupercompression);
   if (options.enableRDO) encoder.setRDOUASTC(true);

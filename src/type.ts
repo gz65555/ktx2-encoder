@@ -63,9 +63,20 @@ export interface IBasisEncoder {
    */
   setCompressionLevel(level: number): void;
   /**
+   * v2.5 rename of {@link setCompressionLevel}. Optional so the compat layer can
+   * bridge both WASM generations; see WASM_UPDATE_PLAN §5.2.
+   */
+  setETC1SCompressionLevel?(level: number): void;
+  /**
    * setNormalMapMode is the same as the basisu.exe "-normal_map" option. It tunes several codec parameters so compression works better on normal maps.
    */
   setNormalMap(): void;
+  /**
+   * v2.5 rename of {@link setNormalMap}. Optional so the compat layer can bridge
+   * both WASM generations; see WASM_UPDATE_PLAN §5.2. Arity assumed unchanged
+   * (no args); confirm against the v2.5 wrapper when the WASM lands.
+   */
+  setNormalMapPreset?(): void;
   /**
    * Create .KTX2 files instead of .basis files. By default this is FALSE.
    * @param isKTX2
@@ -81,6 +92,11 @@ export interface IBasisEncoder {
    * @param srgbTransferFunc need sRGB transfer func
    */
   setKTX2SRGBTransferFunc(srgbTransferFunc: boolean): void;
+  /**
+   * v2.5 rename of {@link setKTX2SRGBTransferFunc}. Optional so the compat layer
+   * can bridge both WASM generations; see WASM_UPDATE_PLAN §5.2.
+   */
+  setKTX2AndBasisSRGBTransferFunc?(srgbTransferFunc: boolean): void;
   /**
    * If true, the input is assumed to be in sRGB space. Be sure to set this correctly! (Examples: True on photos, albedo/spec maps, and false on normal maps.)
    */
