@@ -32,7 +32,7 @@ test.each([
     isUASTC,
     useThreads: true,
     numThreads: 4,
-    wasmUrl: "/basis_encoder_threads.wasm"
+    threadsWasmUrl: "/basis_encoder_threads.wasm"
   });
 
   // Both decode as KTX2 with matching top-level dimensions and level count.
@@ -51,14 +51,30 @@ test.each([
   expect(score).toBeGreaterThan(threshold);
 });
 
-test("one BrowserBasisEncoder caches the variants independently", async () => {
+test("one BrowserBasisEncoder caches the two variants independently", async () => {
   const encoder = new BrowserBasisEncoder();
   const single = await encoder.init({ wasmUrl: "/basis_encoder.wasm" });
-  const threaded = await encoder.init({ useThreads: true, wasmUrl: "/basis_encoder_threads.wasm" });
+  const threaded = await encoder.init({ useThreads: true, threadsWasmUrl: "/basis_encoder_threads.wasm" });
 
   expect(threaded).not.toBe(single);
   await expect(encoder.init({ wasmUrl: "/basis_encoder.wasm" })).resolves.toBe(single);
-  await expect(encoder.init({ useThreads: true, wasmUrl: "/basis_encoder_threads.wasm" })).resolves.toBe(threaded);
+  await expect(encoder.init({ useThreads: true, threadsWasmUrl: "/basis_encoder_threads.wasm" })).resolves.toBe(
+    threaded
+  );
+});
+
+test("threaded module is shared across encoder instances (one worker pool per URL)", async () => {
+  // The threaded module pre-spawns a worker pool, so separate encoders must
+  // reuse one module per URL rather than each spawning their own pool.
+  const first = await new BrowserBasisEncoder().init({
+    useThreads: true,
+    threadsWasmUrl: "/basis_encoder_threads.wasm"
+  });
+  const second = await new BrowserBasisEncoder().init({
+    useThreads: true,
+    threadsWasmUrl: "/basis_encoder_threads.wasm"
+  });
+  expect(second).toBe(first);
 });
 
 test("threaded UASTC HDR encode produces a valid mipmapped KTX2", { timeout: 120_000 }, async () => {
@@ -69,7 +85,7 @@ test("threaded UASTC HDR encode produces a valid mipmapped KTX2", { timeout: 120
     generateMipmap: true,
     useThreads: true,
     numThreads: 4,
-    wasmUrl: "/basis_encoder_threads.wasm"
+    threadsWasmUrl: "/basis_encoder_threads.wasm"
   });
 
   const container = read(result);

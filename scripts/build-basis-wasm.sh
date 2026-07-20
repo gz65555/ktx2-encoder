@@ -113,14 +113,30 @@ export SOURCE_DATE_EPOCH="${SOURCE_DATE_EPOCH:-$(git -C "${BASIS_UNIVERSAL_DIR}"
 sha256() { command -v sha256sum >/dev/null 2>&1 && sha256sum "$1" || shasum -a 256 "$1"; }
 
 # ---------------------------------------------------------------------------
-# build_variant <target> <out_basename> <extra_linker_flags>
-#   Configures + builds one encoder target in a fresh temp dir and echoes the
-#   two output paths ("<js> <wasm>") on stdout. All logging goes to stderr.
+# Cleanup runs on EXIT (success or failure): restore the (possibly patched)
+# CMakeLists and delete every temp build tree we created. build_variant runs in
+# a process-substitution subshell, so build dirs are created + tracked here in
+# the parent shell to keep BUILD_DIRS populated for cleanup. Provenance below is
+# emitted before the script exits, i.e. before this trap fires.
+BUILD_DIRS=()
+cleanup() {
+  git -C "${BASIS_UNIVERSAL_DIR}" checkout -- webgl/encoder/CMakeLists.txt 2>/dev/null || true
+  # Guard the expansion: an empty array under `set -u` would otherwise error.
+  if [[ ${#BUILD_DIRS[@]} -gt 0 ]]; then
+    for d in "${BUILD_DIRS[@]}"; do
+      [[ -n "$d" ]] && rm -rf "$d"
+    done
+  fi
+}
+trap cleanup EXIT
+
+# build_variant <build_dir> <target> <out_basename> <extra_linker_flags>
+#   Configures + builds one encoder target in the given (caller-tracked) temp dir
+#   and echoes the two output paths ("<js> <wasm>") on stdout. All logging goes
+#   to stderr.
 # ---------------------------------------------------------------------------
 build_variant() {
-  local target="$1" out_basename="$2" extra_flags="$3"
-  local build_dir
-  build_dir="$(mktemp -d "${TMPDIR:-/tmp}/ktx2-basis-build.XXXXXX")"
+  local build_dir="$1" target="$2" out_basename="$3" extra_flags="$4"
   echo "Building ${target} in clean dir: ${build_dir}" >&2
 
   emcmake cmake -S "${BASIS_UNIVERSAL_DIR}/webgl/encoder" -B "${build_dir}" \
@@ -144,7 +160,11 @@ build_variant() {
 # 1. Single-threaded variant (unchanged flags — keeps the shipped artifact
 #    byte-reproducible).
 # ---------------------------------------------------------------------------
-read -r SINGLE_JS SINGLE_WASM < <(build_variant "basis_encoder.js" "basis_encoder" "-s EXPORT_ES6=1")
+# Create + track the temp dir in the PARENT shell (build_variant runs in a
+# process-substitution subshell, so it can't append to BUILD_DIRS itself).
+SINGLE_BUILD_DIR="$(mktemp -d "${TMPDIR:-/tmp}/ktx2-basis-build.XXXXXX")"
+BUILD_DIRS+=("${SINGLE_BUILD_DIR}")
+read -r SINGLE_JS SINGLE_WASM < <(build_variant "${SINGLE_BUILD_DIR}" "basis_encoder.js" "basis_encoder" "-s EXPORT_ES6=1")
 
 for dir in "${SINGLE_DEST_DIRS[@]}"; do
   mkdir -p "$dir"
@@ -154,12 +174,9 @@ done
 cp "${SINGLE_WASM}" "${REPO_ROOT}/public/basis_encoder.wasm"
 
 # ---------------------------------------------------------------------------
-# 2. Threaded variant. Patch the pool size (see header), build, then restore the
-#    CMakeLists no matter what.
+# 2. Threaded variant. Patch the pool size (see header); the EXIT trap restores
+#    the CMakeLists no matter what.
 # ---------------------------------------------------------------------------
-restore_cmakelists() { git -C "${BASIS_UNIVERSAL_DIR}" checkout -- webgl/encoder/CMakeLists.txt; }
-trap restore_cmakelists EXIT
-
 # 32 -> THREADS_POOL_SIZE, only inside the LINK_THREADS definition.
 perl -0pi -e "s/(-s PTHREAD_POOL_SIZE=)32\b/\${1}${THREADS_POOL_SIZE}/" "${CMAKELISTS}"
 if ! grep -q -- "-s PTHREAD_POOL_SIZE=${THREADS_POOL_SIZE}" "${CMAKELISTS}"; then
@@ -168,7 +185,9 @@ if ! grep -q -- "-s PTHREAD_POOL_SIZE=${THREADS_POOL_SIZE}" "${CMAKELISTS}"; the
 fi
 echo "Patched PTHREAD_POOL_SIZE -> ${THREADS_POOL_SIZE}" >&2
 
-read -r THREADS_JS THREADS_WASM < <(build_variant "basis_encoder_threads.js" "basis_encoder_threads" \
+THREADS_BUILD_DIR="$(mktemp -d "${TMPDIR:-/tmp}/ktx2-basis-build.XXXXXX")"
+BUILD_DIRS+=("${THREADS_BUILD_DIR}")
+read -r THREADS_JS THREADS_WASM < <(build_variant "${THREADS_BUILD_DIR}" "basis_encoder_threads.js" "basis_encoder_threads" \
   "-s EXPORT_ES6=1 -s MAXIMUM_MEMORY=${THREADS_MAXIMUM_MEMORY}")
 
 for dir in "${THREADS_DEST_DIRS[@]}"; do
@@ -177,8 +196,9 @@ for dir in "${THREADS_DEST_DIRS[@]}"; do
 done
 cp "${THREADS_WASM}" "${REPO_ROOT}/public/basis_encoder_threads.wasm"
 
-restore_cmakelists
-trap - EXIT
+# Restore the CMakeLists now that the threaded build consumed the patch (the EXIT
+# trap also does this as a safety net).
+git -C "${BASIS_UNIVERSAL_DIR}" checkout -- webgl/encoder/CMakeLists.txt
 
 # ---------------------------------------------------------------------------
 # Provenance record.

@@ -84,6 +84,9 @@ test("useThreads falls back to single-threaded (with one warning) when not cross
       useThreads: true,
       numThreads: 4,
       wasmUrl: "/basis_encoder.wasm",
+      // Falling back must use the single-threaded wasmUrl and ignore this
+      // threaded URL — pairing threaded WASM with single glue would LinkError.
+      threadsWasmUrl: "/basis_encoder_threads.wasm",
       imageDecoder: decodeImageBitmap
     });
     // Falls back cleanly and still produces a valid KTX2.

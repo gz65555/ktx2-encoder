@@ -295,9 +295,18 @@ interface BasisOptions {
   /** @deprecated The bundled Basis encoder module is always used. */
   jsUrl?: string;
   /**
-   * wasm url
+   * URL of the single-threaded `basis_encoder.wasm` to load, overriding the
+   * bundled asset. Also used whenever a {@link useThreads} request falls back to
+   * single-threaded, so it must always point at the single-threaded build.
    */
   wasmUrl?: string;
+  /**
+   * URL of the multithreaded `basis_encoder_threads.wasm`, overriding the bundled
+   * asset. Only used when {@link useThreads} is active AND the page is
+   * cross-origin isolated. Kept separate from {@link wasmUrl} because the two
+   * builds ship different, non-interchangeable WASM binaries.
+   */
+  threadsWasmUrl?: string;
   /**
    * Opt into the multithreaded encoder build (browser only). Default is false.
    *

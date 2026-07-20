@@ -157,12 +157,15 @@ On Netlify, put a [`_headers`](https://docs.netlify.com/manage/routing/headers/)
 
 After deployment, check both headers on the top-level document and verify `crossOriginIsolated` in the browser console. Any cross-origin scripts, images, fonts, or other assets must also satisfy COEP through CORS or an appropriate `Cross-Origin-Resource-Policy` response header.
 
-The multithreaded WASM (`basis_encoder_threads.wasm`, ~3.3 MB) is loaded lazily only when you first opt in, so it costs nothing for consumers that don't use it. To self-host it, point `wasmUrl` at the **threaded** asset when `useThreads` is enabled:
+The multithreaded WASM (`basis_encoder_threads.wasm`, ~3.3 MB) is loaded lazily only when you first opt in, so it costs nothing for consumers that don't use it. To self-host it, point `threadsWasmUrl` at the **threaded** asset — this is a separate option from `wasmUrl` because the two builds ship different, non-interchangeable binaries:
 
 ```typescript
 const ktx2Data = await encodeToKTX2(imageBuffer, {
   useThreads: true,
-  wasmUrl: "/assets/basis_encoder_threads.wasm"
+  threadsWasmUrl: "/assets/basis_encoder_threads.wasm",
+  // wasmUrl is used if the page is not cross-origin isolated and threading
+  // falls back to single-threaded; point it at the single-threaded build.
+  wasmUrl: "/assets/basis_encoder.wasm"
 });
 ```
 
