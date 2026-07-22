@@ -8,44 +8,7 @@
 //
 // Approach mirrors https://github.com/gz65555/ktx2-ssim.
 import { test, expect } from "vitest";
-import { BackgroundMode, Camera, Texture2D, TextureFormat, Vector3, WebGLEngine } from "@galacean/engine";
-import { ssim } from "ssim.js";
-
-async function decodeToImageData(url: string): Promise<ImageData> {
-  const canvas = document.createElement("canvas");
-  document.body.appendChild(canvas);
-  const engine = await WebGLEngine.create({
-    canvas,
-    graphicDeviceOptions: { preserveDrawingBuffer: true }
-  });
-  const scene = engine.sceneManager.activeScene;
-  const rootEntity = scene.createRootEntity();
-
-  const texture = await engine.resourceManager.load<Texture2D>({ url });
-  const width = texture.width;
-  const height = texture.height;
-  canvas.width = width;
-  canvas.height = height;
-  console.log(`[quality] ${url}: ${width}x${height} format=${TextureFormat[texture.format]}`);
-
-  const cameraEntity = rootEntity.createChild("camera");
-  cameraEntity.addComponent(Camera);
-  cameraEntity.transform.position = new Vector3(10, 10, 10);
-  cameraEntity.transform.lookAt(new Vector3(0, 0, 0));
-
-  scene.background.mode = BackgroundMode.Texture;
-  scene.background.texture = texture;
-  engine.update();
-
-  const gl = canvas.getContext("webgl2")!;
-  const buf = new Uint8ClampedArray(width * height * 4);
-  gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, buf);
-  return new ImageData(buf, width, height);
-}
-
-function mssim(a: ImageData, b: ImageData) {
-  return ssim(a, b, { windowSize: 20, k1: 0.01, k2: 0.025, ssim: "original" }).mssim;
-}
+import { decodeToImageData, mssim } from "./browser-quality";
 
 test("v2.5 goldens transcode + SSIM vs reference", { timeout: 120000 }, async () => {
   const ref = await decodeToImageData("/tests/DuckCM.png");

@@ -2,6 +2,7 @@ import { expect, test, vi } from "vitest";
 import { read } from "ktx-parse";
 import { CubeBufferData, encodeToKTX2 } from "../src/web";
 import { BrowserBasisEncoder, browserEncoder, fetchWasmBinary } from "../src/web/BrowserBasisEncoder";
+import { decodeImageBitmap } from "../src/web/decodeImageData";
 
 test("uastc", async () => {
   const buffer = await fetch("/tests/DuckCM.png").then((res) => res.arrayBuffer());
@@ -64,6 +65,36 @@ test("warns and reuses the module when wasmUrl changes", async () => {
       "[ktx2-encoder] init() is already using /basis_encoder.wasm; ignoring different wasmUrl " +
         "/another-basis-encoder.wasm. Create a new BrowserBasisEncoder instance to use another URL."
     );
+  } finally {
+    warn.mockRestore();
+  }
+});
+
+test("useThreads falls back to single-threaded (with one warning) when not cross-origin isolated", async () => {
+  // The default vitest browser server sends no COOP/COEP headers, so the page is
+  // not cross-origin isolated and threads are unavailable.
+  expect(self.crossOriginIsolated).toBe(false);
+  const encoder = new BrowserBasisEncoder();
+  const warn = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+  try {
+    const buffer = await fetch("/tests/DuckCM.png").then((res) => res.arrayBuffer());
+    const result = await encoder.encode(new Uint8Array(buffer), {
+      isUASTC: false,
+      qualityLevel: 230,
+      useThreads: true,
+      numThreads: 4,
+      wasmUrl: "/basis_encoder.wasm",
+      // Falling back must use the single-threaded wasmUrl and ignore this
+      // threaded URL — pairing threaded WASM with single glue would LinkError.
+      threadsWasmUrl: "/basis_encoder_threads.wasm",
+      imageDecoder: decodeImageBitmap
+    });
+    // Falls back cleanly and still produces a valid KTX2.
+    expect(result.byteLength).toBeGreaterThan(12);
+    expect(read(result)).toBeDefined();
+    expect(warn).toHaveBeenCalledWith(expect.stringContaining("not cross-origin isolated"));
+    await encoder.init({ useThreads: true, wasmUrl: "/basis_encoder.wasm" });
+    expect(warn).toHaveBeenCalledTimes(1);
   } finally {
     warn.mockRestore();
   }

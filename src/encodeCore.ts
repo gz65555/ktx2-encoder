@@ -25,6 +25,22 @@ function isV25Encoder(encoder: IBasisEncoder): boolean {
   return typeof encoder.setETC1SCompressionLevel === "function";
 }
 
+// Upper bound on extra worker threads, matching PTHREAD_POOL_SIZE in the
+// threaded build (WASM_THREADS_PLAN §3 D3). Requesting more than the pre-spawned
+// pool would make the encoder block the main thread waiting for workers.
+const MAX_EXTRA_WORKER_THREADS = 8;
+
+// Resolve the number of *extra* worker threads (total parallelism = 1 + this).
+// Undefined → default to one fewer than the logical core count (leave one for
+// the caller), clamped to the pool size. A negative/0 result disables threading.
+function resolveExtraWorkerThreads(numThreads: number | undefined): number {
+  if (typeof numThreads === "number" && Number.isFinite(numThreads)) {
+    return Math.max(0, Math.min(Math.floor(numThreads), MAX_EXTRA_WORKER_THREADS));
+  }
+  const cores = globalThis.navigator?.hardwareConcurrency ?? 4;
+  return Math.max(1, Math.min(cores - 1, MAX_EXTRA_WORKER_THREADS));
+}
+
 export function estimateOutputCapacity(
   slices: ReadonlyArray<{ width: number; height: number }> | null,
   inputByteLength: number,
@@ -49,6 +65,15 @@ export async function encodeWithModule(
   try {
     applyInputOptions(options, encoder);
     const v25 = isV25Encoder(encoder);
+
+    // Enable threaded compression when opted in. This is a no-op unless the
+    // threaded module was loaded (BrowserBasisEncoder selects it only in a
+    // cross-origin isolated context); on the single-threaded build the method
+    // exists but the encoder ignores it. See WASM_THREADS_PLAN.md.
+    if (options.useThreads && typeof encoder.controlThreading === "function") {
+      const extraThreads = resolveExtraWorkerThreads(options.numThreads);
+      if (extraThreads > 0) encoder.controlThreading(true, extraThreads);
+    }
 
     const isCube = Array.isArray(bufferOrBufferArray) && bufferOrBufferArray.length === 6;
     encoder.setTexType(isCube ? BasisTextureType.cBASISTexTypeCubemapArray : BasisTextureType.cBASISTexType2D);
