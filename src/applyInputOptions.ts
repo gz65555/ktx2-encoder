@@ -34,6 +34,11 @@ export function applyInputOptions(options: Partial<IEncodeOptions> = {}, encoder
   if (options.enableRDO) encoder.setRDOUASTC(true);
   if (options.rdoQualityLevel !== undefined) encoder.setRDOUASTCQualityScalar(options.rdoQualityLevel);
   if (options.uastcLDRQualityLevel !== undefined) encoder.setPackUASTCFlags(options.uastcLDRQualityLevel);
+  // uastc hdr 6x6 supercompression
+  // see https://github.com/BinomialLLC/basis_universal/blob/1172d07395a890c782c4f2ef09d2f08606c3f743/webgl/transcoder/basis_wrappers.cpp#L2582
+  if (options.needSupercompression !== undefined) {
+    if (encoder.setKTX2UASTCSupercompressionFlags) encoder.setKTX2UASTCSupercompressionFlags(options.needSupercompression);
+  }
   // hdr, only set HDR, if hdr is true, otherwise the format mode will be etc1s
   /** see {@link https://github.com/BinomialLLC/basis_universal/blob/1172d07395a890c782c4f2ef09d2f08606c3f743/webgl/transcoder/basis_wrappers.cpp#L2307-L2321} */
   if (options.isHDR) {
