@@ -32,6 +32,8 @@ const ktx2Data = await encodeToKTX2(source, {
 });
 ```
 
+In Node.js, pass an `imageDecoder` for non-HDR images.
+
 In browsers, `encodeToKTX2` also accepts exactly six `Uint8Array` images to encode a cubemap, ordered as `[posx, negx, posy, negy, posz, negz]`.
 
 To speed up encoding of large textures in a [cross-origin isolated](https://developer.mozilla.org/en-US/docs/Web/API/Window/crossOriginIsolated) page, opt into multithreading with `useThreads: true`. See [Multithreaded Encoding](./website/guide/advanced.md#multithreaded-encoding).
